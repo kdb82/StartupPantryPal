@@ -11,8 +11,8 @@ For this deliverable I did the following:
 
 - [x] Proper use of Markdown
 - [x] A concise and compelling elevator pitch
-- [ ] Description of key features
-- [ ] Description of how you will use each technology
+- [x] Description of key features
+- [x] Description of how you will use each technology
 - [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ### Elevator pitch
@@ -38,6 +38,15 @@ sequenceDiagram
 
 ### Key features
 
+**Pantry Tracking:** Users maintain an updatable list of ingredients in their kitchen, including quantities and categories.
+
+**Social Recipe Discovery:** Users can follow others and view recipes they have saved, creating a lightweight social feed.
+
+**AI Assistant Chef:** Users can prompt an AI assistant to receive recipe recommendations based on pantry contents, dietary preferences, and time constraints. Saved recipes can automatically generate shopping list items for missing ingredients.
+
+**Real-Time Interaction (Supporting Feature):** Group chat and live updates allow users to share recipes and vote in polls to decide what to cook together.
+
+**Meal Planning (Supporting Feature):** Recipes added to a calendar automatically update pantry and shopping list data.
 
 
 
