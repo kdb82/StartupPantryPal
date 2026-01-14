@@ -4,9 +4,6 @@ This serves as the startup specification for my web app Pantry Pal. The web app 
 
 ## 🚀 Specification Deliverable
 
-> [!NOTE]
-> Fill in this sections as the submission artifact for this deliverable. You can refer to this [example](https://github.com/webprogramming260/startup-example/blob/main/README.md) for inspiration.
-
 For this deliverable I did the following:
 
 - [x] Proper use of Markdown
@@ -65,8 +62,8 @@ I am going to use the required technologies in the following ways.
        Unfollow,
        Feed,
        Pantry
-6. **DB/Login** - Description here
-7. **WebSocket** - Description here
+6. **DB/Login** - MongoDB will store user accounts, pantry items, recipes, follows, shopping lists, and meal plans. Authentication will restrict access to user-specific data.
+7. **WebSocket** - WebSockets will provide real-time updates for group chat messages, live polls, and notifications when followed users save recipes.
 
 ## 🚀 AWS deliverable
 
