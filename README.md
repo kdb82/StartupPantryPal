@@ -23,7 +23,11 @@ PantryPal is a social recipe-sharing application designed to reduce food waste a
 
 ![Design image](placeholder.png)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The application is designed around four primary views:
+1. Pantry View – Manage ingredients currently available in your pantry.
+2. Feed & Recipes View – View recipes saved by followed users.
+3. AI assistant - Generate recipe ideas using the ingredients in your pantry.
+4. Planning View – Shopping list and meal calendar that automatically update based on saved recipes.
 
 ```mermaid
 sequenceDiagram
@@ -34,9 +38,8 @@ sequenceDiagram
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+
+
 
 ### Technologies
 
