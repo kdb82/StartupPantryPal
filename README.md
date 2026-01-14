@@ -1,31 +1,23 @@
 # PantryPal
 
-[My Notes](notes.md)
-
-PantryPal is a social recipe-sharing application designed to reduce food waste and decision fatigue by helping users cook with ingredients they already have. The application combines pantry tracking, social media, and an AI-powered assistant chef to recommend recipes tailored to user preferences and available ingredients in their own pantry. Real-time features allow users to interact with friends through shared recipes, group chats, and polls to find the answer for the hardest question: what's for dinner.
-
-> [!NOTE]
-> This is a template for your startup application. You must modify this `README.md` file for each phase of your development. You only need to fill in the section for each deliverable when that deliverable is submitted in Canvas. Without completing the section for a deliverable, the TA will not know what to look for when grading your submission. Feel free to add additional information to each deliverable description, but make sure you at least have the list of rubric items and a description of what you did for each item.
-
-> [!NOTE]
-> If you are not familiar with Markdown then you should review the [documentation](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) before continuing.
+This serves as the startup specification for my web app Pantry Pal. The web app aims to incorporate technologies in order to showcase applicable skills in a modern job market. To see a description of the app itself, see the elevator pitch below.
 
 ## 🚀 Specification Deliverable
 
 > [!NOTE]
 > Fill in this sections as the submission artifact for this deliverable. You can refer to this [example](https://github.com/webprogramming260/startup-example/blob/main/README.md) for inspiration.
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+For this deliverable I did the following:
 
-- [ ] Proper use of Markdown
-- [ ] A concise and compelling elevator pitch
+- [x] Proper use of Markdown
+- [x] A concise and compelling elevator pitch
 - [ ] Description of key features
 - [ ] Description of how you will use each technology
 - [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ### Elevator pitch
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+PantryPal is a social recipe-sharing application designed to reduce food waste and decision fatigue by helping users cook with ingredients they already have. The application combines pantry tracking, social media chat functionality, and an AI-powered assistant chef to recommend recipes tailored to user preferences and available ingredients in their own pantry. Real-time features allow users to interact with friends through shared recipes, group chats, an automated shopping list, and polls to find the answer for the hardest question: what's for dinner tonight?
 
 ### Design
 
