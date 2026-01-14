@@ -49,17 +49,24 @@ sequenceDiagram
 **Meal Planning (Supporting Feature):** Recipes added to a calendar automatically update pantry and shopping list data.
 
 
-
 ### Technologies
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+1. **HTML** - Provides the structure for all pages, including forms, lists, and navigation.
+2. **CSS** - Used for layout, styling, and responsiveness. Flexbox and Grid will ensure the application adapts to different screen sizes.
+3. **React** - Client-side rendering, and state management. React components will encapsulate pantry items, recipes, feeds, and chat views.
+4. **Service** - A Node.js/Express backend will manage authentication, data persistence, API endpoints, and WebSocket connections.
+   Endpoints:
+       Register,
+       Login,
+       Logout,
+       Follow,
+       Unfollow,
+       Feed,
+       Pantry
+6. **DB/Login** - Description here
+7. **WebSocket** - Description here
 
 ## 🚀 AWS deliverable
 
