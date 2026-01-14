@@ -10,7 +10,7 @@ For this deliverable I did the following:
 - [x] A concise and compelling elevator pitch
 - [x] Description of key features
 - [x] Description of how you will use each technology
-- [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
+- [x] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ### Elevator pitch
 
@@ -18,7 +18,6 @@ PantryPal is a social recipe-sharing application designed to reduce food waste a
 
 ### Design
 
-![Design image](placeholder.png)
 
 The application is designed around four primary views:
 1. Pantry View – Manage ingredients currently available in your pantry.
@@ -26,12 +25,9 @@ The application is designed around four primary views:
 3. AI assistant - Generate recipe ideas using the ingredients in your pantry.
 4. Planning View – Shopping list and meal calendar that automatically update based on saved recipes.
 
-```mermaid
-sequenceDiagram
-    actor You
-    actor Website
-    You->>Website: Replace this with your design
-```
+![Design image](https://github.com/user-attachments/assets/e0fa94b1-a1f8-4a61-a77c-ed3e99e2148c)
+
+<img src="https://github.com/user-attachments/assets/b74d49af-2172-447f-a9e2-c07ebf96a5ed" alt="Screenshot" width="300">
 
 ### Key features
 
