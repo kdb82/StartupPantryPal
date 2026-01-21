@@ -67,6 +67,10 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 - [ ] **Server deployed and accessible with custom domain name** - [My server link](https://yourdomainnamehere.click).
 
+**Helpful Info**:
+- Command to SSH into server: ssh -i ~/keys/pantryPal_production.pem ubuntu@98.84.77.7
+- public elastic IP address: 98.84.77.7
+
 ## 🚀 HTML deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
