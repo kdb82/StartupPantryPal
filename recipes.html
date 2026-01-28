@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Recipes - PantryPal</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body class="page-recipes">
+		<header>
+			<h1>PantryPal</h1>
+			<div class="navigation-container">
+				<nav aria-label="Primary">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="pantry.html">Pantry</a></li>
+						<li><a href="recipes.html" aria-current="page">Recipes</a></li>
+						<li><a href="calendar.html">Calendar</a></li>
+						<li><a href="ailanding.html">AI Assistant</a></li>
+						<li><a href="settings.html">Settings</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		<hr />
+		<main id="main-content">
+			<h2>Recipes</h2>
+
+			<!-- View Toggle -->
+			<div class="recipe-filters">
+				<button
+					type="button"
+					class="filter-btn active"
+					data-filter="my-recipes"
+				>
+					My Recipes
+				</button>
+				<button type="button" class="filter-btn" data-filter="friends-recipes">
+					Friends' Recipes
+				</button>
+			</div>
+
+			<!-- My Recipes View -->
+			<section id="my-recipes" class="recipe-view active">
+				<h3>Your Saved Recipes</h3>
+				<div class="recipe-grid">
+					<!-- Recipe Card 1 -->
+					<article class="recipe-card">
+						<h4>Garlic Pasta</h4>
+						<p class="recipe-meta">Shared by You</p>
+						<p class="recipe-description">
+							Creamy garlic pasta with fresh herbs and parmesan cheese.
+						</p>
+						<ul class="recipe-ingredients">
+							<li>Pasta</li>
+							<li>Garlic</li>
+							<li>Olive Oil</li>
+							<li>Parmesan</li>
+						</ul>
+						<div class="recipe-actions">
+							<button
+								type="button"
+								class="add-to-shopping"
+								data-recipe="garlic-pasta"
+								data-missing="garlic,parmesan"
+							>
+								Add Missing to Shopping List
+							</button>
+						</div>
+					</article>
+
+					<!-- Recipe Card 2 -->
+					<article class="recipe-card">
+						<h4>Grilled Chicken Salad</h4>
+						<p class="recipe-meta">Shared by You</p>
+						<p class="recipe-description">
+							Healthy grilled chicken with mixed greens and vinaigrette.
+						</p>
+						<ul class="recipe-ingredients">
+							<li>Chicken</li>
+							<li>Mixed Greens</li>
+							<li>Tomatoes</li>
+							<li>Vinaigrette</li>
+						</ul>
+						<div class="recipe-actions">
+							<button
+								type="button"
+								class="add-to-shopping"
+								data-recipe="chicken-salad"
+								data-missing="mixed-greens,vinaigrette"
+							>
+								Add Missing to Shopping List
+							</button>
+						</div>
+					</article>
+
+					<!-- Recipe Card 3 -->
+					<article class="recipe-card">
+						<h4>Chocolate Chip Cookies</h4>
+						<p class="recipe-meta">Shared by You</p>
+						<p class="recipe-description">
+							Classic homemade chocolate chip cookies.
+						</p>
+						<ul class="recipe-ingredients">
+							<li>Flour</li>
+							<li>Butter</li>
+							<li>Sugar</li>
+							<li>Chocolate Chips</li>
+							<li>Eggs</li>
+						</ul>
+						<div class="recipe-actions">
+							<button
+								type="button"
+								class="add-to-shopping"
+								data-recipe="cookies"
+								data-missing="chocolate-chips,sugar"
+							>
+								Add Missing to Shopping List
+							</button>
+						</div>
+					</article>
+				</div>
+			</section>
+
+			<!-- Friends' Recipes View -->
+			<section id="friends-recipes" class="recipe-view">
+				<h3>Friends' Saved Recipes</h3>
+				<div class="recipe-grid">
+					<!-- Friend Recipe Card 1 -->
+					<article class="recipe-card">
+						<h4>Salmon Teriyaki</h4>
+						<p class="recipe-meta">Shared by Sarah</p>
+						<p class="recipe-description">
+							Glazed salmon with teriyaki sauce and rice.
+						</p>
+						<ul class="recipe-ingredients">
+							<li>Salmon</li>
+							<li>Soy Sauce</li>
+							<li>Ginger</li>
+							<li>Rice</li>
+						</ul>
+						<div class="recipe-actions">
+							<button
+								type="button"
+								class="add-to-shopping"
+								data-recipe="salmon-teriyaki"
+								data-missing="ginger,soy-sauce"
+							>
+								Add Missing to Shopping List
+							</button>
+						</div>
+					</article>
+
+					<!-- Friend Recipe Card 2 -->
+					<article class="recipe-card">
+						<h4>Vegetable Stir Fry</h4>
+						<p class="recipe-meta">Shared by Mike</p>
+						<p class="recipe-description">
+							Quick and colorful stir fry with seasonal vegetables.
+						</p>
+						<ul class="recipe-ingredients">
+							<li>Broccoli</li>
+							<li>Carrots</li>
+							<li>Bell Peppers</li>
+							<li>Soy Sauce</li>
+							<li>Ginger</li>
+						</ul>
+						<div class="recipe-actions">
+							<button
+								type="button"
+								class="add-to-shopping"
+								data-recipe="veg-stir-fry"
+								data-missing="ginger,soy-sauce"
+							>
+								Add Missing to Shopping List
+							</button>
+						</div>
+					</article>
+
+					<!-- Friend Recipe Card 3 -->
+					<article class="recipe-card">
+						<h4>Spicy Tacos</h4>
+						<p class="recipe-meta">Shared by Alex</p>
+						<p class="recipe-description">
+							Flavorful tacos with seasoned beef and fresh toppings.
+						</p>
+						<ul class="recipe-ingredients">
+							<li>Beef</li>
+							<li>Tortillas</li>
+							<li>Cilantro</li>
+							<li>Lime</li>
+							<li>Jalapeños</li>
+						</ul>
+						<div class="recipe-actions">
+							<button
+								type="button"
+								class="add-to-shopping"
+								data-recipe="spicy-tacos"
+								data-missing="tortillas,cilantro,lime,jalapenos"
+							>
+								Add Missing to Shopping List
+							</button>
+						</div>
+					</article>
+				</div>
+			</section>
+		</main>
+		<footer>
+			<p>&copy; 2026 PantryPal</p>
+		</footer>
+	</body>
+</html>
