@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar</title>
+    <title>Meal Calendar - PantryPal</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="page-calendar">
     <header>
         <h1>Calendar</h1>
         <div class="navigation-container">
@@ -15,20 +15,21 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="pantry.html">Pantry</a></li>
                 <li><a href="recipes.html">Recipes</a></li>
-                <li><a href="calendar.html">Calendar</a></li>
+                <li><a href="calendar.html" aria-current="page">Calendar</a></li>
                 <li><a href="ailanding.html">AI Assistant</a></li>
+                <li><a href="settings.html">Settings</a></li>
             </ul>
         </nav>
         </div>
     </header>
     <hr>
-    <main>
+    <main id="main-content">
         <section aria-labelledby="calendar-title">
             <h2 id="calendar-title">This Week’s Meal Plan:</h2>
             <div class="calendar-controls">
-                <button type="button">← Previous</button>
-                <p><strong>Week of:</strong> Jan 26 – Feb 1</p>
-                <button type="button">Next →</button>
+                <button type="button" aria-label="View previous week">← Previous</button>
+                <p id="week-range"><strong>Week of:</strong> <span data-start="2026-01-26">Jan 26</span> – <span data-end="2026-02-01">Feb 1</span></p>
+                <button type="button" aria-label="View next week">Next →</button>
             </div>
         </section>
         <section aria-labelledby="week-grid-title">
@@ -47,13 +48,13 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td><strong>Saved Recipes:</strong> Tacos<br><em>Missing:</em> tortillas</td>
-                    <td><strong>Saved Recipes:</strong> Stir Fry</td>
-                    <td><strong>Saved Recipes:</strong> Pasta</td>
-                    <td><strong>Saved Recipes:</strong> Soup</td>
-                    <td><strong>Saved Recipes:</strong> Pizza</td>
-                    <td><strong>Saved Recipes:</strong> Salmon</td>
-                    <td><strong>Saved Recipes:</strong> Leftovers</td>
+                    <td data-day="monday"><div class="meal-cell"><strong>Saved Recipes:</strong> Tacos<br><em>Missing:</em> tortillas</div></td>
+                    <td data-day="tuesday"><div class="meal-cell"><strong>Saved Recipes:</strong> Stir Fry</div></td>
+                    <td data-day="wednesday"><div class="meal-cell"><strong>Saved Recipes:</strong> Pasta</div></td>
+                    <td data-day="thursday"><div class="meal-cell"><strong>Saved Recipes:</strong> Soup</div></td>
+                    <td data-day="friday"><div class="meal-cell"><strong>Saved Recipes:</strong> Pizza</div></td>
+                    <td data-day="saturday"><div class="meal-cell"><strong>Saved Recipes:</strong> Salmon</div></td>
+                    <td data-day="sunday"><div class="meal-cell"><strong>Saved Recipes:</strong> Leftovers</div></td>
                 </tr>
                 </tbody>
             </table>
