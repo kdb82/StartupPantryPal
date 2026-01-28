@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>My Pantry - PantryPal</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<header>
+			<h1>PantryPal</h1>
+			<div class="navigation-container">
+				<nav aria-label="Primary">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="pantry.html" aria-current="page">Pantry</a></li>
+						<li><a href="recipes.html">Recipes</a></li>
+						<li><a href="calendar.html">Calendar</a></li>
+						<li><a href="ailanding.html">AI Assistant</a></li>
+						<li><a href="settings.html">Settings</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		<hr />
+		<main id="main-content">
+			<h2>My Pantry</h2>
+			<hr />
+
+			<!-- Proteins Section -->
+			<section class="pantry-category">
+				<details open>
+					<summary>Proteins</summary>
+					<div class="category-content">
+						<ul class="item-list">
+							<li>
+								<label>
+									<input type="checkbox" name="protein" value="chicken" />
+									Chicken
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="protein" value="beef" />
+									Beef
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="protein" value="salmon" />
+									Salmon
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="protein" value="eggs" />
+									Eggs
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="protein" value="tofu" />
+									Tofu
+								</label>
+							</li>
+						</ul>
+						<div class="add-item">
+							<label for="proteinInput">Add item:</label>
+							<input
+								type="text"
+								id="proteinInput"
+								placeholder="Enter protein..."
+								data-category="protein"
+							/>
+							<button type="button">Add</button>
+						</div>
+					</div>
+				</details>
+			</section>
+
+			<!-- Dairy & Eggs Section -->
+			<section class="pantry-category">
+				<details open>
+					<summary>Dairy & Eggs</summary>
+					<div class="category-content">
+						<ul class="item-list">
+							<li>
+								<label>
+									<input type="checkbox" name="dairy" value="milk" />
+									Milk
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="dairy" value="cheese" />
+									Cheese
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="dairy" value="yogurt" />
+									Yogurt
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="dairy" value="butter" />
+									Butter
+								</label>
+							</li>
+						</ul>
+						<div class="add-item">
+							<label for="dairyInput">Add item:</label>
+							<input
+								type="text"
+								id="dairyInput"
+								placeholder="Enter dairy product..."
+								data-category="dairy"
+							/>
+							<button type="button">Add</button>
+						</div>
+					</div>
+				</details>
+			</section>
+
+			<!-- Vegetables Section -->
+			<section class="pantry-category">
+				<details open>
+					<summary>Vegetables</summary>
+					<div class="category-content">
+						<ul class="item-list">
+							<li>
+								<label>
+									<input type="checkbox" name="vegetables" value="broccoli" />
+									Broccoli
+								</label>
+							</li>
+							<li>
+								<label>
+									<input
+										type="checkbox"
+										name="vegetables"
+										value="carrots"
+									/>
+									Carrots
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="vegetables" value="spinach" />
+									Spinach
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="vegetables" value="tomatoes" />
+									Tomatoes
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="vegetables" value="peppers" />
+									Peppers
+								</label>
+							</li>
+						</ul>
+						<div class="add-item">
+							<label for="vegetableInput">Add item:</label>
+							<input
+								type="text"
+								id="vegetableInput"
+								placeholder="Enter vegetable..."
+								data-category="vegetables"
+							/>
+							<button type="button">Add</button>
+						</div>
+					</div>
+				</details>
+			</section>
+
+			<!-- Fruits Section -->
+			<section class="pantry-category">
+				<details>
+					<summary>Fruits</summary>
+					<div class="category-content">
+						<ul class="item-list">
+							<li>
+								<label>
+									<input type="checkbox" name="fruits" value="apples" />
+									Apples
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="fruits" value="bananas" />
+									Bananas
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="fruits" value="berries" />
+									Berries
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="fruits" value="oranges" />
+									Oranges
+								</label>
+							</li>
+						</ul>
+						<div class="add-item">
+							<label for="fruitInput">Add item:</label>
+							<input
+								type="text"
+								id="fruitInput"
+								placeholder="Enter fruit..."
+								data-category="fruits"
+							/>
+							<button type="button">Add</button>
+						</div>
+					</div>
+				</details>
+			</section>
+
+			<!-- Grains & Carbs Section -->
+			<section class="pantry-category">
+				<details>
+					<summary>Grains & Carbs</summary>
+					<div class="category-content">
+						<ul class="item-list">
+							<li>
+								<label>
+									<input type="checkbox" name="grains" value="rice" />
+									Rice
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="grains" value="pasta" />
+									Pasta
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="grains" value="bread" />
+									Bread
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="grains" value="oats" />
+									Oats
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="grains" value="potatoes" />
+									Potatoes
+								</label>
+							</li>
+						</ul>
+						<div class="add-item">
+							<label for="grainInput">Add item:</label>
+							<input
+								type="text"
+								id="grainInput"
+								placeholder="Enter grain..."
+								data-category="grains"
+							/>
+							<button type="button">Add</button>
+						</div>
+					</div>
+				</details>
+			</section>
+
+			<!-- Pantry Staples Section -->
+			<section class="pantry-category">
+				<details>
+					<summary>Pantry Staples</summary>
+					<div class="category-content">
+						<ul class="item-list">
+							<li>
+								<label>
+									<input type="checkbox" name="staples" value="oil" />
+									Oil
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="staples" value="salt" />
+									Salt
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="staples" value="spices" />
+									Spices
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="staples" value="vinegar" />
+									Vinegar
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="staples" value="flour" />
+									Flour
+								</label>
+							</li>
+						</ul>
+						<div class="add-item">
+							<label for="stapleInput">Add item:</label>
+							<input
+								type="text"
+								id="stapleInput"
+								placeholder="Enter staple..."
+								data-category="staples"
+							/>
+							<button type="button">Add</button>
+						</div>
+					</div>
+				</details>
+			</section>
+
+			<!-- Beverages Section -->
+			<section class="pantry-category">
+				<details>
+					<summary>Beverages</summary>
+					<div class="category-content">
+						<ul class="item-list">
+							<li>
+								<label>
+									<input type="checkbox" name="beverages" value="water" />
+									Water
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="beverages" value="juice" />
+									Juice
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="beverages" value="coffee" />
+									Coffee
+								</label>
+							</li>
+							<li>
+								<label>
+									<input type="checkbox" name="beverages" value="tea" />
+									Tea
+								</label>
+							</li>
+						</ul>
+						<div class="add-item">
+							<label for="beverageInput">Add item:</label>
+							<input
+								type="text"
+								id="beverageInput"
+								placeholder="Enter beverage..."
+								data-category="beverages"
+							/>
+							<button type="button">Add</button>
+						</div>
+					</div>
+				</details>
+			</section>
+		</main>
+		<footer>
+			<p>&copy; 2026 PantryPal</p>
+		</footer>
+	</body>
+</html>
