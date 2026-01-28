@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Create Account - PantryPal</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<header>
+			<h1>Welcome to PantryPal</h1>
+			<div class="navigation-container">
+				<nav aria-label="Primary">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="pantry.html">Pantry</a></li>
+						<li><a href="recipes.html">Recipes</a></li>
+						<li><a href="calendar.html">Calendar</a></li>
+						<li><a href="ailanding.html">AI Assistant</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		<hr />
+		<main>
+			<img
+				src="images/pantrypal_logo.png"
+				alt="PantryPal Logo"
+				class="logo"
+				width="10%"
+			/>
+			<form id="registerForm" method="post" action="/api/register">
+				<div class="email_field">
+					<label for="email">Email:</label>
+					<input type="email" id="email" name="email" required />
+				</div>
+				<div class="password_field">
+					<label for="password">Password:</label>
+					<input type="password" id="password" name="password" required />
+				</div>
+				<div class="confirm-password_field">
+					<label for="confirmPassword">Confirm Password:</label>
+					<input
+						type="password"
+						id="confirmPassword"
+						name="confirmPassword"
+						required
+					/>
+				</div>
+				<div id="form_actions">
+					<button type="submit">Create Account</button>
+				</div>
+				<div class="error-message" id="registerError" style="display: none">
+					Registration failed. Please try again.
+				</div>
+				<div class="success-message" id="registerSuccess" style="display: none">
+					Account created successfully! Redirecting...
+				</div>
+			</form>
+			<hr />
+			<a href="index.html">Already have an account? Log in here.</a>
+		</main>
+		<footer>
+			<p>&copy; 2026 PantryPal</p>
+		</footer>
+	</body>
+</html>
