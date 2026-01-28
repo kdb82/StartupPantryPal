@@ -23,28 +23,51 @@
     </header>
     <hr>
     <main>
-    <img src="images/pantrypal_logo.png" alt="PantryPal Logo" class="logo" width="10%">
-    <form id="loginForm" method="post" action="/api/login">
-        <div class="email_field">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="password_field">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <div id="form_actions">
-            <button type="submit">Login</button>
-        </div>
-        <div class="error-message" id="loginError" style="display:none;">
-        Invalid email or password. Please try again.
-        </div>
-        <div class="success-message" id="loginSuccess" style="display:none;">
-        Login successful! Redirecting...
-        </div>
-    </form>
-    <hr>
-    <a href="register.html">New user? Create an account.</a>
+        <section aria-labelledby="ai-title">
+            <h1 id="ai-title">AI Recipe Assistant</h1>
+            <p class="muted">
+                Describe what you want to cook. PantryPal will suggest recipes and add missing ingredients to your shopping list.
+            </p>
+
+            <form id="aiPromptForm" method="post" action="/api/ai">
+                <label for="prompt">Prompt</label>
+                <textarea
+                    id="prompt"
+                    name="prompt"
+                    rows="6"
+                    placeholder="Example: I want to make an Italian dinner with ingredients I have."
+                    required
+                ></textarea>
+
+                <fieldset>
+                    <legend>Preferences</legend>
+
+                    <label for="servings">Servings</label>
+                    <input id="servings" name="servings" type="number" min="1" max="12" value="2">
+
+                    <label for="timeLimit">Time limit (minutes)</label>
+                    <input id="timeLimit" name="timeLimit" type="number" min="5" max="180" value="30">
+
+                    <label for="diet">Diet</label>
+                    <select id="diet" name="diet">
+                        <option value="No preference">No preference</option>
+                        <option value="vegetarian">Vegetarian</option>
+                        <option value="vegan">Vegan</option>
+                        <option value="gluten-free">Gluten-free</option>
+                    </select>
+
+                    <label>
+                        <input type="checkbox" name="usePantry" checked>
+                        Use my pantry items (DB placeholder)
+                    </label>
+                </fieldset>
+
+                <div class="form-actions">
+                    <button type="submit">Generate recipe ideas</button>
+                    <button type="reset">Clear</button>
+                </div>
+            </form>
+        </section>
     </main>
     <footer>
         <p>&copy; 2026 PantryPal</p>
