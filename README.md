@@ -73,6 +73,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 ## 🚀 HTML deliverable
 
+Startup URL: https://startup.pantrypal.click/index.html
+
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [x] **HTML pages** - Six main HTML pages created: index.html (login), register.html (account creation), pantry.html (inventory management), recipes.html (social feed), calendar.html (meal planning), and ailanding.html (AI assistant).
