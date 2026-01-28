@@ -1,24 +1,26 @@
-# Calendar.html Structure Review
+# Calendar.html Structure Review (Updated)
 
 ## Current State Assessment
 
-Your calendar page has excellent foundational structure with proper semantic HTML. Here's a professional analysis.
+Excellent progress! Your calendar page has professional foundational structure with proper semantic HTML and improved content organization.
 
-## ✅ What's Good
+## ✅ What's Good (Updated)
 
-- **Semantic HTML:** Proper use of `<header>`, `<main>`, `<footer>`, `<section>`, `<table>`
+- **Semantic HTML:** Proper use of `<header>`, `<main>`, `<footer>`, `<section>`, `<table>` ✓
 - **Accessibility:** 
-  - Uses `aria-label` and `aria-labelledby` for screen reader context
-  - Table has proper `<thead>` and `<tbody>`
-  - `scope="col"` attributes on header cells
+  - Uses `aria-label` and `aria-labelledby` for screen reader context ✓
+  - Table has proper `<thead>` and `<tbody>` ✓
+  - `scope="col"` attributes on header cells ✓
+- **Content Structure:** Updated meal labels to "Saved Recipes" with `.meal-cell` wrapper divs for better CSS control ✓
 - **Navigation:** Consistent header navigation across pages
 - **Title hierarchy:** Proper `<h1>` and `<h2>` structure
 - **Responsive viewport:** Mobile meta tag included
 - **Clean organization:** Logical flow with sections
+- **Wrapper Elements:** Added `.meal-cell` divs for better styling flexibility ✓
 
 ---
 
-## 🔧 Recommended Improvements
+## 🔧 Remaining Recommended Improvements
 
 ### 1. **Missing "Settings" in Navigation (Consistency)**
 **Current:**
@@ -27,64 +29,18 @@ Your calendar page has excellent foundational structure with proper semantic HTM
 </ul>
 ```
 
-**Issue:** Your login page includes Settings navigation, but Calendar doesn't.
-
-**Better:**
+**Recommendation:**
 ```html
 <li><a href="ailanding.html">AI Assistant</a></li>
 <li><a href="settings.html">Settings</a></li>
 </ul>
 ```
 
-**Why:** Consistency across all pages improves UX and maintains navigation structure.
+**Why:** Consistency across all pages improves UX. Your login page includes Settings navigation.
 
 ---
 
-### 2. **Meal Plan Structure - Currently Meals Only**
-**Current:**
-```html
-<td><strong>Dinner:</strong> Tacos<br><em>Missing:</em> tortillas</td>
-```
-
-**Issue:** Only shows dinner. Real meal planning typically includes breakfast/lunch too.
-
-**Better:**
-```html
-<td>
-  <div class="meal-slot">
-    <strong>Breakfast:</strong> Oatmeal<br>
-    <strong>Lunch:</strong> Sandwich<br>
-    <strong>Dinner:</strong> Tacos<br>
-    <em>Missing:</em> tortillas
-  </div>
-</td>
-```
-
-Or use a more semantic structure with nested elements:
-```html
-<td>
-  <article class="meal-day">
-    <h3>Monday</h3>
-    <div class="meal-entry">
-      <h4>Breakfast</h4>
-      <p>Oatmeal with berries</p>
-    </div>
-    <div class="meal-entry">
-      <h4>Lunch</h4>
-      <p>Sandwich</p>
-    </div>
-    <div class="meal-entry">
-      <h4>Dinner</h4>
-      <p>Tacos</p>
-      <p class="missing-items">Missing: tortillas</p>
-    </div>
-  </article>
-</td>
-```
-
----
-
-### 3. **Button Labels Need `aria-label` for Accessibility**
+### 2. **Button Labels Need `aria-label` for Accessibility**
 **Current:**
 ```html
 <button type="button">← Previous</button>
@@ -97,11 +53,41 @@ Or use a more semantic structure with nested elements:
 <button type="button" aria-label="View next week">Next →</button>
 ```
 
-**Why:** Screen reader users need context beyond arrows.
+**Why:** Screen reader users need context beyond arrow symbols.
 
 ---
 
-### 4. **Add Data Attributes for Dynamic Updates**
+### 3. **Add `aria-current="page"` to Active Navigation Link**
+**Current:**
+```html
+<li><a href="calendar.html">Calendar</a></li>
+```
+
+**Better:**
+```html
+<li><a href="calendar.html" aria-current="page">Calendar</a></li>
+```
+
+**Why:** Accessibility best practice—informs screen readers which page is active.
+
+---
+
+### 4. **Add `data-day` Attributes to Table Cells**
+**Current:**
+```html
+<td><div class="meal-cell"><strong>Saved Recipes:</strong> Tacos<br>
+```
+
+**Better:**
+```html
+<td data-day="monday"><div class="meal-cell"><strong>Saved Recipes:</strong> Tacos<br>
+```
+
+**Why:** Makes JavaScript easier when you add interactivity to change weeks/meals dynamically.
+
+---
+
+### 5. **Add Data Attributes to Week Range**
 **Current:**
 ```html
 <p><strong>Week of:</strong> Jan 26 – Feb 1</p>
@@ -109,31 +95,14 @@ Or use a more semantic structure with nested elements:
 
 **Better:**
 ```html
-<p id="week-range"><strong>Week of:</strong> <span data-start="2026-01-26">Jan 26</span> – <span data-end="2026-02-01">Feb 1</span></p>
+<p id="week-range">
+    <strong>Week of:</strong> 
+    <span data-start="2026-01-26">Jan 26</span> – 
+    <span data-end="2026-02-01">Feb 1</span>
+</p>
 ```
 
-**Why:** Makes JavaScript easier when you add interactivity to change weeks dynamically.
-
----
-
-### 5. **Consider Adding Meal Count or Metadata**
-**Current:** Just the meal names
-
-**Enhancement:**
-```html
-<td>
-  <div class="day-summary">
-    <strong>Monday, Jan 26</strong>
-    <div class="meal-count">3 meals planned</div>
-    <div class="meal-list">
-      <strong>Dinner:</strong> Tacos
-      <em>Missing:</em> tortillas
-    </div>
-  </div>
-</td>
-```
-
-Provides better structure for CSS styling and JavaScript interactions.
+**Why:** Enables JavaScript to dynamically update week ranges when navigation buttons are clicked.
 
 ---
 
@@ -148,11 +117,11 @@ Provides better structure for CSS styling and JavaScript interactions.
 <body class="page-calendar">
 ```
 
-**Why:** Makes it easier to style page-specific elements with CSS and identify the current page with JavaScript.
+**Why:** Makes it easier to style page-specific elements and identify the current page with JavaScript.
 
 ---
 
-### 7. **Add ID to Main Section for Skip Links**
+### 7. **Add ID to Main for Skip Links**
 **Current:**
 ```html
 <main>
@@ -163,7 +132,7 @@ Provides better structure for CSS styling and JavaScript interactions.
 <main id="main-content">
 ```
 
-**Why:** Enables "Skip to main content" links for accessibility (best practice for large sites).
+**Why:** Enables "Skip to main content" accessibility links (best practice).
 
 ---
 
@@ -175,9 +144,24 @@ Provides better structure for CSS styling and JavaScript interactions.
 <main>
 ```
 
-**Better:** Remove it. Use CSS border instead if needed.
+**Better:** Delete the `<hr>`. Use CSS border instead if needed.
 
 **Why:** `<hr>` is semantic for content breaks, not visual separators. Let CSS handle styling.
+
+---
+
+### 9. **Enhance Title in Head**
+**Current:**
+```html
+<title>Calendar</title>
+```
+
+**Better:**
+```html
+<title>Meal Calendar - PantryPal</title>
+```
+
+**Why:** More descriptive for browser tabs and SEO.
 
 ---
 
@@ -297,24 +281,51 @@ Provides better structure for CSS styling and JavaScript interactions.
 
 ---
 
-## 🚀 Priority Enhancements
+## 🚀 Priority Enhancements (Remaining)
 
 1. **Add Settings to navigation** 🔴 HIGH - Consistency across pages
 2. **Add `aria-label` to buttons** 🟡 MEDIUM - Accessibility
 3. **Add `aria-current="page"` to active nav link** 🟡 MEDIUM - Accessibility
-4. **Remove `<hr>` separator** 🟢 LOW - Clean up
-5. **Add `data` attributes** 🟡 MEDIUM - Prep for JavaScript
-6. **Add body class** 🟢 LOW - CSS/JS flexibility
+4. **Add `data-day` attributes to table cells** 🟡 MEDIUM - Prep for JavaScript
+5. **Add body class** 🟢 LOW - CSS/JS flexibility
+6. **Remove `<hr>` separator** 🟢 LOW - Clean up
+7. **Enhance page title** 🟢 LOW - SEO/UX
 
 ---
 
-## Summary
+## 📋 Updated Checklist
 
-**Current Grade: A-**
+- [x] Semantic HTML elements
+- [x] Proper heading hierarchy
+- [x] Table structure with `<thead>`, `<tbody>`, `scope` attributes
+- [x] Navigation with `aria-label`
+- [x] Meta tags for responsive design
+- [x] DOCTYPE and language attribute
+- [x] Wrapper divs for CSS flexibility (`.meal-cell`)
+- [ ] Consistent navigation across all pages (Settings still missing)
+- [ ] Screen-reader friendly buttons with `aria-label`
+- [ ] `aria-current="page"` on active nav link
+- [ ] Skip navigation link (enhancement)
+- [ ] Body class for page identification
+- [ ] Data attributes for dynamic content (`data-day`)
+- [ ] Remove visual separators like `<hr>` in layout
+- [ ] Enhanced page title
 
-Your calendar page has professional structure and good accessibility. Main improvements are:
-- Consistency with navigation
-- Enhanced accessibility labels
-- Preparation for JavaScript interactivity with data attributes
+---
 
-The structure is solid and ready for CSS styling and JavaScript functionality!
+## 🎯 Current Grade: A
+
+Your calendar page is well-structured and production-ready from an HTML perspective!
+
+**What's Working Great:**
+- Clean semantic structure with proper table markup
+- Responsive design meta tag in place
+- Good foundation for CSS and JavaScript
+- `.meal-cell` wrappers provide styling flexibility
+- Content properly labeled as "Saved Recipes"
+
+**Next Steps:**
+- Apply remaining accessibility improvements
+- Add missing Settings navigation link
+- Implement JavaScript for dynamic week navigation
+- Apply CSS styling when ready
