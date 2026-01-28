@@ -1,76 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Assistant - Landing</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <header>
-        <h1>Welcome to PantryPal</h1>
-        <div class="navigation-container">
+      <h1>Welcome to PantryPal</h1>
+      <div class="navigation-container">
         <nav aria-label="Primary">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="pantry.html">Pantry</a></li>
-                <li><a href="recipes.html">Recipes</a></li>
-                <li><a href="calendar.html">Calendar</a></li>
-                <li><a href="ailanding.html">AI Assistant</a></li>
-            </ul>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="pantry.html">Pantry</a></li>
+            <li><a href="recipes.html">Recipes</a></li>
+            <li><a href="calendar.html">Calendar</a></li>
+            <li><a href="ailanding.html">AI Assistant</a></li>
+          </ul>
         </nav>
-        </div>
+      </div>
     </header>
-    <hr>
+    <hr />
     <main>
-        <section aria-labelledby="ai-title">
-            <h1 id="ai-title">AI Recipe Assistant</h1>
-            <p class="muted">
-                Describe what you want to cook. PantryPal will suggest recipes and add missing ingredients to your shopping list.
-            </p>
+      <section aria-labelledby="ai-title">
+        <h1 id="ai-title">AI Recipe Assistant</h1>
+        <p class="muted">
+          Describe what you want to cook. PantryPal will suggest recipes and add
+          missing ingredients to your shopping list.
+        </p>
 
-            <form id="aiPromptForm" method="post" action="/api/ai">
-                <label for="prompt">Prompt</label>
-                <textarea
-                    id="prompt"
-                    name="prompt"
-                    rows="6"
-                    placeholder="Example: I want to make an Italian dinner with ingredients I have."
-                    required
-                ></textarea>
+        <div class="response-container">
+          <p><em>AI response hear</em></p>
+        </div>
 
-                <fieldset>
-                    <legend>Preferences</legend>
+        <form id="aiPromptForm" method="post" action="/api/ai">
+          <label for="prompt">Prompt</label>
+          <textarea
+            id="prompt"
+            name="prompt"
+            rows="6"
+            placeholder="Example: I want to make an Italian dinner with ingredients I have."
+            required
+          ></textarea>
 
-                    <label for="servings">Servings</label>
-                    <input id="servings" name="servings" type="number" min="1" max="12" value="2">
+          <fieldset>
+            <legend>Preferences</legend>
 
-                    <label for="timeLimit">Time limit (minutes)</label>
-                    <input id="timeLimit" name="timeLimit" type="number" min="5" max="180" value="30">
+            <label for="servings">Servings</label>
+            <input
+              id="servings"
+              name="servings"
+              type="number"
+              min="1"
+              max="12"
+              value="2"
+            />
 
-                    <label for="diet">Diet</label>
-                    <select id="diet" name="diet">
-                        <option value="No preference">No preference</option>
-                        <option value="vegetarian">Vegetarian</option>
-                        <option value="vegan">Vegan</option>
-                        <option value="gluten-free">Gluten-free</option>
-                    </select>
+            <label for="timeLimit">Time limit (minutes)</label>
+            <input
+              id="timeLimit"
+              name="timeLimit"
+              type="number"
+              min="5"
+              max="180"
+              value="30"
+            />
 
-                    <label>
-                        <input type="checkbox" name="usePantry" checked>
-                        Use my pantry items (DB placeholder)
-                    </label>
-                </fieldset>
+            <label for="diet">Diet</label>
+            <select id="diet" name="diet">
+              <option value="No preference">No preference</option>
+              <option value="vegetarian">Vegetarian</option>
+              <option value="vegan">Vegan</option>
+              <option value="gluten-free">Gluten-free</option>
+            </select>
 
-                <div class="form-actions">
-                    <button type="submit">Generate recipe ideas</button>
-                    <button type="reset">Clear</button>
-                </div>
-            </form>
-        </section>
+            <label>
+              <input type="checkbox" name="usePantry" checked />
+              Use my pantry items (DB placeholder)
+            </label>
+          </fieldset>
+
+          <div class="form-actions">
+            <button type="submit">Generate recipe ideas</button>
+            <button type="reset">Clear</button>
+          </div>
+        </form>
+      </section>
     </main>
     <footer>
-        <p>&copy; 2026 PantryPal</p>
+      <p>&copy; 2026 PantryPal</p>
     </footer>
-</body>
+  </body>
 </html>
