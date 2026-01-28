@@ -75,15 +75,15 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - Six main HTML pages created: index.html (login), register.html (account creation), pantry.html (inventory management), recipes.html (social feed), calendar.html (meal planning), and ailanding.html (AI assistant).
+- [x] **Proper HTML element usage** - All pages use semantic HTML with proper `<header>`, `<nav>`, `<main>`, `<footer>`, `<section>`, `<article>`, `<form>`, `<fieldset>`, and `<details>` elements. DOCTYPE, lang attributes, meta charset, and viewport tags included on all pages.
+- [x] **Links** - Consistent navigation structure across all pages with links to Home, Pantry, Recipes, Calendar, and AI Assistant. Links between authentication pages (login/register). GitHub repository link displayed on home page.
+- [x] **Text** - Application title "PantryPal" and textual content describing each feature. Form labels, button text, and informational messages included throughout.
+- [x] **3rd party API placeholder** - AI Assistant form includes action="/api/ai" with form fields for prompt, servings, time limit, and diet preferences. "Use my pantry items" checkbox indicates database lookup before API call.
+- [x] **Images** - PantryPal logo included on login page with proper alt text and responsive sizing. Images folder created for additional assets.
+- [x] **Login placeholder** - Complete authentication flow with email/password login form (index.html) posting to /api/login endpoint. Account creation form (register.html) with confirm password field posting to /api/register endpoint.
+- [x] **DB data placeholder** - Pantry page displays 7 food categories with sample ingredients (Proteins, Dairy, Vegetables, Fruits, Grains, Pantry Staples, Beverages). Recipes page shows recipe cards with ingredients. Calendar displays meal plan data. All elements prepared with data attributes for backend integration.
+- [x] **WebSocket placeholder** - Calendar shopping list aggregates missing ingredients from weekly recipes. Recipe feed displays both user's and friends' recipes. AI response container ready for real-time updates. All pages structured to receive and display live data.
 
 ## 🚀 CSS deliverable
 
