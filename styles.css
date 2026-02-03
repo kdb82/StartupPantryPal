@@ -245,24 +245,21 @@ nav a[aria-current="page"] {
    Calendar page (scoped)
  */
 
-/* Calendar page should not inherit the vertically-centered home layout */
+
 body.page-calendar main {
 	display: block;
 	padding: var(--space-lg) 0;
 }
 
 body.page-calendar #main-content .container {
-	/* keep content readable and top-aligned */
 	display: block;
 }
 
-/* Headings spacing (you globally removed margins) */
 body.page-calendar h2 {
 	margin: 0 0 var(--space-sm);
 	font-size: 1.1rem;
 }
 
-/* Controls row */
 body.page-calendar .calendar-controls {
 	display: flex;
 	align-items: center;
@@ -290,14 +287,13 @@ body.page-calendar #week-range {
 	margin: 0;
 }
 
-/* Meal calendar table */
 body.page-calendar .meal-calendar {
 	width: 100%;
 	border-collapse: collapse;
 	background: var(--surface);
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
-	overflow: auto; /* rounds the outer corners */
+	overflow: auto;
 }
 
 body.page-calendar .meal-calendar th,
@@ -438,4 +434,21 @@ body.page-calendar .btn-clear:hover {
 		padding: 0;
 		background: transparent;
 	}
+}
+
+/* PANTRY PAGE */
+
+/* Pantry page should be top-aligned (not vertically centered like the home/login pages) */
+body.page-pantry main {
+	display: block;
+	padding: var(--space-lg) 0;
+}
+
+body.page-pantry #main-content .container {
+	display: block;
+}
+
+body.page-pantry h2 {
+	margin: 0 0 var(--space-md);
+	font-size: 1.25rem;
 }
