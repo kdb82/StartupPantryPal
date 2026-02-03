@@ -25,6 +25,54 @@
 		<main id="main-content">
 			<h2>Recipes</h2>
 
+			<section aria-labelledby="recipe-api-title" class="placeholder-card">
+				<h3 id="recipe-api-title">Discover new recipes (3rd-party API placeholder)</h3>
+				<p class="muted">
+					This section will be powered by a third-party recipe API. For now it
+					shows mock results and the planned request/response shape.
+				</p>
+
+				<form id="recipeSearchForm" class="inline-form" autocomplete="off">
+					<label for="recipeQuery">Search</label>
+					<input
+						id="recipeQuery"
+						name="q"
+						type="search"
+						placeholder="Example: chicken, pasta, vegetarian..."
+						required
+					/>
+					<button type="submit">Search recipes</button>
+				</form>
+
+				<p id="recipeApiStatus" class="muted" role="status" aria-live="polite">
+					Not connected (placeholder).
+				</p>
+
+				<ul id="recipeApiResults" class="api-results" aria-label="Recipe results">
+					<li>
+						<strong>Mock result:</strong> Lemon Garlic Chicken
+						<span class="muted"> — 30 minutes — uses pantry: chicken, garlic</span>
+					</li>
+					<li>
+						<strong>Mock result:</strong> Veggie Stir Fry
+						<span class="muted"> — 20 minutes — uses pantry: broccoli, soy sauce</span>
+					</li>
+				</ul>
+
+				<details>
+					<summary>Planned API request/response (placeholder)</summary>
+					<pre class="code-block">GET /api/external/recipes?q=chicken&amp;maxReadyTime=30
+
+200 OK
+{
+  "results": [
+    { "id": "ext_123", "title": "Lemon Garlic Chicken", "readyInMinutes": 30 },
+    { "id": "ext_456", "title": "Veggie Stir Fry", "readyInMinutes": 20 }
+  ]
+}</pre>
+				</details>
+			</section>
+
 			<!-- View Toggle -->
 			<div class="recipe-filters">
 				<button
@@ -199,8 +247,12 @@
 			</section>
 		</main>
 		<footer>
-		<p class="github-link">
-			<a href="https://github.com/kdb82/StartupPantryPal" target="_blank">View on GitHub</a>
-		</p>
+			<p class="github-link">
+				<a href="https://github.com/kdb82/StartupPantryPal" target="_blank"
+					>View on GitHub</a
+				>
+			</p>
+			<p>&copy; 2026 PantryPal</p>
+		</footer>
 	</body>
 </html>
