@@ -16,7 +16,7 @@
 
 *, *::before, *::after {
     box-sizing: border-box;
-    /* margin: 0; */
+    margin: 0;
 }
 
 body {
@@ -46,6 +46,7 @@ header {
 
     display: flex;
     gap: var(--space-md);
+    flex-wrap: wrap;
 }
 
 nav a {
@@ -65,7 +66,9 @@ nav a:hover {
 }
 
 main {
-    padding: var(--space-lg) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
 }
 
 .logo {
@@ -112,7 +115,7 @@ input:focus {
     margin-top: 5px;
 }
 
-button.login-button {
+.form-actions button {
     width: 100%;
     padding: var(--space-sm) var(--space-sm);
     border: none;
@@ -162,6 +165,7 @@ header .container {
 
 footer {
   margin-top: var(--space-lg);
+  margin-bottom: 0;
   padding: var(--space-md) 0;
   background: var(--color-primary);
   border-top: 1px solid #e5e7eb;
