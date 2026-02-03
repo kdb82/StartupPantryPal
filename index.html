@@ -7,7 +7,9 @@
 		<link rel="stylesheet" href="styles.css" />
 	</head>
 	<body>
-		<header>
+		<div class="app">
+		<header class="app-header">
+			<div class="container">
 			<h1>Welcome to PantryPal</h1>
 			<div class="navigation-container">
 				<nav aria-label="Primary">
@@ -20,9 +22,10 @@
 					</ul>
 				</nav>
 			</div>
+			</div>
 		</header>
-		<hr />
-		<main>
+		<main id="main" class="app-main">
+			<div class="container">
 			<img
 				src="images/pantrypal_logo.png"
 				alt="PantryPal Logo"
@@ -41,23 +44,27 @@
 				<div id="form_actions">
 					<button type="submit">Login</button>
 				</div>
-				<div class="error-message" id="loginError" style="display: none">
+				<div class="error-message" id="loginError" hidden>
 					Invalid email or password. Please try again.
 				</div>
-				<div class="success-message" id="loginSuccess" style="display: none">
+				<div class="success-message" id="loginSuccess" hidden>
 					Login successful! Redirecting...
 				</div>
 			</form>
             <a href="register.html">New user? Create an account.</a>
-			<hr />
+			</div>
 		</main>
-		<footer>
+		<footer class="app-footer">
+			<div class="container">
+				<p class="built-by">Built by Kaden Bradshaw</p>
             <p class="github-link">
 				<a href="https://github.com/kdb82/StartupPantryPal" target="_blank"
 					>View on GitHub</a
 				>
 			</p>
 			<p>&copy; 2026 PantryPal</p>
+			</div>
 		</footer>
+		</div>
 	</body>
 </html>
