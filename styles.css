@@ -65,15 +65,29 @@ nav a:hover {
     padding: 0 var(--space-md);
 }
 
-main {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-}
-
 .logo {
     width: 100px;
     height: auto;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-lg) var(--space-md);
+}
+
+
+.app-main .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.25rem;
 }
 
 form {
@@ -112,7 +126,7 @@ input:focus {
 }
 
 .form-actions {
-    margin-top: 5px;
+    margin-top: var(--space-sm);
 }
 
 .form-actions button {
@@ -127,7 +141,7 @@ input:focus {
     cursor: pointer;
 }
 
-button:hover {
+.form-actions button:hover {
     opacity: .85;
 }
 
@@ -198,3 +212,31 @@ footer .container {
   text-decoration: underline;
 }
 
+nav a:focus-visible,
+.github-link a:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+nav a[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+@media (max-width: 768px) {
+  header .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  footer .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-list {
+    gap: var(--space-sm);
+  }
+}
