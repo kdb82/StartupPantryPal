@@ -1,0 +1,15 @@
+:root {
+    --color-primary: #5fb962;
+    --color-secondary: #efa83e;
+    --font-base: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+    --bg: #f7f9f8;
+    --surface: #ffffff;
+    --text: #1f2933;
+
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 2rem;
+
+    --radius: 8px;
+}
