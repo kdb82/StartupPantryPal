@@ -118,12 +118,13 @@ form {
 }
 
 .email_field,
-.password_field {
+.password_field, 
+.confirm_password_field {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-sm);
 }
-
+    
 label {
 	font-weight: 500;
 }
@@ -389,27 +390,52 @@ body.page-calendar .btn-clear:hover {
 		gap: var(--space-sm);
 	}
 
+	/* Mobile calendar: switch from grid to day cards */
+
 	body.page-calendar .meal-calendar {
+		width: 100%;
+		border: none;
+		background: transparent;
+		border-collapse: separate;
+	}
+
+	body.page-calendar .meal-calendar thead {
+		display: none;
+	}
+
+	body.page-calendar .meal-calendar,
+	body.page-calendar .meal-calendar tbody,
+	body.page-calendar .meal-calendar tr {
 		display: block;
-		overflow-x: auto;
-        min-width: 600px;
-		white-space: normal;
-		table-layout: fixed;
+		width: 100%;
 	}
 
-	body.page-calendar .meal-calendar th,
 	body.page-calendar .meal-calendar td {
-		overflow-wrap: break-word;
-		word-break: normal;
-		white-space: normal;
-    }
-
-	body.page-calendar .meal-calendar th,
-	body.page-calendar .meal-calendar td {
-		min-width: 100px;
+		display: block;
+		width: 100%;
+		margin-bottom: var(--space-md);
+		padding: var(--space-md);
+		border: 1px solid #e5e7eb;
+		border-radius: var(--radius);
+		background: var(--surface);
 	}
+	body.page-calendar .meal-calendar td::before {
+		display: block;
+		font-weight: 700;
+		margin-bottom: var(--space-sm);
+		color: var(--text);
+	}
+
+	body.page-calendar .meal-calendar td[data-day="monday"]::before { content: "Mon:"; }
+	body.page-calendar .meal-calendar td[data-day="tuesday"]::before { content: "Tue:"; }
+	body.page-calendar .meal-calendar td[data-day="wednesday"]::before { content: "Wed:"; }
+	body.page-calendar .meal-calendar td[data-day="thursday"]::before { content: "Thu:"; }
+	body.page-calendar .meal-calendar td[data-day="friday"]::before { content: "Fri:"; }
+	body.page-calendar .meal-calendar td[data-day="saturday"]::before { content: "Sat:"; }
+	body.page-calendar .meal-calendar td[data-day="sunday"]::before { content: "Sun"; }
 
 	body.page-calendar .meal-cell {
-		white-space: normal;
+		padding: 0;
+		background: transparent;
 	}
 }
