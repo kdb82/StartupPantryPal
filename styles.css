@@ -1,17 +1,18 @@
 :root {
-    --color-primary: #b6d6b7;
-    --color-secondary: #e3b267;
-    --font-base: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --color-primary: #b6d6b7;
+  --color-secondary: #e3b267;
+  --font-base: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 
-    --bg: #f7f9f8;
-    --surface: #ffffff;
-    --text: #1f2933;
+  --bg: #f7f9f8;
+  --surface: #ffffff;
+  --text: #1f2933;
+  --muted: #6b7280;
 
-    --space-sm: 0.5rem;
-    --space-md: 1rem;
-    --space-lg: 2rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
 
-    --radius: 10px;
+  --radius: 10px;
 }
 
 *, *::before, *::after {
@@ -26,6 +27,16 @@ body {
     line-height: 1.5;
     background-color: var(--bg);
     color: var(--text);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.app {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
 img {
@@ -68,12 +79,14 @@ nav a:hover {
 .logo {
     width: 100px;
     height: auto;
+    margin-bottom: var(--space-md);
 }
 
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: var(--space-lg);
   padding: var(--space-lg) var(--space-md);
 }
@@ -225,6 +238,140 @@ nav a[aria-current="page"] {
   text-underline-offset: 6px;
 }
 
+/*
+   Calendar page (scoped)
+ */
+
+/* Calendar page should not inherit the vertically-centered home layout */
+body.page-calendar main {
+  display: block;
+  padding: var(--space-lg) 0;
+}
+
+body.page-calendar #main-content .container {
+  /* keep content readable and top-aligned */
+  display: block;
+}
+
+/* Headings spacing (you globally removed margins) */
+body.page-calendar h2 {
+  margin: 0 0 var(--space-sm);
+  font-size: 1.1rem;
+}
+
+/* Controls row */
+body.page-calendar .calendar-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-top: var(--space-sm);
+}
+
+body.page-calendar .calendar-controls button {
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  border-radius: var(--radius);
+  background: var(--color-secondary);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+body.page-calendar .calendar-controls button:hover {
+  opacity: 0.85;
+}
+
+body.page-calendar #week-range {
+  margin: 0;
+}
+
+/* Meal calendar table */
+body.page-calendar .meal-calendar {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius);
+  overflow: hidden; /* rounds the outer corners */
+}
+
+body.page-calendar .meal-calendar th,
+body.page-calendar .meal-calendar td {
+  border: 1px solid #e5e7eb;
+  vertical-align: top;
+}
+
+body.page-calendar .meal-calendar th {
+  background: var(--color-primary);
+  text-align: left;
+  padding: var(--space-sm);
+  font-weight: 700;
+}
+
+body.page-calendar .meal-calendar td {
+  padding: var(--space-sm);
+  min-height: 110px;
+}
+
+body.page-calendar .meal-cell {
+  background: #ffffff;
+  border-radius: var(--radius);
+  padding: var(--space-sm);
+}
+
+/* Shopping list */
+body.page-calendar .shopping-list {
+  list-style: none;
+  margin: var(--space-sm) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+body.page-calendar .shopping-list li {
+  background: var(--surface);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius);
+  padding: var(--space-sm) var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+body.page-calendar .shopping-list label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0;
+}
+
+body.page-calendar .recipe-source {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+body.page-calendar .shopping-actions {
+  margin-top: var(--space-md);
+}
+
+body.page-calendar .btn-clear {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid #d1d5db;
+  border-radius: var(--radius);
+  background: var(--surface);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+body.page-calendar .btn-clear:hover {
+  background: #f3f4f6;
+}
+
 @media (max-width: 768px) {
   header .container {
     flex-direction: column;
@@ -238,5 +385,19 @@ nav a[aria-current="page"] {
 
   .nav-list {
     gap: var(--space-sm);
+  }
+
+  body.page-calendar .meal-calendar {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  body.page-calendar .meal-calendar thead,
+  body.page-calendar .meal-calendar tbody,
+  body.page-calendar .meal-calendar tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
   }
 }
