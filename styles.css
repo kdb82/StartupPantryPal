@@ -683,3 +683,33 @@ summary {
 summary::-webkit-details-marker {
   display: none;
 }
+
+body.page-recipes .recipe-filters {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin: 0 0 var(--space-md);
+}
+
+body.page-recipes .filter-button {
+  padding: var(--space-sm) var(--space-md);
+  border: 1 px solid #d1d5db;
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+body.page-recipes .filter-btn:hover {
+  background: #f3f4f6;
+  /* border-color: transparent; */
+  border-radius: var(--radius);
+  /* cursor: pointer; */
+}
+
+body.page-recipes .filter-btn.active {
+  background: var(--color-secondary);
+  color: #fff;
+  border-color: transparent;
+  border-radius: var(--radius)
+}
