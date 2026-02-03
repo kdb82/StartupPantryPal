@@ -79,9 +79,35 @@ form {
     background: var(--surface);
     border: 1px solid #e5e7eb;
     border-radius: var(--radius);
-    padding: var(--space-lg);
+    padding: var(--space-md);
 
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
+}
+
+.email_field, .password_field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+label {
+    font-weight: 500;
+}
+
+input {
+    padding: var(--space-sm);
+    border: 1px solid #d1d5db;
+    border-radius: var(--radius);
+    font-size: 1rem;
+}
+
+input:focus {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 1px;
+}
+
+.form-actions {
+    margin-top: 5px;
 }
