@@ -95,112 +95,113 @@ GET /api/external/recipes?q=chicken&amp;maxReadyTime=30
 					<div class="recipe-filters">
 						<a
 							type="button"
-							class="filter-btn active"
+							class="filter-btn"
 							data-filter="my-recipes"
-							href="recipes.html"
+                            href="recipes.html"
 						>
 							My Recipes
 						</a>
 						<a
 							type="button"
-							class="filter-btn"
-							href="friendsrecipes.html"
+                            href ="friendsrecipes.html"
+							class="filter-btn active"
 							data-filter="friends-recipes"
 						>
 							Friends' Recipes
 						</a>
 					</div>
 
-					<!-- My Recipes View -->
-					<section id="my-recipes" class="recipe-view active">
-						<h3>Your Saved Recipes</h3>
+					<!-- Friends' Recipes View -->
+					<section id="friends-recipes" class="recipe-view">
+						<h3>Friends' Saved Recipes</h3>
 						<div class="recipe-grid">
 							<article class="recipe-card">
-								<h4>Garlic Pasta</h4>
-								<p class="recipe-meta">Shared by You</p>
+								<h4>Salmon Teriyaki</h4>
+								<p class="recipe-meta">Shared by Sarah</p>
 								<p class="recipe-description">
-									Creamy garlic pasta with fresh herbs and parmesan cheese.
+									Glazed salmon with teriyaki sauce and rice.
 								</p>
 								<ul class="recipe-ingredients">
-									<li>Pasta</li>
-									<li>Garlic</li>
-									<li>Olive Oil</li>
-									<li>Parmesan</li>
+									<li>Salmon</li>
+									<li>Soy Sauce</li>
+									<li>Ginger</li>
+									<li>Rice</li>
 								</ul>
 								<div class="recipe-actions">
 									<button
 										type="button"
 										class="add-to-shopping"
-										data-recipe="garlic-pasta"
-										data-missing="garlic,parmesan"
+										data-recipe="salmon-teriyaki"
+										data-missing="ginger,soy-sauce"
 									>
 										Add Missing to Shopping List
 									</button>
 									<button
 										type="button"
 										class="delete-recipe"
-										data-recipe="garlic-pasta"
+										data-recipe="salmon-teriyaki"
 										>Delete Recipe
 									</button>
 								</div>
 							</article>
 
 							<article class="recipe-card">
-								<h4>Grilled Chicken Salad</h4>
-								<p class="recipe-meta">Shared by You</p>
+								<h4>Vegetable Stir Fry</h4>
+								<p class="recipe-meta">Shared by Mike</p>
 								<p class="recipe-description">
-									Healthy grilled chicken with mixed greens and vinaigrette.
+									Quick and colorful stir fry with seasonal vegetables.
 								</p>
 								<ul class="recipe-ingredients">
-									<li>Chicken</li>
-									<li>Mixed Greens</li>
-									<li>Tomatoes</li>
-									<li>Vinaigrette</li>
+									<li>Broccoli</li>
+									<li>Carrots</li>
+									<li>Bell Peppers</li>
+									<li>Soy Sauce</li>
+									<li>Ginger</li>
 								</ul>
 								<div class="recipe-actions">
 									<button
 										type="button"
 										class="add-to-shopping"
-										data-recipe="chicken-salad"
-										data-missing="mixed-greens,vinaigrette"
+										data-recipe="veg-stir-fry"
+										data-missing="ginger,soy-sauce"
 									>
 										Add Missing to Shopping List
 									</button>
 									<button
 										type="button"
 										class="delete-recipe"
-										data-recipe="chicken-salad"
+										data-recipe="veg-stir-fry"
 										>Delete Recipe
 									</button>
 								</div>
 							</article>
 
 							<article class="recipe-card">
-								<h4>Chocolate Chip Cookies</h4>
-								<p class="recipe-meta">Shared by You</p>
+								<h4>Spicy Tacos</h4>
+								<p class="recipe-meta">Shared by Alex</p>
 								<p class="recipe-description">
-									Classic homemade chocolate chip cookies.
+									Flavorful tacos with seasoned beef and fresh toppings.
 								</p>
 								<ul class="recipe-ingredients">
-									<li>Flour</li>
-									<li>Butter</li>
-									<li>Sugar</li>
-									<li>Chocolate Chips</li>
-									<li>Eggs</li>
+									<li>Beef</li>
+									<li>Tortillas</li>
+									<li>Cilantro</li>
+									<li>Lime</li>
+									<li>Jalapeños</li>
 								</ul>
 								<div class="recipe-actions">
 									<button
 										type="button"
 										class="add-to-shopping"
-										data-recipe="cookies"
-										data-missing="chocolate-chips,sugar"
+										data-recipe="spicy-tacos"
+										data-missing="tortillas,cilantro,lime,jalapenos"
 									>
 										Add Missing to Shopping List
 									</button>
 									<button
 										type="button"
 										class="delete-recipe"
-										data-recipe="cookies"
+										data-recipe="spicy-tacos"
 										>Delete Recipe
 									</button>
 								</div>
