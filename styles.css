@@ -636,3 +636,19 @@ body.page-pantry .add-item button:hover {
 		padding: var(--space-sm);
 	}
 }
+
+/* RECIPES ----------------------- */
+
+body.page-recipes main {
+    display: block;
+    padding: var(--space-lg) 0;
+}
+
+body.page-recipes #main-content .container {
+    display: block;
+}
+
+body.page-recipes h2 {
+    margin: 0 0 var(--space-md);
+    font-size: 1.25rem;
+}
