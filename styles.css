@@ -546,7 +546,6 @@ body.page-pantry summary {
 	padding: var(--space-sm) var(--space-md);
 	font-weight: 700;
 	background: #f3f4f6;
-	list-style: none;
 }
 
 body.page-pantry summary::-webkit-details-marker {
@@ -657,3 +656,30 @@ body.page-recipes h2 {
     font-size: 1.25rem;
 }
 
+.code-block {
+    margin: var(--space-sm);
+    padding: var(--space-md);
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    font-size: 0.95rem;
+    border-radius: var(--radius);
+    overflow-x: auto;
+}
+
+details {
+  margin-top: var(--space-md);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+summary {
+  cursor: pointer;
+  padding: var(--space-sm) var(--space-md);
+  font-weight: 700;
+  background: #f3f4f6;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
