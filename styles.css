@@ -669,14 +669,12 @@ body.page-recipes .filter-btn:focus-visible {
   outline-offset: 2px;
 }
 
-/* Active state (you already use .active) */
 body.page-recipes .filter-btn.active {
   background: var(--color-secondary);
   color: #fff;
   border-color: transparent;
 }
 
-/* Optional: if you switch to aria-current instead of .active */
 body.page-recipes .filter-btn[aria-current="page"] {
   background: var(--color-secondary);
   color: #fff;
@@ -773,6 +771,118 @@ body.page-recipes .delete-recipe:focus-visible {
   outline: 2px solid var(--color-secondary);
   outline-offset: 2px;
 }
+
+/* AI LANDING -------------------------- */
+/* AI page should be top-aligned (not vertically centered like the home/login pages) */
+body.page-ai main {
+	display: block;
+	padding: var(--space-lg) 0;
+}
+
+body.page-ai .ai-main .container {
+	display: block;
+}
+
+body.page-ai h2 {
+	margin: 0 0 var(--space-sm);
+	font-size: 1.25rem;
+}
+
+/* Response preview card */
+body.page-ai .response-container {
+	background: var(--surface);
+	border: 1px solid #e5e7eb;
+	border-radius: var(--radius);
+	padding: var(--space-md);
+	margin: var(--space-md) 0 var(--space-lg);
+}
+
+body.page-ai .response-container ul {
+	margin: var(--space-sm) 0;
+	padding-left: 1.1rem;
+}
+
+/* AI output panel: wrap long text nicely */
+body.page-ai #aiOutput.code-block {
+	margin: var(--space-sm) 0 0;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+/* Preferences block */
+/* Preferences dropdown */
+body.page-ai .prefs {
+	border: 1px solid #e5e7eb;
+	border-radius: var(--radius);
+	background: var(--surface);
+	margin: var(--space-md) 0;
+	overflow: hidden;
+}
+
+body.page-ai .prefs summary {
+	cursor: pointer;
+	padding: var(--space-sm) var(--space-md);
+	font-weight: 700;
+	background: #f3f4f6;
+}
+
+body.page-ai .prefs summary::-webkit-details-marker {
+	display: none;
+}
+
+body.page-ai .prefs-content {
+	padding: var(--space-sm);
+}
+
+
+/* Actions: two buttons should sit nicely without forcing full-width */
+body.page-ai .form-actions {
+	display: flex;
+	gap: var(--space-sm);
+	flex-wrap: wrap;
+	margin-top: var(--space-md);
+	width: 100%;
+	max-width: 420px;
+}
+
+/* Override global .form-actions button { width: 100% } for AI page only */
+body.page-ai .form-actions button {
+	flex: 1 1 180px;
+	width: auto;
+}
+
+/* Primary submit */
+body.page-ai .form-actions button[type="submit"] {
+	background: var(--color-secondary);
+	color: #fff;
+	border: none;
+}
+
+/* Secondary reset */
+body.page-ai .form-actions button[type="reset"] {
+	background: var(--surface);
+	color: var(--text);
+	border: 1px solid #d1d5db;
+}
+
+body.page-ai .form-actions button[type="reset"]:hover {
+	background: #f3f4f6;
+}
+
+/* Wide screens: two-column layout (response left, form right) */
+@media (min-width: 900px) {
+	body.page-ai .ai-main .container > section {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--space-lg);
+		align-items: start;
+	}
+
+	body.page-ai .response-container {
+		margin: 0;
+	}
+}
+
 
 @media (max-width: 1024px) {
   body.page-recipes .recipe-grid {

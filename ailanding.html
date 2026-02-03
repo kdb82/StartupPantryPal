@@ -38,8 +38,8 @@
 							aria-label="AI response (placeholder)"
 						>
 							<p class="muted">
-								AI response (placeholder). Later this will call
-								<code>POST /api/ai</code> and display the real model output.
+								AI response (placeholder). Later this will call third-party API
+								and display the real model output.
 							</p>
 							<p>
 								<strong>Example prompt:</strong> “I have chicken, rice, and
@@ -78,10 +78,10 @@ Waiting for a prompt…</pre
 								required
 							></textarea>
 
-							<fieldset>
-								<legend>Preferences</legend>
+							<details class="prefs" open>
+								<summary>Preferences</summary>
 
-								<div class="form-group">
+								<div class="prefs-content">
 									<label for="servings">Servings</label>
 									<input
 										id="servings"
@@ -94,7 +94,7 @@ Waiting for a prompt…</pre
 									/>
 								</div>
 
-								<div class="form-group">
+								<div class="prefs-content">
 									<label for="timeLimit">Time limit (minutes)</label>
 									<input
 										id="timeLimit"
@@ -107,7 +107,7 @@ Waiting for a prompt…</pre
 									/>
 								</div>
 
-								<div class="form-group">
+								<div class="prefs-content">
 									<label for="diet">Diet</label>
 									<select id="diet" name="diet">
 										<option value="No preference">No preference</option>
@@ -117,13 +117,13 @@ Waiting for a prompt…</pre
 									</select>
 								</div>
 
-								<div class="form-group">
+								<div class="prefs-content">
 									<label>
 										<input type="checkbox" name="usePantry" checked />
 										Use my pantry items (DB placeholder)
 									</label>
 								</div>
-							</fieldset>
+							</details>
 
 							<div class="form-actions">
 								<button type="submit">Generate recipe ideas</button>
