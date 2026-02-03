@@ -1,3 +1,5 @@
+/* GLOBAL/ SHARED COMPONENTS */
+
 :root {
 	--color-primary: #b6d6b7;
 	--color-secondary: #e3b267;
@@ -241,6 +243,68 @@ nav a[aria-current="page"] {
 	text-underline-offset: 6px;
 }
 
+.placeholder-card {
+	background: var(--surface);
+	border: 1px solid #e5e7eb;
+	border-radius: var(--radius);
+	padding: var(--space-md);
+	margin-bottom: var(--space-lg);
+}
+
+.placeholder-card h3 {
+	margin: 0 0 var(--space-sm);
+	font-size: 1rem;
+}
+
+.inline-form {
+	display: flex;
+	align-items: center;
+	gap: var(--space-sm);
+	flex-wrap: wrap;
+	margin-top: var(--space-sm);
+}
+
+.inline-form label {
+	margin: 0;
+	font-weight: 600;
+}
+
+.inline-form input {
+	flex: 1 240px;
+	min-width: 220px;
+}
+
+.inline-form button {
+	padding: var(--space-sm) var(--space-md);
+	border: none;
+	border-radius: var(--radius);
+	background: var(--color-secondary);
+	color: #fff;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.inline-form button:hover {
+	opacity: 0.85;
+}
+
+
+.api-results {
+	list-style: none;
+	margin: var(--space-md) 0 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
+}
+
+.api-results li {
+	background: #f9fafb;
+	border: 1px solid #e5e7eb;
+	border-radius: var(--radius);
+	padding: var(--space-sm) var(--space-md);
+}
+
 /*
 CALENDAR PAGE ----------------------
  */
@@ -453,19 +517,6 @@ body.page-pantry h2 {
 	font-size: 1.25rem;
 }
 
-body.page-pantry .placeholder-card {
-	background: var(--surface);
-	border: 1px solid #e5e7eb;
-	border-radius: var(--radius);
-	padding: var(--space-md);
-	margin-bottom: var(--space-lg);
-}
-
-body.page-pantry .placeholder-card h3 {
-	margin: 0 0 var(--space-sm);
-	font-size: 1rem;
-}
-
 body.page-pantry code {
 	background: #f3f4f6;
 	border: 1px solid #e5e7eb;
@@ -473,61 +524,14 @@ body.page-pantry code {
 	padding: 0.1rem 0.35rem;
 }
 
-body.page-pantry .inline-form {
-	display: flex;
-	align-items: center;
-	gap: var(--space-sm);
-	flex-wrap: wrap;
-	margin-top: var(--space-sm);
-}
 
-body.page-pantry .inline-form label {
-	margin: 0;
-	font-weight: 600;
-}
-
-body.page-pantry .inline-form input {
-	flex: 1 240px;
-	min-width: 220px;
-}
-
-body.page-pantry .inline-form button {
-	padding: var(--space-sm) var(--space-md);
-	border: none;
-	border-radius: var(--radius);
-	background: var(--color-secondary);
-	color: #fff;
-	font-weight: 600;
-	cursor: pointer;
-}
-
-body.page-pantry .inline-form button:hover {
-	opacity: 0.85;
+body.page-pantry .pantry-category {
+	margin-bottom: var(--space-md);
 }
 
 body.page-pantry button:disabled {
 	opacity: 0.55;
 	cursor: not-allowed;
-}
-
-body.page-pantry .api-results {
-	list-style: none;
-	margin: var(--space-md) 0 0;
-	padding: 0;
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-sm);
-}
-
-body.page-pantry .api-results li {
-	background: #f9fafb;
-	border: 1px solid #e5e7eb;
-	border-radius: var(--radius);
-	padding: var(--space-sm) var(--space-md);
-}
-
-body.page-pantry .pantry-category {
-	margin-bottom: var(--space-md);
 }
 
 body.page-pantry details {
@@ -652,3 +656,4 @@ body.page-recipes h2 {
     margin: 0 0 var(--space-md);
     font-size: 1.25rem;
 }
+
