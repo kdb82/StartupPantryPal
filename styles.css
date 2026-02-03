@@ -296,7 +296,7 @@ body.page-calendar .meal-calendar {
 	background: var(--surface);
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
-	overflow: hidden; /* rounds the outer corners */
+	overflow: auto; /* rounds the outer corners */
 }
 
 body.page-calendar .meal-calendar th,
@@ -392,14 +392,24 @@ body.page-calendar .btn-clear:hover {
 	body.page-calendar .meal-calendar {
 		display: block;
 		overflow-x: auto;
-		white-space: nowrap;
+        min-width: 600px;
+		white-space: normal;
+		table-layout: fixed;
 	}
 
-	body.page-calendar .meal-calendar thead,
-	body.page-calendar .meal-calendar tbody,
-	body.page-calendar .meal-calendar tr {
-		display: table;
-		width: 100%;
-		table-layout: fixed;
+	body.page-calendar .meal-calendar th,
+	body.page-calendar .meal-calendar td {
+		overflow-wrap: break-word;
+		word-break: normal;
+		white-space: normal;
+    }
+
+	body.page-calendar .meal-calendar th,
+	body.page-calendar .meal-calendar td {
+		min-width: 100px;
+	}
+
+	body.page-calendar .meal-cell {
+		white-space: normal;
 	}
 }
