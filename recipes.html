@@ -7,9 +7,10 @@
 		<link rel="stylesheet" href="styles.css" />
 	</head>
 	<body class="page-recipes">
-		<header>
-			<div class="container">
-				<h1>PantryPal</h1>
+		<div class="app">
+			<header>
+				<div class="container">
+					<h1>PantryPal</h1>
 					<nav aria-label="Primary">
 						<ul class="nav-list">
 							<li><a href="index.html">Home</a></li>
@@ -19,59 +20,64 @@
 							<li><a href="ailanding.html">AI Assistant</a></li>
 						</ul>
 					</nav>
-			</div>
-		</header>
-		<main id="main-content">
-			<div class="container">
-			<h2>Recipes</h2>
+				</div>
+			</header>
+			<main id="main-content">
+				<div class="container">
+					<h2>Recipes</h2>
 
-			<section aria-labelledby="recipe-api-title" class="placeholder-card">
-				<h3 id="recipe-api-title">
-					Discover new recipes (3rd-party API placeholder)
-				</h3>
-				<p class="muted">
-					This section will be powered by a third-party recipe API. For now it
-					shows mock results and the planned request/response shape.
-				</p>
+					<section aria-labelledby="recipe-api-title" class="placeholder-card">
+						<h3 id="recipe-api-title">
+							Discover new recipes (3rd-party API placeholder)
+						</h3>
+						<p class="muted">
+							This section will be powered by a third-party recipe API. For now
+							it shows mock results and the planned request/response shape.
+						</p>
 
-				<form id="recipeSearchForm" class="inline-form" autocomplete="off">
-					<label for="recipeQuery">Search</label>
-					<input
-						id="recipeQuery"
-						name="q"
-						type="search"
-						placeholder="Example: chicken, pasta, vegetarian..."
-						required
-					/>
-					<button type="submit">Search recipes</button>
-				</form>
+						<form id="recipeSearchForm" class="inline-form" autocomplete="off">
+							<label for="recipeQuery">Search</label>
+							<input
+								id="recipeQuery"
+								name="q"
+								type="search"
+								placeholder="Example: chicken, pasta, vegetarian..."
+								required
+							/>
+							<button type="submit">Search recipes</button>
+						</form>
 
-				<p id="recipeApiStatus" class="muted" role="status" aria-live="polite">
-					Not connected (placeholder).
-				</p>
-
-				<ul
-					id="recipeApiResults"
-					class="api-results"
-					aria-label="Recipe results"
-				>
-					<li>
-						<strong>Mock result:</strong> Lemon Garlic Chicken
-						<span class="muted">
-							— 30 minutes — uses pantry: chicken, garlic</span
+						<p
+							id="recipeApiStatus"
+							class="muted"
+							role="status"
+							aria-live="polite"
 						>
-					</li>
-					<li>
-						<strong>Mock result:</strong> Veggie Stir Fry
-						<span class="muted">
-							— 20 minutes — uses pantry: broccoli, soy sauce</span
-						>
-					</li>
-				</ul>
+							Not connected (placeholder).
+						</p>
 
-				<details>
-					<summary>Planned API request/response (placeholder)</summary>
-					<pre class="code-block">
+						<ul
+							id="recipeApiResults"
+							class="api-results"
+							aria-label="Recipe results"
+						>
+							<li>
+								<strong>Mock result:</strong> Lemon Garlic Chicken
+								<span class="muted">
+									— 30 minutes — uses pantry: chicken, garlic</span
+								>
+							</li>
+							<li>
+								<strong>Mock result:</strong> Veggie Stir Fry
+								<span class="muted">
+									— 20 minutes — uses pantry: broccoli, soy sauce</span
+								>
+							</li>
+						</ul>
+
+						<details>
+							<summary>Planned API request/response (placeholder)</summary>
+							<pre class="code-block">
 GET /api/external/recipes?q=chicken&amp;maxReadyTime=30
 
 200 OK
@@ -81,193 +87,198 @@ GET /api/external/recipes?q=chicken&amp;maxReadyTime=30
     { "id": "ext_456", "title": "Veggie Stir Fry", "readyInMinutes": 20 }
   ]
 }</pre
-					>
-				</details>
-			</section>
-
-			<!-- View Toggle -->
-			<div class="recipe-filters">
-				<button
-					type="button"
-					class="filter-btn active"
-					data-filter="my-recipes"
-				>
-					My Recipes
-				</button>
-				<button type="button" class="filter-btn" data-filter="friends-recipes">
-					Friends' Recipes
-				</button>
-			</div>
-
-			<!-- My Recipes View -->
-			<section id="my-recipes" class="recipe-view active">
-				<h3>Your Saved Recipes</h3>
-				<div class="recipe-grid">
-					<article class="recipe-card">
-						<h4>Garlic Pasta</h4>
-						<p class="recipe-meta">Shared by You</p>
-						<p class="recipe-description">
-							Creamy garlic pasta with fresh herbs and parmesan cheese.
-						</p>
-						<ul class="recipe-ingredients">
-							<li>Pasta</li>
-							<li>Garlic</li>
-							<li>Olive Oil</li>
-							<li>Parmesan</li>
-						</ul>
-						<div class="recipe-actions">
-							<button
-								type="button"
-								class="add-to-shopping"
-								data-recipe="garlic-pasta"
-								data-missing="garlic,parmesan"
 							>
-								Add Missing to Shopping List
-							</button>
-						</div>
-					</article>
+						</details>
+					</section>
 
-					<article class="recipe-card">
-						<h4>Grilled Chicken Salad</h4>
-						<p class="recipe-meta">Shared by You</p>
-						<p class="recipe-description">
-							Healthy grilled chicken with mixed greens and vinaigrette.
-						</p>
-						<ul class="recipe-ingredients">
-							<li>Chicken</li>
-							<li>Mixed Greens</li>
-							<li>Tomatoes</li>
-							<li>Vinaigrette</li>
-						</ul>
-						<div class="recipe-actions">
-							<button
-								type="button"
-								class="add-to-shopping"
-								data-recipe="chicken-salad"
-								data-missing="mixed-greens,vinaigrette"
-							>
-								Add Missing to Shopping List
-							</button>
-						</div>
-					</article>
+					<!-- View Toggle -->
+					<div class="recipe-filters">
+						<button
+							type="button"
+							class="filter-btn active"
+							data-filter="my-recipes"
+						>
+							My Recipes
+						</button>
+						<button
+							type="button"
+							class="filter-btn"
+							data-filter="friends-recipes"
+						>
+							Friends' Recipes
+						</button>
+					</div>
 
-					<article class="recipe-card">
-						<h4>Chocolate Chip Cookies</h4>
-						<p class="recipe-meta">Shared by You</p>
-						<p class="recipe-description">
-							Classic homemade chocolate chip cookies.
-						</p>
-						<ul class="recipe-ingredients">
-							<li>Flour</li>
-							<li>Butter</li>
-							<li>Sugar</li>
-							<li>Chocolate Chips</li>
-							<li>Eggs</li>
-						</ul>
-						<div class="recipe-actions">
-							<button
-								type="button"
-								class="add-to-shopping"
-								data-recipe="cookies"
-								data-missing="chocolate-chips,sugar"
-							>
-								Add Missing to Shopping List
-							</button>
+					<!-- My Recipes View -->
+					<section id="my-recipes" class="recipe-view active">
+						<h3>Your Saved Recipes</h3>
+						<div class="recipe-grid">
+							<article class="recipe-card">
+								<h4>Garlic Pasta</h4>
+								<p class="recipe-meta">Shared by You</p>
+								<p class="recipe-description">
+									Creamy garlic pasta with fresh herbs and parmesan cheese.
+								</p>
+								<ul class="recipe-ingredients">
+									<li>Pasta</li>
+									<li>Garlic</li>
+									<li>Olive Oil</li>
+									<li>Parmesan</li>
+								</ul>
+								<div class="recipe-actions">
+									<button
+										type="button"
+										class="add-to-shopping"
+										data-recipe="garlic-pasta"
+										data-missing="garlic,parmesan"
+									>
+										Add Missing to Shopping List
+									</button>
+								</div>
+							</article>
+
+							<article class="recipe-card">
+								<h4>Grilled Chicken Salad</h4>
+								<p class="recipe-meta">Shared by You</p>
+								<p class="recipe-description">
+									Healthy grilled chicken with mixed greens and vinaigrette.
+								</p>
+								<ul class="recipe-ingredients">
+									<li>Chicken</li>
+									<li>Mixed Greens</li>
+									<li>Tomatoes</li>
+									<li>Vinaigrette</li>
+								</ul>
+								<div class="recipe-actions">
+									<button
+										type="button"
+										class="add-to-shopping"
+										data-recipe="chicken-salad"
+										data-missing="mixed-greens,vinaigrette"
+									>
+										Add Missing to Shopping List
+									</button>
+								</div>
+							</article>
+
+							<article class="recipe-card">
+								<h4>Chocolate Chip Cookies</h4>
+								<p class="recipe-meta">Shared by You</p>
+								<p class="recipe-description">
+									Classic homemade chocolate chip cookies.
+								</p>
+								<ul class="recipe-ingredients">
+									<li>Flour</li>
+									<li>Butter</li>
+									<li>Sugar</li>
+									<li>Chocolate Chips</li>
+									<li>Eggs</li>
+								</ul>
+								<div class="recipe-actions">
+									<button
+										type="button"
+										class="add-to-shopping"
+										data-recipe="cookies"
+										data-missing="chocolate-chips,sugar"
+									>
+										Add Missing to Shopping List
+									</button>
+								</div>
+							</article>
 						</div>
-					</article>
+					</section>
+
+					<!-- Friends' Recipes View -->
+					<section id="friends-recipes" class="recipe-view">
+						<h3>Friends' Saved Recipes</h3>
+						<div class="recipe-grid">
+							<article class="recipe-card">
+								<h4>Salmon Teriyaki</h4>
+								<p class="recipe-meta">Shared by Sarah</p>
+								<p class="recipe-description">
+									Glazed salmon with teriyaki sauce and rice.
+								</p>
+								<ul class="recipe-ingredients">
+									<li>Salmon</li>
+									<li>Soy Sauce</li>
+									<li>Ginger</li>
+									<li>Rice</li>
+								</ul>
+								<div class="recipe-actions">
+									<button
+										type="button"
+										class="add-to-shopping"
+										data-recipe="salmon-teriyaki"
+										data-missing="ginger,soy-sauce"
+									>
+										Add Missing to Shopping List
+									</button>
+								</div>
+							</article>
+
+							<article class="recipe-card">
+								<h4>Vegetable Stir Fry</h4>
+								<p class="recipe-meta">Shared by Mike</p>
+								<p class="recipe-description">
+									Quick and colorful stir fry with seasonal vegetables.
+								</p>
+								<ul class="recipe-ingredients">
+									<li>Broccoli</li>
+									<li>Carrots</li>
+									<li>Bell Peppers</li>
+									<li>Soy Sauce</li>
+									<li>Ginger</li>
+								</ul>
+								<div class="recipe-actions">
+									<button
+										type="button"
+										class="add-to-shopping"
+										data-recipe="veg-stir-fry"
+										data-missing="ginger,soy-sauce"
+									>
+										Add Missing to Shopping List
+									</button>
+								</div>
+							</article>
+
+							<article class="recipe-card">
+								<h4>Spicy Tacos</h4>
+								<p class="recipe-meta">Shared by Alex</p>
+								<p class="recipe-description">
+									Flavorful tacos with seasoned beef and fresh toppings.
+								</p>
+								<ul class="recipe-ingredients">
+									<li>Beef</li>
+									<li>Tortillas</li>
+									<li>Cilantro</li>
+									<li>Lime</li>
+									<li>Jalapeños</li>
+								</ul>
+								<div class="recipe-actions">
+									<button
+										type="button"
+										class="add-to-shopping"
+										data-recipe="spicy-tacos"
+										data-missing="tortillas,cilantro,lime,jalapenos"
+									>
+										Add Missing to Shopping List
+									</button>
+								</div>
+							</article>
+						</div>
+					</section>
 				</div>
-			</section>
-
-			<!-- Friends' Recipes View -->
-			<section id="friends-recipes" class="recipe-view">
-				<h3>Friends' Saved Recipes</h3>
-				<div class="recipe-grid">
-					<article class="recipe-card">
-						<h4>Salmon Teriyaki</h4>
-						<p class="recipe-meta">Shared by Sarah</p>
-						<p class="recipe-description">
-							Glazed salmon with teriyaki sauce and rice.
-						</p>
-						<ul class="recipe-ingredients">
-							<li>Salmon</li>
-							<li>Soy Sauce</li>
-							<li>Ginger</li>
-							<li>Rice</li>
-						</ul>
-						<div class="recipe-actions">
-							<button
-								type="button"
-								class="add-to-shopping"
-								data-recipe="salmon-teriyaki"
-								data-missing="ginger,soy-sauce"
-							>
-								Add Missing to Shopping List
-							</button>
-						</div>
-					</article>
-
-					<article class="recipe-card">
-						<h4>Vegetable Stir Fry</h4>
-						<p class="recipe-meta">Shared by Mike</p>
-						<p class="recipe-description">
-							Quick and colorful stir fry with seasonal vegetables.
-						</p>
-						<ul class="recipe-ingredients">
-							<li>Broccoli</li>
-							<li>Carrots</li>
-							<li>Bell Peppers</li>
-							<li>Soy Sauce</li>
-							<li>Ginger</li>
-						</ul>
-						<div class="recipe-actions">
-							<button
-								type="button"
-								class="add-to-shopping"
-								data-recipe="veg-stir-fry"
-								data-missing="ginger,soy-sauce"
-							>
-								Add Missing to Shopping List
-							</button>
-						</div>
-					</article>
-
-					<article class="recipe-card">
-						<h4>Spicy Tacos</h4>
-						<p class="recipe-meta">Shared by Alex</p>
-						<p class="recipe-description">
-							Flavorful tacos with seasoned beef and fresh toppings.
-						</p>
-						<ul class="recipe-ingredients">
-							<li>Beef</li>
-							<li>Tortillas</li>
-							<li>Cilantro</li>
-							<li>Lime</li>
-							<li>Jalapeños</li>
-						</ul>
-						<div class="recipe-actions">
-							<button
-								type="button"
-								class="add-to-shopping"
-								data-recipe="spicy-tacos"
-								data-missing="tortillas,cilantro,lime,jalapenos"
-							>
-								Add Missing to Shopping List
-							</button>
-						</div>
-					</article>
+			</main>
+			<footer>
+				<div class="container">
+					<p class="github-link">
+						<a href="https://github.com/kdb82/StartupPantryPal" target="_blank"
+							>View on GitHub</a
+						>
+					</p>
+					<p>&copy; 2026 PantryPal</p>
 				</div>
-			</section>
-			</div>
-		</main>
-		<footer>
-			<div class="container">
-				<p class="github-link">
-					<a href="https://github.com/kdb82/StartupPantryPal" target="_blank"
-						>View on GitHub</a
-					>
-				</p>
-				<p>&copy; 2026 PantryPal</p>
-			</div>
-		</footer>
+			</footer>
+		</div>
 	</body>
 </html>
