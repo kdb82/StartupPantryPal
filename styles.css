@@ -1,6 +1,6 @@
 :root {
-    --color-primary: #5fb962;
-    --color-secondary: #efa83e;
+    --color-primary: #b6d6b7;
+    --color-secondary: #deb16d;
     --font-base: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 
     --bg: #f7f9f8;
@@ -34,7 +34,7 @@ img {
 }
 
 header {
-    background-color: var(--surface);
+    background-color: var(--color-primary);
     border-bottom: 1px solid #e5e7eb;
     padding: var(--space-md);
 }
@@ -55,5 +55,33 @@ nav a {
 }
 
 nav a:hover {
-    color: var(--color-primary);
+    color: var(--color-secondary);
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+
+main {
+    padding: var(--space-lg) 0;
+}
+
+.logo {
+    width: 100px;
+    height: auto;
+}
+
+form {
+    width: 100%;
+    max-width: 420px;
+    background: var(--surface);
+    border: 1px solid #e5e7eb;
+    border-radius: var(--radius);
+    padding: var(--space-lg);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
 }
