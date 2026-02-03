@@ -16,7 +16,9 @@
 						<li><a href="pantry.html">Pantry</a></li>
 						<li><a href="recipes.html">Recipes</a></li>
 						<li><a href="calendar.html">Calendar</a></li>
-						<li><a href="ailanding.html" aria-current="page">AI Assistant</a></li>
+						<li>
+							<a href="ailanding.html" aria-current="page">AI Assistant</a>
+						</li>
 					</ul>
 				</nav>
 			</div>
@@ -30,22 +32,36 @@
 					missing ingredients to your shopping list.
 				</p>
 
-				<section class="response-container" aria-label="AI response (placeholder)">
+				<section
+					class="response-container"
+					aria-label="AI response (placeholder)"
+				>
 					<p class="muted">
 						AI response (placeholder). Later this will call
 						<code>POST /api/ai</code> and display the real model output.
 					</p>
-					<p><strong>Example prompt:</strong> “I have chicken, rice, and broccoli. I want a 30-minute dinner.”</p>
+					<p>
+						<strong>Example prompt:</strong> “I have chicken, rice, and
+						broccoli. I want a 30-minute dinner.”
+					</p>
 					<p><strong>Example response:</strong></p>
 					<ul>
 						<li><strong>Idea:</strong> Chicken &amp; Broccoli Stir Fry Bowl</li>
-						<li><strong>Steps:</strong> sauté chicken → add broccoli → sauce → serve over rice</li>
-						<li><strong>Missing items:</strong> soy sauce, ginger (added to Shopping List)</li>
+						<li>
+							<strong>Steps:</strong> sauté chicken → add broccoli → sauce →
+							serve over rice
+						</li>
+						<li>
+							<strong>Missing items:</strong> soy sauce, ginger (added to
+							Shopping List)
+						</li>
 					</ul>
 					<p id="aiStatus" class="muted" role="status" aria-live="polite">
 						Not connected (placeholder).
 					</p>
-					<pre id="aiOutput" class="code-block" aria-label="AI output text">Waiting for a prompt…</pre>
+					<pre id="aiOutput" class="code-block" aria-label="AI output text">
+Waiting for a prompt…</pre
+					>
 				</section>
 
 				<form id="aiPromptForm" method="post" action="/api/ai">
@@ -55,7 +71,7 @@
 						name="prompt"
 						rows="6"
 						placeholder="Example: I want to make an Italian dinner with ingredients I have."
-                        data-field="recipe-prompt"
+						data-field="recipe-prompt"
 						required
 					></textarea>
 
@@ -71,7 +87,7 @@
 								min="1"
 								max="12"
 								value="2"
-                                data-field="recipe-servings"
+								data-field="recipe-servings"
 							/>
 						</div>
 
@@ -84,7 +100,7 @@
 								min="5"
 								max="180"
 								value="30"
-                                data-field="time-limit"
+								data-field="time-limit"
 							/>
 						</div>
 
@@ -115,7 +131,9 @@
 		</main>
 		<footer>
 			<p class="github-link">
-				<a href="https://github.com/kdb82/StartupPantryPal" target="_blank">View on GitHub</a>
+				<a href="https://github.com/kdb82/StartupPantryPal" target="_blank"
+					>View on GitHub</a
+				>
 			</p>
 			<p>&copy; 2026 PantryPal</p>
 		</footer>
