@@ -385,6 +385,11 @@ body.page-calendar .meal-cell {
 }
 
 /* Shopping list */
+
+#shopping-title {
+    margin-top: var(--space-sm);
+}
+
 body.page-calendar .shopping-list {
 	list-style: none;
 	margin: var(--space-sm) 0 0;
@@ -691,27 +696,43 @@ body.page-recipes .recipe-filters {
   margin: 0 0 var(--space-md);
 }
 
-body.page-recipes .filter-button {
+body.page-recipes .filter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   padding: var(--space-sm) var(--space-md);
-  border: 1 px solid #d1d5db;
+  border: 1px solid #d1d5db;
   border-radius: var(--radius);
   background: var(--surface);
+
   font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
   cursor: pointer;
 }
 
 body.page-recipes .filter-btn:hover {
   background: #f3f4f6;
-  /* border-color: transparent; */
-  border-radius: var(--radius);
-  /* cursor: pointer; */
 }
 
+body.page-recipes .filter-btn:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+/* Active state (you already use .active) */
 body.page-recipes .filter-btn.active {
   background: var(--color-secondary);
   color: #fff;
   border-color: transparent;
-  border-radius: var(--radius)
+}
+
+/* Optional: if you switch to aria-current instead of .active */
+body.page-recipes .filter-btn[aria-current="page"] {
+  background: var(--color-secondary);
+  color: #fff;
+  border-color: transparent;
 }
 
 body.page-recipes .recipe-view {
