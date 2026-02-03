@@ -242,7 +242,7 @@ nav a[aria-current="page"] {
 }
 
 /*
-   Calendar page (scoped)
+CALENDAR PAGE ----------------------
  */
 
 
@@ -436,7 +436,7 @@ body.page-calendar .btn-clear:hover {
 	}
 }
 
-/* PANTRY PAGE */
+/* PANTRY PAGE ---------------------------*/
 
 /* Pantry page should be top-aligned (not vertically centered like the home/login pages) */
 body.page-pantry main {
