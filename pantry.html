@@ -25,6 +25,48 @@
 		<hr />
 		<main id="main-content">
 			<h2>My Pantry</h2>
+
+			<section aria-labelledby="ws-title" class="placeholder-card">
+				<h3 id="ws-title">Live updates (WebSocket placeholder)</h3>
+				<p class="muted">
+					Planned: use WebSockets for real-time pantry updates (multi-device sync,
+					friend collaboration, and notifications).
+				</p>
+				<p class="muted">
+					Endpoint placeholder:
+					<code id="wsUrlText">wss://your-domain/ws</code>
+				</p>
+				<p id="wsStatus" class="muted" role="status" aria-live="polite">
+					Not connected (placeholder).
+				</p>
+
+				<div class="inline-form">
+					<button id="wsConnectBtn" type="button">Connect</button>
+					<button id="wsDisconnectBtn" type="button" disabled>Disconnect</button>
+				</div>
+
+				<div class="inline-form">
+					<label for="wsMessage">Send message</label>
+					<input
+						id="wsMessage"
+						type="text"
+						placeholder='Example: {"type":"pantry:add","item":"apples"}'
+					/>
+					<button id="wsSendBtn" type="button" disabled>Send</button>
+				</div>
+
+				<ul id="wsLog" class="api-results" aria-label="WebSocket message log">
+					<li>
+						<strong>Mock:</strong> Connected users: 2
+						<span class="muted"> (placeholder message)</span>
+					</li>
+					<li>
+						<strong>Mock:</strong> Pantry updated: added “milk”
+						<span class="muted"> (placeholder message)</span>
+					</li>
+				</ul>
+			</section>
+
 			<hr />
 
 			<!-- Proteins Section -->
@@ -86,7 +128,7 @@
 			<!-- Dairy & Eggs Section -->
 			<section class="pantry-category">
 				<details open>
-					<summary>Dairy & Eggs</summary>
+					<summary>Dairy &amp; Eggs</summary>
 					<div class="category-content">
 						<ul class="item-list">
 							<li>
@@ -244,7 +286,7 @@
 			<!-- Grains & Carbs Section -->
 			<section class="pantry-category">
 				<details>
-					<summary>Grains & Carbs</summary>
+					<summary>Grains &amp; Carbs</summary>
 					<div class="category-content">
 						<ul class="item-list">
 							<li>

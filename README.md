@@ -66,10 +66,12 @@ I am going to use the required technologies in the following ways.
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ x ] **Server deployed and accessible with custom domain name** - [My server link](https://startup.pantrypal.click).
+- [ ] **IMPORTANT (grading): deploy Simon to subdomain** - The course Simon app must be deployed to `https://simon.pantrypal.click` (don’t skip this or you may receive a 0).
 
 **Helpful Info**:
 - Command to SSH into server: ssh -i ~/keys/pantryPal_production.pem ubuntu@98.84.77.7
 - public elastic IP address: 98.84.77.7
+ - Deploy script supports a source directory: `./deployFiles.sh -k <key.pem> -h <host> -s <service> -d <sourceDir>`
 
 ## 🚀 HTML deliverable
 
@@ -80,12 +82,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [x] **HTML pages** - Six main HTML pages created: index.html (login), register.html (account creation), pantry.html (inventory management), recipes.html (social feed), calendar.html (meal planning), and ailanding.html (AI assistant).
 - [x] **Proper HTML element usage** - All pages use semantic HTML with proper `<header>`, `<nav>`, `<main>`, `<footer>`, `<section>`, `<article>`, `<form>`, `<fieldset>`, and `<details>` elements. DOCTYPE, lang attributes, meta charset, and viewport tags included on all pages.
 - [x] **Links** - Consistent navigation structure across all pages with links to Home, Pantry, Recipes, Calendar, and AI Assistant. Links between authentication pages (login/register). GitHub repository link displayed on home page.
-- [x] **Text** - Application title "PantryPal" and textual content describing each feature. Form labels, button text, and informational messages included throughout.
-- [x] **3rd party API placeholder** - AI Assistant form includes action="/api/ai" with form fields for prompt, servings, time limit, and diet preferences. "Use my pantry items" checkbox indicates database lookup before API call.
+- [x] **Text** - Home page includes a short “What PantryPal does” description. Recipes and AI pages include explanatory text and example placeholder outputs (sample prompt + sample response).
+- [x] **3rd party API placeholder** - `recipes.html` includes a “Discover new recipes” section with a search form, mock results, and a documented planned endpoint (`GET /api/external/recipes?q=...`). `ailanding.html` includes a prompt form posting to `POST /api/ai` plus a static example prompt/response.
 - [x] **Images** - PantryPal logo included on login page with proper alt text and responsive sizing. Images folder created for additional assets.
 - [x] **Login placeholder** - Complete authentication flow with email/password login form (index.html) posting to /api/login endpoint. Account creation form (register.html) with confirm password field posting to /api/register endpoint.
 - [x] **DB data placeholder** - Pantry page displays 7 food categories with sample ingredients (Proteins, Dairy, Vegetables, Fruits, Grains, Pantry Staples, Beverages). Recipes page shows recipe cards with ingredients. Calendar displays meal plan data. All elements prepared with data attributes for backend integration.
-- [x] **WebSocket placeholder** - Calendar shopping list aggregates missing ingredients from weekly recipes. Recipe feed displays both user's and friends' recipes. AI response container ready for real-time updates. All pages structured to receive and display live data.
+- [x] **WebSocket placeholder** - `pantry.html` includes a “Live updates” section with connect/send UI, a message log, and a documented planned endpoint (`ws(s)://<host>/ws`).
 
 ## 🚀 CSS deliverable
 

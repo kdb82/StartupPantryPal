@@ -8,7 +8,7 @@
 	</head>
 	<body class="page-ai">
 		<header>
-			<h1>Welcome to PantryPal</h1>
+			<h1>PantryPal AI Assistant</h1>
 			<div class="navigation-container">
 				<nav aria-label="Primary">
 					<ul>
@@ -16,7 +16,7 @@
 						<li><a href="pantry.html">Pantry</a></li>
 						<li><a href="recipes.html">Recipes</a></li>
 						<li><a href="calendar.html">Calendar</a></li>
-						<li><a href="ailanding.html">AI Assistant</a></li>
+						<li><a href="ailanding.html" aria-current="page">AI Assistant</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -30,9 +30,23 @@
 					missing ingredients to your shopping list.
 				</p>
 
-				<div class="response-container">
-					<p><em>AI response here</em></p>
-				</div>
+				<section class="response-container" aria-label="AI response (placeholder)">
+					<p class="muted">
+						AI response (placeholder). Later this will call
+						<code>POST /api/ai</code> and display the real model output.
+					</p>
+					<p><strong>Example prompt:</strong> “I have chicken, rice, and broccoli. I want a 30-minute dinner.”</p>
+					<p><strong>Example response:</strong></p>
+					<ul>
+						<li><strong>Idea:</strong> Chicken &amp; Broccoli Stir Fry Bowl</li>
+						<li><strong>Steps:</strong> sauté chicken → add broccoli → sauce → serve over rice</li>
+						<li><strong>Missing items:</strong> soy sauce, ginger (added to Shopping List)</li>
+					</ul>
+					<p id="aiStatus" class="muted" role="status" aria-live="polite">
+						Not connected (placeholder).
+					</p>
+					<pre id="aiOutput" class="code-block" aria-label="AI output text">Waiting for a prompt…</pre>
+				</section>
 
 				<form id="aiPromptForm" method="post" action="/api/ai">
 					<label for="prompt">Prompt</label>
