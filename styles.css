@@ -463,71 +463,6 @@ body.page-calendar .btn-clear:hover {
 	background: #f3f4f6;
 }
 
-@media (max-width: 768px) {
-	header .container {
-		flex-direction: column;
-		align-items: flex-start;
-	}
-
-	footer .container {
-		flex-direction: column;
-		align-items: flex-start;
-	}
-
-	.nav-list {
-		gap: var(--space-sm);
-	}
-
-	/* Mobile calendar: switch from grid to day cards */
-
-	body.page-calendar .meal-calendar {
-		width: 100%;
-		border: none;
-		background: transparent;
-		border-collapse: separate;
-	}
-
-	body.page-calendar .meal-calendar thead {
-		display: none;
-	}
-
-	body.page-calendar .meal-calendar,
-	body.page-calendar .meal-calendar tbody,
-	body.page-calendar .meal-calendar tr {
-		display: block;
-		width: 100%;
-	}
-
-	body.page-calendar .meal-calendar td {
-		display: block;
-		width: 100%;
-		margin-bottom: var(--space-md);
-		padding: var(--space-md);
-		border: 1px solid #e5e7eb;
-		border-radius: var(--radius);
-		background: var(--surface);
-	}
-	body.page-calendar .meal-calendar td::before {
-		display: block;
-		font-weight: 700;
-		margin-bottom: var(--space-sm);
-		color: var(--text);
-	}
-
-	body.page-calendar .meal-calendar td[data-day="monday"]::before { content: "Mon:"; }
-	body.page-calendar .meal-calendar td[data-day="tuesday"]::before { content: "Tue:"; }
-	body.page-calendar .meal-calendar td[data-day="wednesday"]::before { content: "Wed:"; }
-	body.page-calendar .meal-calendar td[data-day="thursday"]::before { content: "Thu:"; }
-	body.page-calendar .meal-calendar td[data-day="friday"]::before { content: "Fri:"; }
-	body.page-calendar .meal-calendar td[data-day="saturday"]::before { content: "Sat:"; }
-	body.page-calendar .meal-calendar td[data-day="sunday"]::before { content: "Sun"; }
-
-	body.page-calendar .meal-cell {
-		padding: 0;
-		background: transparent;
-	}
-}
-
 /* PANTRY PAGE ---------------------------*/
 
 /* Pantry page should be top-aligned (not vertically centered like the home/login pages) */
@@ -656,16 +591,6 @@ body.page-pantry .add-item button {
 
 body.page-pantry .add-item button:hover {
 	opacity: 0.85;
-}
-
-@media (max-width: 768px) {
-	body.page-pantry .category-content {
-		padding: var(--space-sm);
-	}
-
-	body.page-pantry .item-list li {
-		padding: var(--space-sm);
-	}
 }
 
 /* RECIPES ----------------------- */
@@ -856,7 +781,78 @@ body.page-recipes .delete-recipe:focus-visible {
 }
 
 @media (max-width: 768px) {
-  body.page-recipes .recipe-grid {
-    grid-template-columns: 1fr;
-  }
+	body.page-pantry .category-content {
+		padding: var(--space-sm);
+	}
+
+	body.page-pantry .item-list li {
+		padding: var(--space-sm);
+	}
+
+    body.page-recipes .recipe-grid {
+        grid-template-columns: 1fr;
+    }
+
+    header .container {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	footer .container {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.nav-list {
+		gap: var(--space-sm);
+	}
+
+	/* Mobile calendar: switch from grid to day cards */
+
+	body.page-calendar .meal-calendar {
+		width: 100%;
+		border: none;
+		background: transparent;
+		border-collapse: separate;
+	}
+
+	body.page-calendar .meal-calendar thead {
+		display: none;
+	}
+
+	body.page-calendar .meal-calendar,
+	body.page-calendar .meal-calendar tbody,
+	body.page-calendar .meal-calendar tr {
+		display: block;
+		width: 100%;
+	}
+
+	body.page-calendar .meal-calendar td {
+		display: block;
+		width: 100%;
+		margin-bottom: var(--space-md);
+		padding: var(--space-md);
+		border: 1px solid #e5e7eb;
+		border-radius: var(--radius);
+		background: var(--surface);
+	}
+	body.page-calendar .meal-calendar td::before {
+		display: block;
+		font-weight: 700;
+		margin-bottom: var(--space-sm);
+		color: var(--text);
+	}
+
+	body.page-calendar .meal-calendar td[data-day="monday"]::before { content: "Mon:"; }
+	body.page-calendar .meal-calendar td[data-day="tuesday"]::before { content: "Tue:"; }
+	body.page-calendar .meal-calendar td[data-day="wednesday"]::before { content: "Wed:"; }
+	body.page-calendar .meal-calendar td[data-day="thursday"]::before { content: "Thu:"; }
+	body.page-calendar .meal-calendar td[data-day="friday"]::before { content: "Fri:"; }
+	body.page-calendar .meal-calendar td[data-day="saturday"]::before { content: "Sat:"; }
+	body.page-calendar .meal-calendar td[data-day="sunday"]::before { content: "Sun"; }
+
+	body.page-calendar .meal-cell {
+		padding: 0;
+		background: transparent;
+	}
 }
