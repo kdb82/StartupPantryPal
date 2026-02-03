@@ -138,9 +138,32 @@ input {
 	font-size: 1rem;
 }
 
-input:focus {
+input:focus,
+textarea:focus,
+select:focus {
 	outline: 2px solid var(--color-secondary);
 	outline-offset: 1px;
+}
+
+textarea,
+select {
+	padding: var(--space-sm);
+	border: 1px solid #d1d5db;
+	border-radius: var(--radius);
+	font-size: 1rem;
+	font-family: inherit;
+	background: var(--surface);
+	color: var(--text);
+}
+
+textarea {
+	width: 100%;
+	resize: vertical;
+	min-height: 140px;
+}
+
+select {
+	width: 100%;
 }
 
 .form-actions {
