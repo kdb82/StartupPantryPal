@@ -1,6 +1,6 @@
 :root {
     --color-primary: #b6d6b7;
-    --color-secondary: #deb16d;
+    --color-secondary: #e3b267;
     --font-base: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 
     --bg: #f7f9f8;
@@ -11,12 +11,12 @@
     --space-md: 1rem;
     --space-lg: 2rem;
 
-    --radius: 8px;
+    --radius: 10px;
 }
 
 *, *::before, *::after {
     box-sizing: border-box;
-    margin: 0;
+    /* margin: 0; */
 }
 
 body {
@@ -36,7 +36,7 @@ img {
 header {
     background-color: var(--color-primary);
     border-bottom: 1px solid #e5e7eb;
-    padding: var(--space-md);
+    padding: var(--space-sm) var(--space-md) var(--space-md);
 }
 
 .nav-list {
@@ -110,4 +110,28 @@ input:focus {
 
 .form-actions {
     margin-top: 5px;
+}
+
+button.login-button {
+    width: 100%;
+    padding: var(--space-sm) var(--space-sm);
+    border: none;
+    border-radius: var(--radius);
+    background: var(--color-secondary);
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: .85;
+}
+
+header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    flex-wrap: wrap;
 }
