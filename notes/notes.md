@@ -1,4 +1,4 @@
-# CS 260 Notes
+## CS 260 Notes
 
 [Startup Example - Simon](https://simon.cs260.click)
 [My startup - PantryPal](https://startup.yourdomain.click)
@@ -53,3 +53,34 @@ Completed the HTML structure for the PantryPal startup application. Created six 
 - Forms should use appropriate input types and validation attributes to provide better UX and security.
 - ARIA labels and semantic markup should be added during initial HTML creation
 - Proper heading hierarchy (single h1 per page with h2/h3 for sections) is important for accessibility.
+
+## PantryPal – CSS & UI Learnings (Recent)
+
+### CSS Architecture & Conventions
+- Learned how to organize a single main stylesheet into clear sections (root variables, resets, layout, components, page-specific styles, and media queries) so the CSS stays readable as the project grows.
+- Used CSS custom properties (`:root` variables) for colors, spacing, and border radius values, which made it much easier to keep a consistent visual theme and tweak styles globally.
+- Started scoping page-specific styles using body classes (like `body.page-recipes`) to avoid accidentally affecting other pages.
+
+### Responsive Layout Techniques
+- Got more comfortable using Flexbox and CSS Grid intentionally instead of mixing layout techniques randomly.
+- Used max-width containers and responsive grids to prevent horizontal scrolling on smaller screens.
+- Learned when and why to collapse multi-column layouts (like recipe cards) down to a single column on mobile.
+
+### Component-Based Styling
+- Focused on building reusable components (cards, buttons, forms, status messages) rather than styling elements individually each time.
+- Learned the importance of avoiding nested interactive elements (for example, buttons inside clickable cards) to keep accessibility and behavior predictable.
+
+### Bootstrap Integration
+- Learned that Bootstrap components rely on a combination of specific HTML structure, predefined class names, and Bootstrap’s JavaScript—not just CSS alone.
+- Used Bootstrap modals to display detailed recipe information, while overriding Bootstrap styles with scoped CSS so everything still matches PantryPal’s color scheme.
+- Took advantage of Bootstrap’s `data-bs-*` attributes to add real interactivity without writing custom JavaScript yet.
+
+### Accessibility & UX Improvements
+- Paid more attention to keyboard accessibility by making sure focus states are visible on clickable cards and modal triggers.
+- Used ARIA attributes correctly for navigation state (`aria-current="page"`) and modal behavior.
+- Learned how properly implemented modals automatically handle focus, scrolling, and background interaction.
+
+### Workflow & Practical Takeaways
+- Committed CSS changes frequently to Git to clearly show progress and ownership.
+- Used browser dev tools extensively to debug layout issues, inspect flex/grid behavior, and understand how Bootstrap styles were applied.
+- Became more comfortable reading and overriding framework CSS instead of treating it like a black box.
