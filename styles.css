@@ -6,7 +6,8 @@
 :root {
 	--color-primary: #b6d6b7;
 	--color-secondary: #e3b267;
-	--font-base: "Manrope" , system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+	--font-base:
+		"Manrope", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 
 	--bg: #f7f9f8;
 	--surface: #ffffff;
@@ -123,13 +124,13 @@ form {
 }
 
 .email_field,
-.password_field, 
+.password_field,
 .confirm_password_field {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-sm);
 }
-    
+
 label {
 	font-weight: 500;
 }
@@ -314,7 +315,6 @@ nav a[aria-current="page"] {
 	opacity: 0.85;
 }
 
-
 .api-results {
 	list-style: none;
 	margin: var(--space-md) 0 0;
@@ -334,7 +334,6 @@ nav a[aria-current="page"] {
 /*
 CALENDAR PAGE ----------------------
  */
-
 
 body.page-calendar main {
 	display: block;
@@ -413,7 +412,7 @@ body.page-calendar .meal-cell {
 /* Shopping list */
 
 #shopping-title {
-    margin-top: var(--space-sm);
+	margin-top: var(--space-sm);
 }
 
 body.page-calendar .shopping-list {
@@ -489,7 +488,6 @@ body.page-pantry code {
 	border-radius: 6px;
 	padding: 0.1rem 0.35rem;
 }
-
 
 body.page-pantry .pantry-category {
 	margin-bottom: var(--space-md);
@@ -599,106 +597,105 @@ body.page-pantry .add-item button:hover {
 /* RECIPES ----------------------- */
 
 body.page-recipes main {
-    display: block;
-    padding: var(--space-lg) 0;
+	display: block;
+	padding: var(--space-lg) 0;
 }
 
 body.page-recipes #main-content .container {
-    display: block;
+	display: block;
 }
 
 body.page-recipes h2 {
-    margin: 0 0 var(--space-md);
-    font-size: 1.25rem;
+	margin: 0 0 var(--space-md);
+	font-size: 1.25rem;
 }
 
 .code-block {
-    margin: var(--space-sm);
-    padding: var(--space-md);
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    font-size: 0.95rem;
-    border-radius: var(--radius);
-    overflow-x: auto;
+	margin: var(--space-sm);
+	padding: var(--space-md);
+	background: #f9fafb;
+	border: 1px solid #e5e7eb;
+	font-size: 0.95rem;
+	border-radius: var(--radius);
+	overflow-x: auto;
 }
 
 body.page-recipes details {
-  margin-top: var(--space-md);
-  border: 1px solid #e5e7eb;
-  border-radius: var(--radius);
-  background: var(--surface);
+	margin-top: var(--space-md);
+	border: 1px solid #e5e7eb;
+	border-radius: var(--radius);
+	background: var(--surface);
 }
 
 body.page-recipes summary {
-  cursor: pointer;
-  padding: var(--space-sm) var(--space-md);
-  font-weight: 700;
-  background: #f3f4f6;
+	cursor: pointer;
+	padding: var(--space-sm) var(--space-md);
+	font-weight: 700;
+	background: #f3f4f6;
 }
 
 body.page-recipes summary::-webkit-details-marker {
-  display: none;
+	display: none;
 }
 
 body.page-recipes .recipe-filters {
-  display: flex;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
-  margin: 0 0 var(--space-md);
+	display: flex;
+	gap: var(--space-sm);
+	flex-wrap: wrap;
+	margin: 0 0 var(--space-md);
 }
 
 body.page-recipes .filter-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 
-  padding: var(--space-sm) var(--space-md);
-  border: 1px solid #d1d5db;
-  border-radius: var(--radius);
-  background: var(--surface);
+	padding: var(--space-sm) var(--space-md);
+	border: 1px solid #d1d5db;
+	border-radius: var(--radius);
+	background: var(--surface);
 
-  font-weight: 600;
-  color: var(--text);
-  text-decoration: none;
-  cursor: pointer;
+	font-weight: 600;
+	color: var(--text);
+	text-decoration: none;
+	cursor: pointer;
 }
 
 body.page-recipes .filter-btn:hover {
-  background: #f3f4f6;
+	background: #f3f4f6;
 }
 
 body.page-recipes .filter-btn:focus-visible {
-  outline: 2px solid var(--color-secondary);
-  outline-offset: 2px;
+	outline: 2px solid var(--color-secondary);
+	outline-offset: 2px;
 }
 
 body.page-recipes .filter-btn.active {
-  background: var(--color-secondary);
-  color: #fff;
-  border-color: transparent;
+	background: var(--color-secondary);
+	color: #fff;
+	border-color: transparent;
 }
 
 body.page-recipes .filter-btn[aria-current="page"] {
-  background: var(--color-secondary);
-  color: #fff;
-  border-color: transparent;
+	background: var(--color-secondary);
+	color: #fff;
+	border-color: transparent;
 }
 
 body.page-recipes .recipe-view {
-  margin-top: var(--space-md);
+	margin-top: var(--space-md);
 }
 
 body.page-recipes .recipe-view h3 {
-  margin: 0 0 var(--space-md);
+	margin: 0 0 var(--space-md);
 }
 
 body.page-recipes .recipe-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-md);
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--space-md);
 }
 
-/* Make entire recipe cards clickable (Bootstrap modal triggers) */
 body.page-recipes .recipe-card-trigger {
 	display: block;
 	width: 100%;
@@ -716,7 +713,9 @@ body.page-recipes .recipe-card-trigger:focus-visible {
 }
 
 body.page-recipes .recipe-card {
-	transition: transform 120ms ease, box-shadow 120ms ease;
+	transition:
+		transform 120ms ease,
+		box-shadow 120ms ease;
 }
 
 body.page-recipes .recipe-card-trigger:hover .recipe-card {
@@ -725,83 +724,81 @@ body.page-recipes .recipe-card-trigger:hover .recipe-card {
 }
 
 body.page-recipes .recipe-card {
-    background: var(--surface);
-    border: 1px solid #e5e7eb;
-    padding: var(--space-md);
-    border-radius: var(--radius);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
+	background: var(--surface);
+	border: 1px solid #e5e7eb;
+	padding: var(--space-md);
+	border-radius: var(--radius);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
 }
 
 body.page-recipes .recipe-card h4 {
-  margin: 0;
-  font-size: 1.05rem;
+	margin: 0;
+	font-size: 1.05rem;
 }
 
 body.page-recipes .recipe-meta {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.9rem;
+	margin: 0;
+	color: var(--muted);
+	font-size: 0.9rem;
 }
 
 body.page-recipes .recipe-description {
-  margin: 0;
+	margin: 0;
 }
 
 body.page-recipes .recipe-ingredients {
-  margin: 0;
-  padding-left: 1.1rem;
+	margin: 0;
+	padding-left: 1.1rem;
 }
 
 body.page-recipes .recipe-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
-  margin-top: auto;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-sm);
+	margin-top: auto;
 }
 
-/* Buttons share the row when there is room; otherwise they wrap */
 body.page-recipes .recipe-actions button {
-  flex: 1 1 220px;
-  width: 100%;
-  max-width: 100%;
+	flex: 1 1 220px;
+	width: 100%;
+	max-width: 100%;
 }
 
 body.page-recipes .add-to-shopping {
-  padding: var(--space-sm) var(--space-md);
-  border: none;
-  border-radius: var(--radius);
-  background: var(--color-secondary);
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
+	padding: var(--space-sm) var(--space-md);
+	border: none;
+	border-radius: var(--radius);
+	background: var(--color-secondary);
+	color: #fff;
+	font-weight: 600;
+	cursor: pointer;
 }
 
 body.page-recipes .delete-recipe {
-  padding: var(--space-sm) var(--space-md);
-  border: 1px solid var(--color-secondary);
-  border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--color-secondary);
-  font-weight: 600;
-  cursor: pointer;
+	padding: var(--space-sm) var(--space-md);
+	border: 1px solid var(--color-secondary);
+	border-radius: var(--radius);
+	background: var(--surface);
+	color: var(--color-secondary);
+	font-weight: 600;
+	cursor: pointer;
 }
 
 body.page-recipes .add-to-shopping:hover {
-  opacity: 0.85;
+	opacity: 0.85;
 }
 
 body.page-recipes .delete-recipe:hover {
-  background: #f3f4f6;
+	background: #f3f4f6;
 }
 
 body.page-recipes .delete-recipe:focus-visible {
-  outline: 2px solid var(--color-secondary);
-  outline-offset: 2px;
+	outline: 2px solid var(--color-secondary);
+	outline-offset: 2px;
 }
 
-/* Bootstrap modal theming for PantryPal (scoped to Recipes page) */
 body.page-recipes .modal-content {
 	border-radius: var(--radius);
 	border: 1px solid #e5e7eb;
@@ -822,7 +819,6 @@ body.page-recipes .modal-footer {
 	border-top: 1px solid #e5e7eb;
 }
 
-/* Make Bootstrap badges fit the app tone */
 body.page-recipes .badge.text-bg-light {
 	background: #f3f4f6 !important;
 	color: var(--text) !important;
@@ -830,7 +826,6 @@ body.page-recipes .badge.text-bg-light {
 	font-weight: 600;
 }
 
-/* Buttons inside the modal (Bootstrap classes) */
 body.page-recipes .modal .btn-primary {
 	background-color: var(--color-secondary);
 	border-color: var(--color-secondary);
@@ -841,11 +836,11 @@ body.page-recipes .modal .btn-primary:hover {
 	opacity: 0.9;
 }
 
-/* Destructive action: keep it clearly destructive, but tuned */
 body.page-recipes .modal .btn-danger {
 	background-color: transparent;
-	border-color: --var(--color-secondary);
+	border-color: #c94259;
 	font-weight: 600;
+    color: #c94259;
 }
 
 body.page-recipes .modal .btn-danger:hover {
@@ -862,7 +857,6 @@ body.page-recipes .modal .btn-outline-secondary:hover {
 	background: #f3f4f6;
 }
 
-/* Close button visibility on colored header */
 body.page-recipes .modal-header .btn-close {
 	opacity: 0.85;
 }
@@ -872,7 +866,6 @@ body.page-recipes .modal-header .btn-close:hover {
 }
 
 /* AI LANDING -------------------------- */
-/* AI page should be top-aligned (not vertically centered like the home/login pages) */
 body.page-ai main {
 	display: block;
 	padding: var(--space-lg) 0;
@@ -901,15 +894,13 @@ body.page-ai .response-container ul {
 	padding-left: 1.1rem;
 }
 
-/* AI output panel: wrap long text nicely */
+
 body.page-ai #aiOutput.code-block {
 	margin: var(--space-sm) 0 0;
 	white-space: pre-wrap;
 	word-break: break-word;
 }
 
-/* Preferences block */
-/* Preferences dropdown */
 body.page-ai .prefs {
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
@@ -933,8 +924,6 @@ body.page-ai .prefs-content {
 	padding: var(--space-sm);
 }
 
-
-/* Actions: two buttons should sit nicely without forcing full-width */
 body.page-ai .form-actions {
 	display: flex;
 	gap: var(--space-sm);
@@ -944,7 +933,6 @@ body.page-ai .form-actions {
 	max-width: 420px;
 }
 
-/* Override global .form-actions button { width: 100% } for AI page only */
 body.page-ai .form-actions button {
 	flex: 1 1 180px;
 	width: auto;
@@ -968,7 +956,6 @@ body.page-ai .form-actions button[type="reset"]:hover {
 	background: #f3f4f6;
 }
 
-/* Wide screens: two-column layout (response left, form right) */
 @media (min-width: 900px) {
 	body.page-ai .ai-main .container > section {
 		display: grid;
@@ -982,11 +969,10 @@ body.page-ai .form-actions button[type="reset"]:hover {
 	}
 }
 
-
 @media (max-width: 1024px) {
-  body.page-recipes .recipe-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+	body.page-recipes .recipe-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
 }
 
 @media (max-width: 768px) {
@@ -998,11 +984,11 @@ body.page-ai .form-actions button[type="reset"]:hover {
 		padding: var(--space-sm);
 	}
 
-    body.page-recipes .recipe-grid {
-        grid-template-columns: 1fr;
-    }
+	body.page-recipes .recipe-grid {
+		grid-template-columns: 1fr;
+	}
 
-    header .container {
+	header .container {
 		flex-direction: column;
 		align-items: flex-start;
 	}
@@ -1052,13 +1038,27 @@ body.page-ai .form-actions button[type="reset"]:hover {
 		color: var(--text);
 	}
 
-	body.page-calendar .meal-calendar td[data-day="monday"]::before { content: "Mon:"; }
-	body.page-calendar .meal-calendar td[data-day="tuesday"]::before { content: "Tue:"; }
-	body.page-calendar .meal-calendar td[data-day="wednesday"]::before { content: "Wed:"; }
-	body.page-calendar .meal-calendar td[data-day="thursday"]::before { content: "Thu:"; }
-	body.page-calendar .meal-calendar td[data-day="friday"]::before { content: "Fri:"; }
-	body.page-calendar .meal-calendar td[data-day="saturday"]::before { content: "Sat:"; }
-	body.page-calendar .meal-calendar td[data-day="sunday"]::before { content: "Sun"; }
+	body.page-calendar .meal-calendar td[data-day="monday"]::before {
+		content: "Mon:";
+	}
+	body.page-calendar .meal-calendar td[data-day="tuesday"]::before {
+		content: "Tue:";
+	}
+	body.page-calendar .meal-calendar td[data-day="wednesday"]::before {
+		content: "Wed:";
+	}
+	body.page-calendar .meal-calendar td[data-day="thursday"]::before {
+		content: "Thu:";
+	}
+	body.page-calendar .meal-calendar td[data-day="friday"]::before {
+		content: "Fri:";
+	}
+	body.page-calendar .meal-calendar td[data-day="saturday"]::before {
+		content: "Sat:";
+	}
+	body.page-calendar .meal-calendar td[data-day="sunday"]::before {
+		content: "Sun";
+	}
 
 	body.page-calendar .meal-cell {
 		padding: 0;
