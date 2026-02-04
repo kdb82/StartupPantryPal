@@ -622,21 +622,21 @@ body.page-recipes h2 {
     overflow-x: auto;
 }
 
-details {
+body.page-recipes details {
   margin-top: var(--space-md);
   border: 1px solid #e5e7eb;
   border-radius: var(--radius);
   background: var(--surface);
 }
 
-summary {
+body.page-recipes summary {
   cursor: pointer;
   padding: var(--space-sm) var(--space-md);
   font-weight: 700;
   background: #f3f4f6;
 }
 
-summary::-webkit-details-marker {
+body.page-recipes summary::-webkit-details-marker {
   display: none;
 }
 
@@ -696,6 +696,32 @@ body.page-recipes .recipe-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-md);
+}
+
+/* Make entire recipe cards clickable (Bootstrap modal triggers) */
+body.page-recipes .recipe-card-trigger {
+	display: block;
+	width: 100%;
+	padding: 0;
+	border: none;
+	background: transparent;
+	text-align: left;
+	cursor: pointer;
+}
+
+body.page-recipes .recipe-card-trigger:focus-visible {
+	outline: 2px solid var(--color-secondary);
+	outline-offset: 3px;
+	border-radius: var(--radius);
+}
+
+body.page-recipes .recipe-card {
+	transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+body.page-recipes .recipe-card-trigger:hover .recipe-card {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 body.page-recipes .recipe-card {
@@ -773,6 +799,76 @@ body.page-recipes .delete-recipe:hover {
 body.page-recipes .delete-recipe:focus-visible {
   outline: 2px solid var(--color-secondary);
   outline-offset: 2px;
+}
+
+/* Bootstrap modal theming for PantryPal (scoped to Recipes page) */
+body.page-recipes .modal-content {
+	border-radius: var(--radius);
+	border: 1px solid #e5e7eb;
+	background: var(--surface);
+	color: var(--text);
+}
+
+body.page-recipes .modal-header {
+	background: var(--color-primary);
+	border-bottom: 1px solid #e5e7eb;
+}
+
+body.page-recipes .modal-title {
+	font-weight: 700;
+}
+
+body.page-recipes .modal-footer {
+	border-top: 1px solid #e5e7eb;
+}
+
+/* Make Bootstrap badges fit the app tone */
+body.page-recipes .badge.text-bg-light {
+	background: #f3f4f6 !important;
+	color: var(--text) !important;
+	border: 1px solid #e5e7eb;
+	font-weight: 600;
+}
+
+/* Buttons inside the modal (Bootstrap classes) */
+body.page-recipes .modal .btn-primary {
+	background-color: var(--color-secondary);
+	border-color: var(--color-secondary);
+	font-weight: 600;
+}
+
+body.page-recipes .modal .btn-primary:hover {
+	opacity: 0.9;
+}
+
+/* Destructive action: keep it clearly destructive, but tuned */
+body.page-recipes .modal .btn-danger {
+	background-color: transparent;
+	border-color: --var(--color-secondary);
+	font-weight: 600;
+}
+
+body.page-recipes .modal .btn-danger:hover {
+	opacity: 0.9;
+}
+
+body.page-recipes .modal .btn-outline-secondary {
+	border-color: #d1d5db;
+	color: var(--text);
+	font-weight: 600;
+}
+
+body.page-recipes .modal .btn-outline-secondary:hover {
+	background: #f3f4f6;
+}
+
+/* Close button visibility on colored header */
+body.page-recipes .modal-header .btn-close {
+	opacity: 0.85;
+}
+
+body.page-recipes .modal-header .btn-close:hover {
+	opacity: 1;
 }
 
 /* AI LANDING -------------------------- */
