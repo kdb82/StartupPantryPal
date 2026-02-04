@@ -1,9 +1,12 @@
 /* GLOBAL/ SHARED COMPONENTS */
 
+/* @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap");
+
 :root {
 	--color-primary: #b6d6b7;
 	--color-secondary: #e3b267;
-	--font-base: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+	--font-base: "Manrope" , system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 
 	--bg: #f7f9f8;
 	--surface: #ffffff;
