@@ -4,6 +4,10 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Recipes - PantryPal</title>
+		<link
+		href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+		rel="stylesheet"
+		/>
 		<link rel="stylesheet" href="styles.css" />
 	</head>
 	<body class="page-recipes">
@@ -63,7 +67,6 @@ GET /api/recipes?q=chicken&amp;maxReadyTime=30
 					<!-- View Toggle -->
 					<div class="recipe-filters">
 						<a
-							type="button"
 							class="filter-btn active"
 							data-filter="my-recipes"
 							href="recipes.html"
@@ -71,7 +74,6 @@ GET /api/recipes?q=chicken&amp;maxReadyTime=30
 							My Recipes
 						</a>
 						<a
-							type="button"
 							class="filter-btn"
 							href="friendsrecipes.html"
 							data-filter="friends-recipes"
@@ -84,6 +86,12 @@ GET /api/recipes?q=chicken&amp;maxReadyTime=30
 					<section id="my-recipes" class="recipe-view active">
 						<h3>Your Saved Recipes</h3>
 						<div class="recipe-grid">
+						<button
+							type="button"
+							class="recipe-card-trigger"
+							data-bs-toggle="modal"
+							data-bs-target="#recipeModal-garlic-pasta"
+						>
 							<article class="recipe-card">
 								<h4>Garlic Pasta</h4>
 								<p class="recipe-meta">Shared by You</p>
@@ -96,24 +104,15 @@ GET /api/recipes?q=chicken&amp;maxReadyTime=30
 									<li>Olive Oil</li>
 									<li>Parmesan</li>
 								</ul>
-								<div class="recipe-actions">
-									<button
-										type="button"
-										class="add-to-shopping"
-										data-recipe="garlic-pasta"
-										data-missing="garlic,parmesan"
-									>
-										Add Missing to Shopping List
-									</button>
-									<button
-										type="button"
-										class="delete-recipe"
-										data-recipe="garlic-pasta"
-										>Delete Recipe
-									</button>
-								</div>
 							</article>
+						</button>
 
+						<button
+							type="button"
+							class="recipe-card-trigger"
+							data-bs-toggle="modal"
+							data-bs-target="#recipeModal-chicken-salad"
+						>
 							<article class="recipe-card">
 								<h4>Grilled Chicken Salad</h4>
 								<p class="recipe-meta">Shared by You</p>
@@ -126,30 +125,19 @@ GET /api/recipes?q=chicken&amp;maxReadyTime=30
 									<li>Tomatoes</li>
 									<li>Vinaigrette</li>
 								</ul>
-								<div class="recipe-actions">
-									<button
-										type="button"
-										class="add-to-shopping"
-										data-recipe="chicken-salad"
-										data-missing="mixed-greens,vinaigrette"
-									>
-										Add Missing to Shopping List
-									</button>
-									<button
-										type="button"
-										class="delete-recipe"
-										data-recipe="chicken-salad"
-										>Delete Recipe
-									</button>
-								</div>
 							</article>
+						</button>
 
+						<button
+							type="button"
+							class="recipe-card-trigger"
+							data-bs-toggle="modal"
+							data-bs-target="#recipeModal-cookies"
+						>
 							<article class="recipe-card">
 								<h4>Chocolate Chip Cookies</h4>
 								<p class="recipe-meta">Shared by You</p>
-								<p class="recipe-description">
-									Classic homemade chocolate chip cookies.
-								</p>
+								<p class="recipe-description">Classic homemade chocolate chip cookies.</p>
 								<ul class="recipe-ingredients">
 									<li>Flour</li>
 									<li>Butter</li>
@@ -157,31 +145,115 @@ GET /api/recipes?q=chicken&amp;maxReadyTime=30
 									<li>Chocolate Chips</li>
 									<li>Eggs</li>
 								</ul>
-								<div class="recipe-actions">
-									<button
-										type="button"
-										class="add-to-shopping"
-										data-recipe="cookies"
-										data-missing="chocolate-chips,sugar"
-									>
-										Add Missing to Shopping List
-									</button>
-									<button
-										type="button"
-										class="delete-recipe"
-										data-recipe="cookies"
-										>Delete Recipe
-									</button>
-								</div>
 							</article>
+						</button>
 						</div>
 					</section>
+
+					<!-- Recipe Modals (Bootstrap) -->
+
+					<div class="modal fade" id="recipeModal-garlic-pasta" tabindex="-1" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">Garlic Pasta</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<p class="text-muted mb-3">Shared by You • 20–30 minutes (placeholder)</p>
+									<p>Creamy garlic pasta with fresh herbs and parmesan cheese.</p>
+									<h6>Ingredients</h6>
+									<ul>
+										<li>Pasta</li>
+										<li>Garlic</li>
+										<li>Olive Oil</li>
+										<li>Parmesan</li>
+									</ul>
+									<h6>Missing (to add to shopping list)</h6>
+									<p class="mb-0">
+										<span class="badge text-bg-light">Garlic</span>
+										<span class="badge text-bg-light">Parmesan</span>
+									</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary save-ingredients" data-recipe="garlic-pasta" data-missing="garlic,parmesan" data-bs-dismiss="modal">Save ingredients</button>
+									<button type="button" class="btn btn-danger delete-recipe" data-recipe="garlic-pasta" data-bs-dismiss="modal">Delete recipe</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="modal fade" id="recipeModal-chicken-salad" tabindex="-1" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">Grilled Chicken Salad</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<p class="text-muted mb-3">Shared by You • 20–30 minutes (placeholder)</p>
+									<p>Healthy grilled chicken with mixed greens and vinaigrette.</p>
+									<h6>Ingredients</h6>
+									<ul>
+										<li>Chicken</li>
+										<li>Mixed Greens</li>
+										<li>Tomatoes</li>
+										<li>Vinaigrette</li>
+									</ul>
+									<h6>Missing (to add to shopping list)</h6>
+									<p class="mb-0">
+										<span class="badge text-bg-light">Mixed Greens</span>
+										<span class="badge text-bg-light">Vinaigrette</span>
+									</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary save-ingredients" data-recipe="chicken-salad" data-missing="mixed-greens,vinaigrette" data-bs-dismiss="modal">Save ingredients</button>
+									<button type="button" class="btn btn-danger delete-recipe" data-recipe="chicken-salad" data-bs-dismiss="modal">Delete recipe</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="modal fade" id="recipeModal-cookies" tabindex="-1" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">Chocolate Chip Cookies</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<p class="text-muted mb-3">Shared by You • 30–45 minutes (placeholder)</p>
+									<p>Classic homemade chocolate chip cookies.</p>
+									<h6>Ingredients</h6>
+									<ul>
+										<li>Flour</li>
+										<li>Butter</li>
+										<li>Sugar</li>
+										<li>Chocolate Chips</li>
+										<li>Eggs</li>
+									</ul>
+									<h6>Missing (to add to shopping list)</h6>
+									<p class="mb-0">
+										<span class="badge text-bg-light">Chocolate Chips</span>
+										<span class="badge text-bg-light">Sugar</span>
+									</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary save-ingredients" data-recipe="cookies" data-missing="chocolate-chips,sugar" data-bs-dismiss="modal">Save ingredients</button>
+									<button type="button" class="btn btn-danger delete-recipe" data-recipe="cookies" data-bs-dismiss="modal">Delete recipe</button>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</main>
 			<footer>
 				<div class="container">
 					<p class="github-link">
-						<a href="https://github.com/kdb82/StartupPantryPal" target="_blank"
+						<a href="https://github.com/kdb82/StartupPantryPal" target="_blank" rel="noreferrer"
 							>View on GitHub</a
 						>
 					</p>
@@ -189,5 +261,6 @@ GET /api/recipes?q=chicken&amp;maxReadyTime=30
 				</div>
 			</footer>
 		</div>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	</body>
 </html>
