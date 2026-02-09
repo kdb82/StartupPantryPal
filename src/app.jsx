@@ -3,13 +3,45 @@ import './styles.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 export default function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<h1>Home Page</h1>} />
-        <Route path="/" element={<h1>About Page</h1>} />
-        <Route path="/contact" element={<h1>Contact Page</h1>} />
-      </Routes>
-    </Router>
-  );
+	return (
+		<BrowserRouter>
+			<div class="app">
+				<header class="app-header">
+					<div class="container">
+						<h1>PantryPal</h1>
+						<div class="navigation-container">
+							<nav aria-label="Primary">
+								<ul class="nav-list">
+									<li><a href="index.html" aria-current="page">Home</a></li>
+									<li><a href="pantry.html">Pantry</a></li>
+									<li><a href="recipes.html">Recipes</a></li>
+									<li><a href="calendar.html">Calendar</a></li>
+									<li><a href="ailanding.html">AI Assistant</a></li>
+								</ul>
+							</nav>
+						</div>
+					</div>
+				</header>
+
+				<Routes>
+					{/* Define your routes here */}
+				</Routes>
+
+				<footer class="app-footer">
+					<div class="container">
+						<p class="built-by">Built by Kaden Bradshaw</p>
+						<p class="github-link">
+							<a
+								href="https://github.com/kdb82/StartupPantryPal"
+								target="_blank"
+								rel="noreferrer"
+							>View on GitHub</a
+							>
+						</p>
+						<p>&copy; 2026 PantryPal</p>
+					</div>
+				</footer>
+			</div>
+		</BrowserRouter>
+	);
 }
