@@ -601,16 +601,16 @@ body.page-pantry .add-item button:hover {
 
 /* RECIPES ----------------------- */
 
-body.page-recipes main {
+.page-recipes main {
 	display: block;
 	padding: var(--space-lg) 0;
 }
 
-body.page-recipes #main-content .container {
+.page-recipes #main-content .container {
 	display: block;
 }
 
-body.page-recipes h2 {
+.page-recipes h2 {
 	margin: 0 0 var(--space-md);
 	font-size: 1.25rem;
 }
@@ -625,32 +625,32 @@ body.page-recipes h2 {
 	overflow-x: auto;
 }
 
-body.page-recipes details {
+.page-recipes details {
 	margin-top: var(--space-md);
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
 	background: var(--surface);
 }
 
-body.page-recipes summary {
+.page-recipes summary {
 	cursor: pointer;
 	padding: var(--space-sm) var(--space-md);
 	font-weight: 700;
 	background: #f3f4f6;
 }
 
-body.page-recipes summary::-webkit-details-marker {
+.page-recipes summary::-webkit-details-marker {
 	display: none;
 }
 
-body.page-recipes .recipe-filters {
+.page-recipes .recipe-filters {
 	display: flex;
 	gap: var(--space-sm);
 	flex-wrap: wrap;
 	margin: 0 0 var(--space-md);
 }
 
-body.page-recipes .filter-btn {
+.page-recipes .filter-btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -666,42 +666,42 @@ body.page-recipes .filter-btn {
 	cursor: pointer;
 }
 
-body.page-recipes .filter-btn:hover {
+.page-recipes .filter-btn:hover {
 	background: #f3f4f6;
 }
 
-body.page-recipes .filter-btn:focus-visible {
+.page-recipes .filter-btn:focus-visible {
 	outline: 2px solid var(--color-secondary);
 	outline-offset: 2px;
 }
 
-body.page-recipes .filter-btn.active {
+.page-recipes .filter-btn.active {
 	background: var(--color-secondary);
 	color: #fff;
 	border-color: transparent;
 }
 
-body.page-recipes .filter-btn[aria-current="page"] {
+.page-recipes .filter-btn[aria-current="page"] {
 	background: var(--color-secondary);
 	color: #fff;
 	border-color: transparent;
 }
 
-body.page-recipes .recipe-view {
+.page-recipes .recipe-view {
 	margin-top: var(--space-md);
 }
 
-body.page-recipes .recipe-view h3 {
+.page-recipes .recipe-view h3 {
 	margin: 0 0 var(--space-md);
 }
 
-body.page-recipes .recipe-grid {
+.page-recipes .recipe-grid {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: var(--space-md);
 }
 
-body.page-recipes .recipe-card-trigger {
+.page-recipes .recipe-card-trigger {
 	display: block;
 	width: 100%;
 	padding: 0;
@@ -711,24 +711,24 @@ body.page-recipes .recipe-card-trigger {
 	cursor: pointer;
 }
 
-body.page-recipes .recipe-card-trigger:focus-visible {
+.page-recipes .recipe-card-trigger:focus-visible {
 	outline: 2px solid var(--color-secondary);
 	outline-offset: 3px;
 	border-radius: var(--radius);
 }
 
-body.page-recipes .recipe-card {
+.page-recipes .recipe-card {
 	transition:
 		transform 120ms ease,
 		box-shadow 120ms ease;
 }
 
-body.page-recipes .recipe-card-trigger:hover .recipe-card {
+.page-recipes .recipe-card-trigger:hover .recipe-card {
 	transform: translateY(-2px);
 	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
-body.page-recipes .recipe-card {
+.page-recipes .recipe-card {
 	background: var(--surface);
 	border: 1px solid #e5e7eb;
 	padding: var(--space-md);
@@ -738,40 +738,40 @@ body.page-recipes .recipe-card {
 	gap: var(--space-sm);
 }
 
-body.page-recipes .recipe-card h4 {
+.page-recipes .recipe-card h4 {
 	margin: 0;
 	font-size: 1.05rem;
 }
 
-body.page-recipes .recipe-meta {
+.page-recipes .recipe-meta {
 	margin: 0;
 	color: var(--muted);
 	font-size: 0.9rem;
 }
 
-body.page-recipes .recipe-description {
+.page-recipes .recipe-description {
 	margin: 0;
 }
 
-body.page-recipes .recipe-ingredients {
+.page-recipes .recipe-ingredients {
 	margin: 0;
 	padding-left: 1.1rem;
 }
 
-body.page-recipes .recipe-actions {
+.page-recipes .recipe-actions {
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--space-sm);
 	margin-top: auto;
 }
 
-body.page-recipes .recipe-actions button {
+.page-recipes .recipe-actions button {
 	flex: 1 1 220px;
 	width: 100%;
 	max-width: 100%;
 }
 
-body.page-recipes .add-to-shopping {
+.page-recipes .add-to-shopping {
 	padding: var(--space-sm) var(--space-md);
 	border: none;
 	border-radius: var(--radius);
@@ -781,7 +781,7 @@ body.page-recipes .add-to-shopping {
 	cursor: pointer;
 }
 
-body.page-recipes .delete-recipe {
+.page-recipes .delete-recipe {
 	padding: var(--space-sm) var(--space-md);
 	border: 1px solid var(--color-secondary);
 	border-radius: var(--radius);
@@ -791,82 +791,82 @@ body.page-recipes .delete-recipe {
 	cursor: pointer;
 }
 
-body.page-recipes .add-to-shopping:hover {
+.page-recipes .add-to-shopping:hover {
 	opacity: 0.85;
 }
 
-body.page-recipes .delete-recipe:hover {
+.page-recipes .delete-recipe:hover {
 	background: #f3f4f6;
 }
 
-body.page-recipes .delete-recipe:focus-visible {
+.page-recipes .delete-recipe:focus-visible {
 	outline: 2px solid var(--color-secondary);
 	outline-offset: 2px;
 }
 
-body.page-recipes .modal-content {
+.page-recipes .modal-content {
 	border-radius: var(--radius);
 	border: 1px solid #e5e7eb;
 	background: var(--surface);
 	color: var(--text);
 }
 
-body.page-recipes .modal-header {
+.page-recipes .modal-header {
 	background: var(--color-primary);
 	border-bottom: 1px solid #e5e7eb;
 }
 
-body.page-recipes .modal-title {
+.page-recipes .modal-title {
 	font-weight: 700;
 }
 
-body.page-recipes .modal-footer {
+.page-recipes .modal-footer {
 	border-top: 1px solid #e5e7eb;
 }
 
-body.page-recipes .badge.text-bg-light {
+.page-recipes .badge.text-bg-light {
 	background: #f3f4f6 !important;
 	color: var(--text) !important;
 	border: 1px solid #e5e7eb;
 	font-weight: 600;
 }
 
-body.page-recipes .modal .btn-primary {
+.page-recipes .modal .btn-primary {
 	background-color: var(--color-secondary);
 	border-color: var(--color-secondary);
 	font-weight: 600;
 }
 
-body.page-recipes .modal .btn-primary:hover {
+.page-recipes .modal .btn-primary:hover {
 	opacity: 0.9;
 }
 
-body.page-recipes .modal .btn-danger {
+.page-recipes .modal .btn-danger {
 	background-color: transparent;
 	border-color: #c94259;
 	font-weight: 600;
     color: #c94259;
 }
 
-body.page-recipes .modal .btn-danger:hover {
+.page-recipes .modal .btn-danger:hover {
 	opacity: 0.9;
 }
 
-body.page-recipes .modal .btn-outline-secondary {
+.page-recipes .modal .btn-outline-secondary {
 	border-color: #d1d5db;
 	color: var(--text);
 	font-weight: 600;
 }
 
-body.page-recipes .modal .btn-outline-secondary:hover {
+.page-recipes .modal .btn-outline-secondary:hover {
 	background: #f3f4f6;
 }
 
-body.page-recipes .modal-header .btn-close {
+.page-recipes .modal-header .btn-close {
 	opacity: 0.85;
 }
 
-body.page-recipes .modal-header .btn-close:hover {
+.page-recipes .modal-header .btn-close:hover {
 	opacity: 1;
 }
 
