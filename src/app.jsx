@@ -18,11 +18,11 @@ export default function App() {
 						<div className="navigation-container">
 							<nav aria-label="Primary">
 								<ul className="nav-list">
-									<li><a href="index.html" aria-current="page">Home</a></li>
-									<li><a href="pantry.html">Pantry</a></li>
-									<li><a href="recipes.html">Recipes</a></li>
-									<li><a href="calendar.html">Calendar</a></li>
-									<li><a href="ailanding.html">AI Assistant</a></li>
+									<li><NavLink to="/login">Home</NavLink></li>
+									<li><NavLink to="/pantry">Pantry</NavLink></li>
+									<li><NavLink to="/recipes">Recipes</NavLink></li>
+									<li><NavLink to="/calendar">Calendar</NavLink></li>
+									<li><NavLink to="/ai-assistant">AI Assistant</NavLink></li>
 								</ul>
 							</nav>
 						</div>
@@ -30,7 +30,8 @@ export default function App() {
 				</header>
 
 				<Routes>
-					{/* Define your routes here */}
+					<Route path="/login" element={<Login />} />
+					<Route path="/" element={<Login />} />
 				</Routes>
 
 				<footer className="app-footer">

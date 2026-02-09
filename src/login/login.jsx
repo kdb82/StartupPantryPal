@@ -5,7 +5,7 @@ export function Login() {
     <main id="main" class="app-main">
 				<div class="container">
 					<img
-						src="images/pantrypal_logo.png"
+						src="/pantrypal_logo.png"
 						alt="PantryPal Logo"
 						class="logo"
 					/>
