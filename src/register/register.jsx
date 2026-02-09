@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 export function Register() {
     return (
@@ -43,7 +44,7 @@ export function Register() {
                     </div>
                 </form>
                 <hr />
-                <a href="index.html">Already have an account? Log in here.</a>
+                <NavLink to="/login">Already have an account? Log in here.</NavLink>
             </div>
         </main>
     );

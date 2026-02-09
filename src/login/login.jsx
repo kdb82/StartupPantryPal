@@ -1,36 +1,37 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 export function Login() {
   return (
-    <main id="main" class="app-main">
-				<div class="container">
+    <main id="main" className="app-main">
+				<div className="container">
 					<img
 						src="/pantrypal_logo.png"
 						alt="PantryPal Logo"
-						class="logo"
+						className="logo"
 					/>
 					<form id="loginForm" method="post" action="/api/login">
-						<div class="email_field">
-							<label for="email">Email:</label>
+						<div className="email_field">
+							<label htmlFor="email">Email:</label>
 							<input type="email" id="email" name="email" required />
 						</div>
-						<div class="password_field">
-							<label for="password">Password:</label>
+						<div className="password_field">
+							<label htmlFor="password">Password:</label>
 							<input type="password" id="password" name="password" required />
 						</div>
-						<div class="form-actions">
-							<button type="submit" class="login-button">Login</button>
+						<div className="form-actions">
+							<button type="submit" className="login-button">Login</button>
 						</div>
-						<div class="error-message" id="loginError" hidden>
+						<div className="error-message" id="loginError" hidden>
 							Invalid email or password. Please try again.
 						</div>
-						<div class="success-message" id="loginSuccess" hidden>
+						<div className="success-message" id="loginSuccess" hidden>
 							Login successful! Redirecting...
 						</div>
 					</form>
-					<a href="register.html">New user? Create an account.</a>
+					<NavLink to="/register">New user? Create an account.</NavLink>
 
-					<section aria-labelledby="about-title" class="placeholder-card">
+					<section aria-labelledby="about-title" className="placeholder-card">
 						<h2 id="about-title">What PantryPal does</h2>
 						<p>
 							PantryPal helps you track pantry items, discover recipes, and plan
@@ -50,7 +51,7 @@ export function Login() {
 								devices and shared plans
 							</li>
 						</ul>
-						<p class="muted">
+						<p className="muted">
 							Today this is a front-end placeholder. The structure and IDs are
 							set up so the real backend integrations can be wired in later with
 							minimal HTML changes.
