@@ -4,7 +4,7 @@ import { BrowserRouter, NavLink, Routes, Route } from "react-router-dom";
 import { Login } from "./login/login";
 // import { Register } from "./register/register";
 // import { Pantry } from "./pantry/pantry";
-// import { Recipes } from "./recipes/recipes";
+import { FriendsRecipes, Recipes } from "./recipes/recipes";
 // import { Calendar } from "./calendar/calendar";
 // import { AILanding } from "./ailanding/ailanding";
  
@@ -32,6 +32,8 @@ export default function App() {
 				<Routes>
 					<Route path="/login" element={<Login />} />
 					<Route path="/" element={<Login />} />
+					<Route path="/recipes" element={<Recipes />} />
+					<Route path="/recipes/friends" element={<FriendsRecipes />} />
 				</Routes>
 
 				<footer className="app-footer">
