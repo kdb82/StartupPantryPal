@@ -44,7 +44,8 @@ export function Recipes() {
                     <div className="recipe-filters">
                         <NavLink to="/recipes"
                             data-filter="my-recipes"
-                            className="filter-btn active"
+                            className="filter-btn"
+                            end
                         >
                             My Recipes
                         </NavLink>
@@ -375,12 +376,16 @@ export function FriendsRecipes() {
 
                     {/* View Toggle */}
                     <div className="recipe-filters">
-                        <NavLink to="/recipes" data-filter="my-recipes" className="filter-btn">
+                        <NavLink to="/recipes" 
+                            data-filter="my-recipes" 
+                            className="filter-btn"
+                            end
+                        >
                             My Recipes
                         </NavLink>
                         <NavLink
                             to="/recipes/friends"
-                            className="filter-btn active"
+                            className="filter-btn"
                             data-filter="friends-recipes"
                         >
                             Friends' Recipes
