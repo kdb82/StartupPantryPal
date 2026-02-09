@@ -3,7 +3,7 @@ import './styles.css';
 import { BrowserRouter, NavLink, Routes, Route } from "react-router-dom";
 import { Login } from "./login/login";
 import { Register } from "./register/register";
-// import { Pantry } from "./pantry/pantry";
+import { Pantry } from "./pantry/pantry";
 import { FriendsRecipes, Recipes } from "./recipes/recipes";
 // import { Calendar } from "./calendar/calendar";
 // import { AILanding } from "./ailanding/ailanding";
@@ -35,6 +35,7 @@ export default function App() {
 					<Route path="/recipes" element={<Recipes />} />
 					<Route path="/recipes/friends" element={<FriendsRecipes />} />
 					<Route path="/register" element={<Register />} />
+					<Route path="/pantry" element={<Pantry />} />
 				</Routes>
 
 				<footer className="app-footer">
