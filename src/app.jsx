@@ -2,7 +2,7 @@ import React from "react";
 import './styles.css';
 import { BrowserRouter, NavLink, Routes, Route } from "react-router-dom";
 import { Login } from "./login/login";
-// import { Register } from "./register/register";
+import { Register } from "./register/register";
 // import { Pantry } from "./pantry/pantry";
 import { FriendsRecipes, Recipes } from "./recipes/recipes";
 // import { Calendar } from "./calendar/calendar";
@@ -34,6 +34,7 @@ export default function App() {
 					<Route path="/" element={<Login />} />
 					<Route path="/recipes" element={<Recipes />} />
 					<Route path="/recipes/friends" element={<FriendsRecipes />} />
+					<Route path="/register" element={<Register />} />
 				</Routes>
 
 				<footer className="app-footer">
