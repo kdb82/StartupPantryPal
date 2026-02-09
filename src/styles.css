@@ -335,21 +335,21 @@ nav a[aria-current="page"] {
 CALENDAR PAGE ----------------------
  */
 
-body.page-calendar main {
+.page-calendar main {
 	display: block;
 	padding: var(--space-lg) 0;
 }
 
-body.page-calendar #main-content .container {
+.page-calendar #main-content .container {
 	display: block;
 }
 
-body.page-calendar h2 {
+.page-calendar h2 {
 	margin: 0 0 var(--space-sm);
 	font-size: 1.1rem;
 }
 
-body.page-calendar .calendar-controls {
+.page-calendar .calendar-controls {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -358,7 +358,7 @@ body.page-calendar .calendar-controls {
 	margin: var(--space-md) 0;
 }
 
-body.page-calendar .calendar-controls button {
+.page-calendar .calendar-controls button {
 	padding: var(--space-sm) var(--space-md);
 	border: none;
 	border-radius: var(--radius);
@@ -368,15 +368,15 @@ body.page-calendar .calendar-controls button {
 	cursor: pointer;
 }
 
-body.page-calendar .calendar-controls button:hover {
+.page-calendar .calendar-controls button:hover {
 	opacity: 0.85;
 }
 
-body.page-calendar #week-range {
+.page-calendar #week-range {
 	margin: 0;
 }
 
-body.page-calendar .meal-calendar {
+.page-calendar .meal-calendar {
 	width: 100%;
 	border-collapse: collapse;
 	background: var(--surface);
@@ -385,25 +385,25 @@ body.page-calendar .meal-calendar {
 	overflow: auto;
 }
 
-body.page-calendar .meal-calendar th,
-body.page-calendar .meal-calendar td {
+.page-calendar .meal-calendar th,
+.page-calendar .meal-calendar td {
 	border: 1px solid #e5e7eb;
 	vertical-align: top;
 }
 
-body.page-calendar .meal-calendar th {
+.page-calendar .meal-calendar th {
 	background: var(--color-primary);
 	text-align: left;
 	padding: var(--space-sm);
 	font-weight: 700;
 }
 
-body.page-calendar .meal-calendar td {
+.page-calendar .meal-calendar td {
 	padding: var(--space-sm);
 	min-height: 110px;
 }
 
-body.page-calendar .meal-cell {
+.page-calendar .meal-cell {
 	background: #ffffff;
 	border-radius: var(--radius);
 	padding: var(--space-sm);
@@ -420,7 +420,7 @@ body.page-calendar .meal-cell {
 	margin-top: var(--space-sm);
 }
 
-body.page-calendar .shopping-list {
+.page-calendar .shopping-list {
 	list-style: none;
 	margin: var(--space-sm) 0 0;
 	padding: 0;
@@ -429,7 +429,7 @@ body.page-calendar .shopping-list {
 	gap: var(--space-sm);
 }
 
-body.page-calendar .shopping-list li {
+.page-calendar .shopping-list li {
 	background: var(--surface);
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
@@ -441,23 +441,23 @@ body.page-calendar .shopping-list li {
 	flex-wrap: wrap;
 }
 
-body.page-calendar .shopping-list label {
+.page-calendar .shopping-list label {
 	display: flex;
 	align-items: center;
 	gap: var(--space-sm);
 	margin: 0;
 }
 
-body.page-calendar .recipe-source {
+.page-calendar .recipe-source {
 	color: var(--muted);
 	font-size: 0.9rem;
 }
 
-body.page-calendar .shopping-actions {
+.page-calendar .shopping-actions {
 	margin-top: var(--space-md);
 }
 
-body.page-calendar .btn-clear {
+.page-calendar .btn-clear {
 	padding: var(--space-sm) var(--space-md);
 	border: 1px solid #d1d5db;
 	border-radius: var(--radius);
@@ -466,66 +466,66 @@ body.page-calendar .btn-clear {
 	font-weight: 600;
 }
 
-body.page-calendar .btn-clear:hover {
+.page-calendar .btn-clear:hover {
 	background: #f3f4f6;
 }
 
 /* PANTRY PAGE ---------------------------*/
 
 /* Pantry page should be top-aligned (not vertically centered like the home/login pages) */
-body.page-pantry main {
+.page-pantry main {
 	display: block;
 	padding: var(--space-lg) 0;
 }
 
-body.page-pantry #main-content .container {
+.page-pantry #main-content .container {
 	display: block;
 }
 
-body.page-pantry h2 {
+.page-pantry h2 {
 	margin: 0 0 var(--space-md);
 	font-size: 1.25rem;
 }
 
-body.page-pantry code {
+.page-pantry code {
 	background: #f3f4f6;
 	border: 1px solid #e5e7eb;
 	border-radius: 6px;
 	padding: 0.1rem 0.35rem;
 }
 
-body.page-pantry .pantry-category {
+.page-pantry .pantry-category {
 	margin-bottom: var(--space-md);
 }
 
-body.page-pantry button:disabled {
+.page-pantry button:disabled {
 	opacity: 0.55;
 	cursor: not-allowed;
 }
 
-body.page-pantry details {
+.page-pantry details {
 	background: var(--surface);
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
 	overflow: hidden;
 }
 
-body.page-pantry summary {
+.page-pantry summary {
 	cursor: pointer;
 	padding: var(--space-sm) var(--space-md);
 	font-weight: 700;
 	background: #f3f4f6;
 }
 
-body.page-pantry summary::-webkit-details-marker {
+.page-pantry summary::-webkit-details-marker {
 	display: none;
 }
 
-body.page-pantry .category-content {
+.page-pantry .category-content {
 	padding: var(--space-md);
 }
 
-body.page-pantry .item-list {
+.page-pantry .item-list {
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -534,7 +534,7 @@ body.page-pantry .item-list {
 	gap: var(--space-sm);
 }
 
-body.page-pantry .item-list li {
+.page-pantry .item-list li {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -546,7 +546,7 @@ body.page-pantry .item-list li {
 	background: #ffffff;
 }
 
-body.page-pantry .item-list label {
+.page-pantry .item-list label {
 	display: flex;
 	align-items: center;
 	gap: var(--space-sm);
@@ -554,7 +554,7 @@ body.page-pantry .item-list label {
 	font-weight: 500;
 }
 
-body.page-pantry .remove-item {
+.page-pantry .remove-item {
 	padding: 0.35rem 0.7rem;
 	border: 1px solid #d1d5db;
 	border-radius: var(--radius);
@@ -563,11 +563,11 @@ body.page-pantry .remove-item {
 	font-weight: 600;
 }
 
-body.page-pantry .remove-item:hover {
+.page-pantry .remove-item:hover {
 	background: #f3f4f6;
 }
 
-body.page-pantry .add-item {
+.page-pantry .add-item {
 	display: flex;
 	align-items: center;
 	gap: var(--space-sm);
@@ -575,17 +575,17 @@ body.page-pantry .add-item {
 	margin-top: var(--space-md);
 }
 
-body.page-pantry .add-item label {
+.page-pantry .add-item label {
 	margin: 0;
 	font-weight: 600;
 }
 
-body.page-pantry .add-item input {
+.page-pantry .add-item input {
 	flex: 1 220px;
 	min-width: 220px;
 }
 
-body.page-pantry .add-item button {
+.page-pantry .add-item button {
 	padding: var(--space-sm) var(--space-md);
 	border: none;
 	border-radius: var(--radius);
@@ -595,7 +595,7 @@ body.page-pantry .add-item button {
 	cursor: pointer;
 }
 
-body.page-pantry .add-item button:hover {
+.page-pantry .add-item button:hover {
 	opacity: 0.85;
 }
 
@@ -871,22 +871,22 @@ body.page-pantry .add-item button:hover {
 }
 
 /* AI LANDING -------------------------- */
-body.page-ai main {
+.page-ai main {
 	display: block;
 	padding: var(--space-lg) 0;
 }
 
-body.page-ai .ai-main .container {
+.page-ai .ai-main .container {
 	display: block;
 }
 
-body.page-ai h2 {
+.page-ai h2 {
 	margin: 0 0 var(--space-sm);
 	font-size: 1.25rem;
 }
 
 /* Response preview card */
-body.page-ai .response-container {
+.page-ai .response-container {
 	background: var(--surface);
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
@@ -894,19 +894,19 @@ body.page-ai .response-container {
 	margin: var(--space-md) 0 var(--space-lg);
 }
 
-body.page-ai .response-container ul {
+.page-ai .response-container ul {
 	margin: var(--space-sm) 0;
 	padding-left: 1.1rem;
 }
 
 
-body.page-ai #aiOutput.code-block {
+.page-ai #aiOutput.code-block {
 	margin: var(--space-sm) 0 0;
 	white-space: pre-wrap;
 	word-break: break-word;
 }
 
-body.page-ai .prefs {
+.page-ai .prefs {
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
 	background: var(--surface);
@@ -914,22 +914,22 @@ body.page-ai .prefs {
 	overflow: hidden;
 }
 
-body.page-ai .prefs summary {
+.page-ai .prefs summary {
 	cursor: pointer;
 	padding: var(--space-sm) var(--space-md);
 	font-weight: 700;
 	background: #f3f4f6;
 }
 
-body.page-ai .prefs summary::-webkit-details-marker {
+.page-ai .prefs summary::-webkit-details-marker {
 	display: none;
 }
 
-body.page-ai .prefs-content {
+.page-ai .prefs-content {
 	padding: var(--space-sm);
 }
 
-body.page-ai .form-actions {
+.page-ai .form-actions {
 	display: flex;
 	gap: var(--space-sm);
 	flex-wrap: wrap;
@@ -938,38 +938,38 @@ body.page-ai .form-actions {
 	max-width: 420px;
 }
 
-body.page-ai .form-actions button {
+.page-ai .form-actions button {
 	flex: 1 1 180px;
 	width: auto;
 }
 
 /* Primary submit */
-body.page-ai .form-actions button[type="submit"] {
+.page-ai .form-actions button[type="submit"] {
 	background: var(--color-secondary);
 	color: #fff;
 	border: none;
 }
 
 /* Secondary reset */
-body.page-ai .form-actions button[type="reset"] {
+.page-ai .form-actions button[type="reset"] {
 	background: var(--surface);
 	color: var(--text);
 	border: 1px solid #d1d5db;
 }
 
-body.page-ai .form-actions button[type="reset"]:hover {
+.page-ai .form-actions button[type="reset"]:hover {
 	background: #f3f4f6;
 }
 
 @media (min-width: 900px) {
-	body.page-ai .ai-main .container > section {
+	.page-ai .ai-main .container > section {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: var(--space-lg);
 		align-items: start;
 	}
 
-	body.page-ai .response-container {
+	.page-ai .response-container {
 		margin: 0;
 	}
 }
@@ -981,11 +981,11 @@ body.page-ai .form-actions button[type="reset"]:hover {
 }
 
 @media (max-width: 768px) {
-	body.page-pantry .category-content {
+	.page-pantry .category-content {
 		padding: var(--space-sm);
 	}
 
-	body.page-pantry .item-list li {
+	.page-pantry .item-list li {
 		padding: var(--space-sm);
 	}
 
@@ -1009,25 +1009,25 @@ body.page-ai .form-actions button[type="reset"]:hover {
 
 	/* Mobile calendar: switch from grid to day cards */
 
-	body.page-calendar .meal-calendar {
+	.page-calendar .meal-calendar {
 		width: 100%;
 		border: none;
 		background: transparent;
 		border-collapse: separate;
 	}
 
-	body.page-calendar .meal-calendar thead {
+	.page-calendar .meal-calendar thead {
 		display: none;
 	}
 
-	body.page-calendar .meal-calendar,
-	body.page-calendar .meal-calendar tbody,
-	body.page-calendar .meal-calendar tr {
+	.page-calendar .meal-calendar,
+	.page-calendar .meal-calendar tbody,
+	.page-calendar .meal-calendar tr {
 		display: block;
 		width: 100%;
 	}
 
-	body.page-calendar .meal-calendar td {
+	.page-calendar .meal-calendar td {
 		display: block;
 		width: 100%;
 		margin-bottom: var(--space-md);
@@ -1036,36 +1036,36 @@ body.page-ai .form-actions button[type="reset"]:hover {
 		border-radius: var(--radius);
 		background: var(--surface);
 	}
-	body.page-calendar .meal-calendar td::before {
+	.page-calendar .meal-calendar td::before {
 		display: block;
 		font-weight: 700;
 		margin-bottom: var(--space-sm);
 		color: var(--text);
 	}
 
-	body.page-calendar .meal-calendar td[data-day="monday"]::before {
+	.page-calendar .meal-calendar td[data-day="monday"]::before {
 		content: "Mon:";
 	}
-	body.page-calendar .meal-calendar td[data-day="tuesday"]::before {
+	.page-calendar .meal-calendar td[data-day="tuesday"]::before {
 		content: "Tue:";
 	}
-	body.page-calendar .meal-calendar td[data-day="wednesday"]::before {
+	.page-calendar .meal-calendar td[data-day="wednesday"]::before {
 		content: "Wed:";
 	}
-	body.page-calendar .meal-calendar td[data-day="thursday"]::before {
+	.page-calendar .meal-calendar td[data-day="thursday"]::before {
 		content: "Thu:";
 	}
-	body.page-calendar .meal-calendar td[data-day="friday"]::before {
+	.page-calendar .meal-calendar td[data-day="friday"]::before {
 		content: "Fri:";
 	}
-	body.page-calendar .meal-calendar td[data-day="saturday"]::before {
+	.page-calendar .meal-calendar td[data-day="saturday"]::before {
 		content: "Sat:";
 	}
-	body.page-calendar .meal-calendar td[data-day="sunday"]::before {
+	.page-calendar .meal-calendar td[data-day="sunday"]::before {
 		content: "Sun";
 	}
 
-	body.page-calendar .meal-cell {
+	.page-calendar .meal-cell {
 		padding: 0;
 		background: transparent;
 	}

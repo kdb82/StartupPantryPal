@@ -6,7 +6,7 @@ import { Register } from "./register/register";
 import { Pantry } from "./pantry/pantry";
 import { FriendsRecipes, Recipes } from "./recipes/recipes";
 import { Calendar } from "./calendar/calendar";
-// import { AILanding } from "./ailanding/ailanding";
+import { AILanding } from "./aiLanding/ailanding";
  
 export default function App() {
 	return (
@@ -37,6 +37,7 @@ export default function App() {
 					<Route path="/register" element={<Register />} />
 					<Route path="/pantry" element={<Pantry />} />
 					<Route path="/calendar" element={<Calendar />} />
+					<Route path="/ai-assistant" element={<AILanding />} />
 				</Routes>
 
 				<footer className="app-footer">
