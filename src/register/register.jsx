@@ -2,10 +2,49 @@ import React from "react";
 
 export function Register() {
     return (
-        <main id="main" class="app-main">
-                <div class="container">
-                    <h1>AI Landing Page</h1>
-                </div>
-            </main>
+        <main id="main" className="app-main">
+            <div className="container">
+                <img
+                    src="images/pantrypal_logo.png"
+                    alt="PantryPal Logo"
+                    className="logo"
+                    width="10%"
+                />
+                <form id="registerForm" method="post" action="/api/register">
+                    <div className="email_field">
+                        <label htmlFor="email">Email:</label>
+                        <input type="email" id="email" name="email" required />
+                    </div>
+                    <div className="password_field">
+                        <label htmlFor="password">Password:</label>
+                        <input type="password" id="password" name="password" required />
+                    </div>
+                    <div className="confirm_password_field">
+                        <label htmlFor="confirmPassword">Confirm Password:</label>
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            required
+                        />
+                    </div>
+                    <div className="form-actions">
+                        <button type="submit">Create Account</button>
+                    </div>
+                    <div className="error-message" id="registerError" style={{display: "none"}}>
+                        Registration failed. Please try again.
+                    </div>
+                    <div
+                        className="success-message"
+                        id="registerSuccess"
+                        style={{display: "none"}}
+                    >
+                        Account created successfully! Redirecting...
+                    </div>
+                </form>
+                <hr />
+                <a href="index.html">Already have an account? Log in here.</a>
+            </div>
+        </main>
     );
 }
