@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 export function Recipes() {
     return (
@@ -40,20 +41,19 @@ export function Recipes() {
 
                 {/* View Toggle */}
                 <div className="recipe-filters">
-                    <a
-                        className="filter-btn active"
+                    <NavLink to="/recipes"
                         data-filter="my-recipes"
-                        href="recipes.html"
+                        className="filter-btn active"
                     >
                         My Recipes
-                    </a>
-                    <a
+                    </NavLink>
+                    <NavLink
                         className="filter-btn"
-                        href="friendsrecipes.html"
+                        to="/recipes/friends"
                         data-filter="friends-recipes"
                     >
                         Friends' Recipes
-                    </a>
+                    </NavLink>
                 </div>
 
                 {/* My Recipes View */}
@@ -372,16 +372,16 @@ export function FriendsRecipes() {
 
                 {/* View Toggle */}
                 <div className="recipe-filters">
-                    <a className="filter-btn" data-filter="my-recipes" href="recipes.html">
+                    <NavLink to="/recipes" data-filter="my-recipes" className="filter-btn">
                         My Recipes
-                    </a>
-                    <a
-                        href="friendsrecipes.html"
+                    </NavLink>
+                    <NavLink
+                        to="/recipes/friends"
                         className="filter-btn active"
                         data-filter="friends-recipes"
                     >
                         Friends' Recipes
-                    </a>
+                    </NavLink>
                 </div>
 
                 {/* Friends' Recipes View */}
