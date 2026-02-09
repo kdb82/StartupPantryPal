@@ -1,0 +1,33 @@
+{
+  "name": "startuppantrypal",
+  "version": "1.0.0",
+  "description": "This serves as the startup specification for my web app Pantry Pal. The web app aims to incorporate technologies in order to showcase applicable skills in a modern job market. To see a description of the app itself, see the elevator pitch below.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kdb82/StartupPantryPal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kdb82/StartupPantryPal/issues"
+  },
+  "homepage": "https://github.com/kdb82/StartupPantryPal#readme",
+  "devDependencies": {
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "react": "^19.2.4",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.13.0"
+  }
+}
