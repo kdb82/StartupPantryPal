@@ -104,9 +104,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - I did not complete this part of the deliverable.
+- [x] **Bundled using Vite** - Created a Vite-based React project with automatic bundling and hot module replacement. The project uses `npm run dev` for local development and `npm run build` for production bundling.
+- [x] **Components** - Converted HTML pages into React components with proper JSX structure. Created six main components: Login, Register, Pantry, Recipes, Calendar, and AILanding. Each component is organized in its own directory with accompanying CSS files.
+- [x] **Router** - Implemented React Router with BrowserRouter, Routes, and Route components. Navigation links use NavLink. All pages are routable through `/login`, `/register`, `/pantry`, `/recipes`, `/calendar`, and `/ai-assistant` paths with proper navigation structure in the header.
 
 ## 🚀 React part 2: Reactivity deliverable
 
