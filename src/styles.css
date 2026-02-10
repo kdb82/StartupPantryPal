@@ -68,6 +68,11 @@ header {
 	flex-wrap: wrap;
 }
 
+.checkbox-text {
+	margin-left: var(--space-sm);
+	color: var(--text);
+}
+
 nav a {
 	text-decoration: none;
 	color: var(--text);
@@ -230,6 +235,10 @@ footer {
 	border-top: 1px solid #e5e7eb;
 }
 
+footer p {
+	margin: 0;
+}
+
 footer .container {
 	display: flex;
 	align-items: center;
@@ -244,6 +253,10 @@ footer .container {
 }
 
 .github-link {
+	margin: 0;
+}
+
+.copyright {
 	margin: 0;
 }
 
@@ -927,6 +940,12 @@ CALENDAR PAGE ----------------------
 
 .page-ai .prefs-content {
 	padding: var(--space-sm);
+}
+
+.page-ai .prefs-content label {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-sm);
 }
 
 .page-ai .form-actions {

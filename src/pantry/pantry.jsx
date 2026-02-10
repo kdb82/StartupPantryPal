@@ -29,7 +29,7 @@ export function Pantry() {
                         </div>
 
                         <div className="inline-form">
-                            <label for="wsMessage">Send message</label>
+                            <label htmlFor="wsMessage">Send message</label>
                             <input
                                 id="wsMessage"
                                 type="text"
@@ -103,7 +103,7 @@ export function Pantry() {
                                     </li>
                                 </ul>
                                 <div className="add-item">
-                                    <label for="proteinInput">Add item:</label>
+                                    <label htmlFor="proteinInput">Add item:</label>
                                     <input
                                         type="text"
                                         id="proteinInput"
@@ -160,7 +160,7 @@ export function Pantry() {
                                     </li>
                                 </ul>
                                 <div className="add-item">
-                                    <label for="dairyInput">Add item:</label>
+                                    <label htmlFor="dairyInput">Add item:</label>
                                     <input
                                         type="text"
                                         id="dairyInput"
@@ -226,7 +226,7 @@ export function Pantry() {
                                     </li>
                                 </ul>
                                 <div className="add-item">
-                                    <label for="vegetableInput">Add item:</label>
+                                    <label htmlFor="vegetableInput">Add item:</label>
                                     <input
                                         type="text"
                                         id="vegetableInput"
@@ -415,7 +415,7 @@ export function Pantry() {
                                     </li>
                                 </ul>
                                 <div className="add-item">
-                                    <label for="stapleInput">Add item:</label>
+                                    <label htmlFor="stapleInput">Add item:</label>
                                     <input
                                         type="text"
                                         id="stapleInput"
@@ -472,7 +472,7 @@ export function Pantry() {
                                     </li>
                                 </ul>
                                 <div className="add-item">
-                                    <label for="beverageInput">Add item:</label>
+                                    <label htmlFor="beverageInput">Add item:</label>
                                     <input
                                         type="text"
                                         id="beverageInput"

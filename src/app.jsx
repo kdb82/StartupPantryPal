@@ -51,7 +51,7 @@ export default function App() {
 							>View on GitHub</a
 							>
 						</p>
-						<p>&copy; 2026 PantryPal</p>
+						<p className="copyright">&copy; 2026 PantryPal</p>
 					</div>
 				</footer>
 			</div>
