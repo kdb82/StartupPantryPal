@@ -47,7 +47,7 @@ export function AILanding() {
                         </section>
 
                         <form id="aiPromptForm" method="post" action="/api/ai">
-                            <label for="prompt">Prompt</label>
+                            <label htmlFor="prompt">Prompt</label>
                             <textarea
                                 id="prompt"
                                 name="prompt"
@@ -61,33 +61,33 @@ export function AILanding() {
                                 <summary>Preferences</summary>
 
                                 <div className="prefs-content">
-                                    <label for="servings">Servings</label>
+                                    <label htmlFor="servings">Servings</label>
                                     <input
                                         id="servings"
                                         name="servings"
                                         type="number"
                                         min="1"
                                         max="12"
-                                        value="2"
+                                        defaultValue="2"
                                         data-field="recipe-servings"
                                     />
                                 </div>
 
                                 <div className="prefs-content">
-                                    <label for="timeLimit">Time limit (minutes)</label>
+                                    <label htmlFor="timeLimit">Time limit (minutes)</label>
                                     <input
                                         id="timeLimit"
                                         name="timeLimit"
                                         type="number"
                                         min="5"
                                         max="180"
-                                        value="30"
+                                        defaultValue="30"
                                         data-field="time-limit"
                                     />
                                 </div>
 
                                 <div className="prefs-content">
-                                    <label for="diet">Diet</label>
+                                    <label htmlFor="diet">Diet</label>
                                     <select id="diet" name="diet">
                                         <option value="No preference">No preference</option>
                                         <option value="vegetarian">Vegetarian</option>
@@ -98,7 +98,12 @@ export function AILanding() {
 
                                 <div className="prefs-content">
                                     <label>
-                                        <input type="checkbox" name="usePantry" checked />
+                                        <input
+                                            type="checkbox"
+                                            className="checkbox-text"
+                                            name="usePantry"
+                                            defaultChecked
+                                        />
                                         Use my pantry items (DB placeholder)
                                     </label>
                                 </div>

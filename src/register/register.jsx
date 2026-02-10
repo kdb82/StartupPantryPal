@@ -6,10 +6,9 @@ export function Register() {
         <main id="main" className="app-main">
             <div className="container">
                 <img
-                    src="images/pantrypal_logo.png"
+                    src="/pantrypal_logo.png"
                     alt="PantryPal Logo"
                     className="logo"
-                    width="10%"
                 />
                 <form id="registerForm" method="post" action="/api/register">
                     <div className="email_field">
@@ -43,7 +42,7 @@ export function Register() {
                         Account created successfully! Redirecting...
                     </div>
                 </form>
-                <hr />
+
                 <NavLink to="/login">Already have an account? Log in here.</NavLink>
             </div>
         </main>
