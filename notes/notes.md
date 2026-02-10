@@ -84,3 +84,58 @@ Completed the HTML structure for the PantryPal startup application. Created six 
 - Committed CSS changes frequently to Git to clearly show progress and ownership.
 - Used browser dev tools extensively to debug layout issues, inspect flex/grid behavior, and understand how Bootstrap styles were applied.
 - Became more comfortable reading and overriding framework CSS instead of treating it like a black box.
+
+## PantryPal – CSS Organization & React Integration (Recent)
+
+### CSS File Organization
+- Reorganized monolithic `styles.css` into modular, page-specific stylesheets:
+  - `global.css` - Shared variables, typography, header/footer, forms, and global utilities
+  - `calendar.css` - Calendar page specific styles for meal tables and shopping lists
+  - `pantry.css` - Pantry page styles for category management and item lists
+  - `recipes.css` - Recipe grid, cards, filters, and modals
+  - `aiLanding.css` - AI assistant form and response container styles
+- Each page component now imports both `global.css` (shared) and its page-specific CSS file
+- Reduced redundancy and improved maintainability by isolating page-specific styles
+
+### Recipe Card UI Improvements
+- Implemented equal-height recipe cards using CSS Grid (`grid-auto-rows: 1fr`)
+- Added text truncation with ellipsis to prevent layout breaking:
+  - Recipe titles: single-line ellipsis with `text-overflow: ellipsis`
+  - Descriptions: clamped to 2 lines using `-webkit-line-clamp: 2`
+  - Added `overflow: hidden` on card containers to contain oversized content
+- Result: professional, uniform card layout that gracefully handles variable content lengths
+
+### React & CSS Import Patterns
+- Learned to import multiple CSS files in React components without conflicts
+- CSS cascade works predictably when importing global styles first, then page-specific styles
+- All page components follow consistent import pattern for maintainability
+
+## PantryPal – React Components & JSX
+
+### Component Structure
+- Converted all HTML pages to React components with proper JSX structure
+- Each main component (Login, Register, Pantry, Recipes, Calendar, AILanding) lives in its own folder alongside its CSS file
+- Components export as named exports (e.g., `export function Calendar()`)
+- All components return a JSX tree with proper semantic HTML (`<main>`, `<section>`, `<article>`, etc.)
+
+### Key JSX Patterns Used
+- **Semantic HTML elements**: All components use proper HTML5 semantic tags for accessibility and structure
+- **Class names for styling**: Components use `className` attribute to apply CSS scoped with page-specific selectors (e.g., `className="page-recipes"`)
+- **ARIA attributes**: Proper use of `aria-label`, `aria-labelledby`, `aria-current="page"` for accessibility
+- **Data attributes**: Strategic use of `data-*` attributes (e.g., `data-day`, `data-category`) for JavaScript event targeting
+- **Conditional rendering**: Used hidden attribute (`[hidden]`) for placeholder sections that will be populated by backend data
+
+### Component Features
+- **Login & Register**: Form components with email/password fields, linking to backend `/api/login` and `/api/register` endpoints
+- **Pantry**: Collapsible category details with item lists and add-item functionality (WebSocket placeholder)
+- **Recipes**: Grid layout with recipe cards, filter buttons, modal triggers, and actions (add to shopping, delete)
+- **Calendar**: Weekly meal planner with navigation, meal table, and shopping list (data attributes prepared for backend)
+- **AI Assistant**: Form with preferences (servings, time limit, diet type) and response container placeholder
+- **Navigation**: Consistent header with logo, nav links using `<NavLink>` from React Router
+
+### JSX Best Practices Applied
+- Kept components focused on structure and layout (business logic and state to come later)
+- Used semantic, accessible HTML structure throughout all components
+- Avoided inline styles—all styling done through CSS classes and the organized CSS files
+- Proper nesting of elements and no unnecessary wrapper divs
+- Forms prepared with POST methods and data attributes for future backend integration
