@@ -7,7 +7,7 @@ import { Pantry } from "./pantry/pantry";
 import { FriendsRecipes, Recipes } from "./recipes/recipes";
 import { Calendar } from "./calendar/calendar";
 import { AILanding } from "./aiLanding/ailanding";
- 
+
 export default function App() {
 	return (
 		<BrowserRouter>
@@ -49,7 +49,7 @@ export default function App() {
 								target="_blank"
 								rel="noreferrer"
 							>View on GitHub</a
-							>
+						>
 						</p>
 						<p className="copyright">&copy; 2026 PantryPal</p>
 					</div>
