@@ -37,14 +37,9 @@ body {
 	color: var(--text);
 }
 
-h1 {
-	font-weight: 700;
-}
-
 .muted {
 	color: var(--muted);
 }
-
 
 .app {
 	min-height: 100vh;
@@ -71,11 +66,6 @@ header {
 	display: flex;
 	gap: var(--space-md);
 	flex-wrap: wrap;
-}
-
-.checkbox-text {
-	margin-right: var(--space-sm);
-	color: var(--text);
 }
 
 nav a {
@@ -240,10 +230,6 @@ footer {
 	border-top: 1px solid #e5e7eb;
 }
 
-footer p {
-	margin: 0;
-}
-
 footer .container {
 	display: flex;
 	align-items: center;
@@ -258,10 +244,6 @@ footer .container {
 }
 
 .github-link {
-	margin: 0;
-}
-
-.copyright {
 	margin: 0;
 }
 
@@ -353,22 +335,21 @@ nav a[aria-current="page"] {
 CALENDAR PAGE ----------------------
  */
 
-.page-calendar main {
+body.page-calendar main {
 	display: block;
 	padding: var(--space-lg) 0;
 }
 
-.page-calendar #main-content .container {
+body.page-calendar #main-content .container {
 	display: block;
 }
 
-.page-calendar h2 {
+body.page-calendar h2 {
 	margin: 0 0 var(--space-sm);
 	font-size: 1.1rem;
-	font-weight: 700;
 }
 
-.page-calendar .calendar-controls {
+body.page-calendar .calendar-controls {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -377,8 +358,7 @@ CALENDAR PAGE ----------------------
 	margin: var(--space-md) 0;
 }
 
-.page-calendar .calendar-controls button {
-	font-size: .7rem;
+body.page-calendar .calendar-controls button {
 	padding: var(--space-sm) var(--space-md);
 	border: none;
 	border-radius: var(--radius);
@@ -388,15 +368,15 @@ CALENDAR PAGE ----------------------
 	cursor: pointer;
 }
 
-.page-calendar .calendar-controls button:hover {
+body.page-calendar .calendar-controls button:hover {
 	opacity: 0.85;
 }
 
-.page-calendar #week-range {
+body.page-calendar #week-range {
 	margin: 0;
 }
 
-.page-calendar .meal-calendar {
+body.page-calendar .meal-calendar {
 	width: 100%;
 	border-collapse: collapse;
 	background: var(--surface);
@@ -405,42 +385,37 @@ CALENDAR PAGE ----------------------
 	overflow: auto;
 }
 
-.page-calendar .meal-calendar th,
-.page-calendar .meal-calendar td {
+body.page-calendar .meal-calendar th,
+body.page-calendar .meal-calendar td {
 	border: 1px solid #e5e7eb;
 	vertical-align: top;
 }
 
-.page-calendar .meal-calendar th {
+body.page-calendar .meal-calendar th {
 	background: var(--color-primary);
 	text-align: left;
 	padding: var(--space-sm);
 	font-weight: 700;
 }
 
-.page-calendar .meal-calendar td {
+body.page-calendar .meal-calendar td {
 	padding: var(--space-sm);
 	min-height: 110px;
 }
 
-.page-calendar .meal-cell {
+body.page-calendar .meal-cell {
 	background: #ffffff;
 	border-radius: var(--radius);
 	padding: var(--space-sm);
 }
 
 /* Shopping list */
-.page-recipes .recipe-card-trigger {
-  color: inherit;
-  text-decoration: none;
-  -webkit-tap-highlight-color: transparent;
-}
 
 #shopping-title {
 	margin-top: var(--space-sm);
 }
 
-.page-calendar .shopping-list {
+body.page-calendar .shopping-list {
 	list-style: none;
 	margin: var(--space-sm) 0 0;
 	padding: 0;
@@ -449,7 +424,7 @@ CALENDAR PAGE ----------------------
 	gap: var(--space-sm);
 }
 
-.page-calendar .shopping-list li {
+body.page-calendar .shopping-list li {
 	background: var(--surface);
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
@@ -461,97 +436,91 @@ CALENDAR PAGE ----------------------
 	flex-wrap: wrap;
 }
 
-.page-calendar .shopping-list label {
+body.page-calendar .shopping-list label {
 	display: flex;
 	align-items: center;
 	gap: var(--space-sm);
 	margin: 0;
 }
 
-.page-calendar .recipe-source {
+body.page-calendar .recipe-source {
 	color: var(--muted);
 	font-size: 0.9rem;
 }
 
-.page-calendar .shopping-actions {
+body.page-calendar .shopping-actions {
 	margin-top: var(--space-md);
 }
 
-.page-calendar .btn-clear {
-	font-size: 0.8rem;
+body.page-calendar .btn-clear {
 	padding: var(--space-sm) var(--space-md);
 	border: 1px solid #d1d5db;
-	border-radius: 14px;
+	border-radius: var(--radius);
 	background: var(--surface);
 	cursor: pointer;
 	font-weight: 600;
 }
 
-.page-calendar .btn-clear:hover {
+body.page-calendar .btn-clear:hover {
 	background: #f3f4f6;
 }
 
 /* PANTRY PAGE ---------------------------*/
 
 /* Pantry page should be top-aligned (not vertically centered like the home/login pages) */
-.add-button {
-	font-size: .7rem;
-	border-radius: 16px;
-}
-
-.page-pantry main {
+body.page-pantry main {
 	display: block;
 	padding: var(--space-lg) 0;
 }
 
-.page-pantry #main-content .container {
+body.page-pantry #main-content .container {
 	display: block;
 }
 
-.page-pantry h2 {
+body.page-pantry h2 {
 	margin: 0 0 var(--space-md);
 	font-size: 1.25rem;
 }
 
-.page-pantry code {
+body.page-pantry code {
 	background: #f3f4f6;
 	border: 1px solid #e5e7eb;
 	border-radius: 6px;
 	padding: 0.1rem 0.35rem;
 }
 
-.page-pantry .pantry-category {
+body.page-pantry .pantry-category {
 	margin-bottom: var(--space-md);
 }
 
-.page-pantry button:disabled {
+body.page-pantry button:disabled {
 	opacity: 0.55;
 	cursor: not-allowed;
 }
 
-.page-pantry details {
+body.page-pantry details {
 	background: var(--surface);
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
 	overflow: hidden;
 }
 
-.page-pantry summary {
+body.page-pantry summary {
 	cursor: pointer;
 	padding: var(--space-sm) var(--space-md);
 	font-weight: 700;
 	background: #f3f4f6;
 }
 
-.page-pantry summary::-webkit-details-marker {
+body.page-pantry summary::-webkit-details-marker {
 	display: none;
 }
 
-.page-pantry .category-content {
+body.page-pantry .category-content {
 	padding: var(--space-md);
 }
 
-.page-pantry .item-list {
+body.page-pantry .item-list {
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -560,7 +529,7 @@ CALENDAR PAGE ----------------------
 	gap: var(--space-sm);
 }
 
-.page-pantry .item-list li {
+body.page-pantry .item-list li {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -572,7 +541,7 @@ CALENDAR PAGE ----------------------
 	background: #ffffff;
 }
 
-.page-pantry .item-list label {
+body.page-pantry .item-list label {
 	display: flex;
 	align-items: center;
 	gap: var(--space-sm);
@@ -580,21 +549,20 @@ CALENDAR PAGE ----------------------
 	font-weight: 500;
 }
 
-.page-pantry .remove-item {
-	padding: 0.2rem 0.5rem;
+body.page-pantry .remove-item {
+	padding: 0.35rem 0.7rem;
 	border: 1px solid #d1d5db;
-	border-radius: var(--radius) !important;
+	border-radius: var(--radius);
 	background: var(--surface);
 	cursor: pointer;
-	font-size: 0.7rem;
 	font-weight: 600;
 }
 
-.page-pantry .remove-item:hover {
+body.page-pantry .remove-item:hover {
 	background: #f3f4f6;
 }
 
-.page-pantry .add-item {
+body.page-pantry .add-item {
 	display: flex;
 	align-items: center;
 	gap: var(--space-sm);
@@ -602,17 +570,17 @@ CALENDAR PAGE ----------------------
 	margin-top: var(--space-md);
 }
 
-.page-pantry .add-item label {
+body.page-pantry .add-item label {
 	margin: 0;
 	font-weight: 600;
 }
 
-.page-pantry .add-item input {
+body.page-pantry .add-item input {
 	flex: 1 220px;
 	min-width: 220px;
 }
 
-.page-pantry .add-item button {
+body.page-pantry .add-item button {
 	padding: var(--space-sm) var(--space-md);
 	border: none;
 	border-radius: var(--radius);
@@ -622,25 +590,24 @@ CALENDAR PAGE ----------------------
 	cursor: pointer;
 }
 
-.page-pantry .add-item button:hover {
+body.page-pantry .add-item button:hover {
 	opacity: 0.85;
 }
 
 /* RECIPES ----------------------- */
 
-.page-recipes main {
+body.page-recipes main {
 	display: block;
 	padding: var(--space-lg) 0;
 }
 
-.page-recipes #main-content .container {
+body.page-recipes #main-content .container {
 	display: block;
 }
 
-.page-recipes h2 {
+body.page-recipes h2 {
 	margin: 0 0 var(--space-md);
 	font-size: 1.25rem;
-	font-weight: 700;
 }
 
 .code-block {
@@ -653,32 +620,32 @@ CALENDAR PAGE ----------------------
 	overflow-x: auto;
 }
 
-.page-recipes details {
+body.page-recipes details {
 	margin-top: var(--space-md);
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
 	background: var(--surface);
 }
 
-.page-recipes summary {
+body.page-recipes summary {
 	cursor: pointer;
 	padding: var(--space-sm) var(--space-md);
 	font-weight: 700;
 	background: #f3f4f6;
 }
 
-.page-recipes summary::-webkit-details-marker {
+body.page-recipes summary::-webkit-details-marker {
 	display: none;
 }
 
-.page-recipes .recipe-filters {
+body.page-recipes .recipe-filters {
 	display: flex;
 	gap: var(--space-sm);
 	flex-wrap: wrap;
 	margin: 0 0 var(--space-md);
 }
 
-.page-recipes .filter-btn {
+body.page-recipes .filter-btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -694,43 +661,42 @@ CALENDAR PAGE ----------------------
 	cursor: pointer;
 }
 
-.page-recipes .filter-btn:hover {
+body.page-recipes .filter-btn:hover {
 	background: #f3f4f6;
 }
 
-.page-recipes .filter-btn:focus-visible {
+body.page-recipes .filter-btn:focus-visible {
 	outline: 2px solid var(--color-secondary);
 	outline-offset: 2px;
 }
 
-.page-recipes .filter-btn.active {
+body.page-recipes .filter-btn.active {
 	background: var(--color-secondary);
 	color: #fff;
 	border-color: transparent;
 }
 
-.page-recipes .filter-btn[aria-current="page"] {
+body.page-recipes .filter-btn[aria-current="page"] {
 	background: var(--color-secondary);
 	color: #fff;
 	border-color: transparent;
 }
 
-.page-recipes .recipe-view {
+body.page-recipes .recipe-view {
 	margin-top: var(--space-md);
 }
 
-.page-recipes .recipe-view h3 {
+body.page-recipes .recipe-view h3 {
 	margin: 0 0 var(--space-md);
-	font-weight: 700;
 }
 
-.page-recipes .recipe-grid {
+body.page-recipes .recipe-grid {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: var(--space-md);
 }
 
-.page-recipes .recipe-card-trigger {
+body.page-recipes .recipe-card-trigger {
 	display: block;
 	width: 100%;
 	padding: 0;
@@ -740,24 +706,24 @@ CALENDAR PAGE ----------------------
 	cursor: pointer;
 }
 
-.page-recipes .recipe-card-trigger:focus-visible {
+body.page-recipes .recipe-card-trigger:focus-visible {
 	outline: 2px solid var(--color-secondary);
 	outline-offset: 3px;
 	border-radius: var(--radius);
 }
 
-.page-recipes .recipe-card {
+body.page-recipes .recipe-card {
 	transition:
 		transform 120ms ease,
 		box-shadow 120ms ease;
 }
 
-.page-recipes .recipe-card-trigger:hover .recipe-card {
+body.page-recipes .recipe-card-trigger:hover .recipe-card {
 	transform: translateY(-2px);
 	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
-.page-recipes .recipe-card {
+body.page-recipes .recipe-card {
 	background: var(--surface);
 	border: 1px solid #e5e7eb;
 	padding: var(--space-md);
@@ -767,40 +733,40 @@ CALENDAR PAGE ----------------------
 	gap: var(--space-sm);
 }
 
-.page-recipes .recipe-card h4 {
+body.page-recipes .recipe-card h4 {
 	margin: 0;
 	font-size: 1.05rem;
 }
 
-.page-recipes .recipe-meta {
+body.page-recipes .recipe-meta {
 	margin: 0;
 	color: var(--muted);
 	font-size: 0.9rem;
 }
 
-.page-recipes .recipe-description {
+body.page-recipes .recipe-description {
 	margin: 0;
 }
 
-.page-recipes .recipe-ingredients {
+body.page-recipes .recipe-ingredients {
 	margin: 0;
 	padding-left: 1.1rem;
 }
 
-.page-recipes .recipe-actions {
+body.page-recipes .recipe-actions {
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--space-sm);
 	margin-top: auto;
 }
 
-.page-recipes .recipe-actions button {
+body.page-recipes .recipe-actions button {
 	flex: 1 1 220px;
 	width: 100%;
 	max-width: 100%;
 }
 
-.page-recipes .add-to-shopping {
+body.page-recipes .add-to-shopping {
 	padding: var(--space-sm) var(--space-md);
 	border: none;
 	border-radius: var(--radius);
@@ -810,7 +776,7 @@ CALENDAR PAGE ----------------------
 	cursor: pointer;
 }
 
-.page-recipes .delete-recipe {
+body.page-recipes .delete-recipe {
 	padding: var(--space-sm) var(--space-md);
 	border: 1px solid var(--color-secondary);
 	border-radius: var(--radius);
@@ -820,102 +786,102 @@ CALENDAR PAGE ----------------------
 	cursor: pointer;
 }
 
-.page-recipes .add-to-shopping:hover {
+body.page-recipes .add-to-shopping:hover {
 	opacity: 0.85;
 }
 
-.page-recipes .delete-recipe:hover {
+body.page-recipes .delete-recipe:hover {
 	background: #f3f4f6;
 }
 
-.page-recipes .delete-recipe:focus-visible {
+body.page-recipes .delete-recipe:focus-visible {
 	outline: 2px solid var(--color-secondary);
 	outline-offset: 2px;
 }
 
-.page-recipes .modal-content {
+body.page-recipes .modal-content {
 	border-radius: var(--radius);
 	border: 1px solid #e5e7eb;
 	background: var(--surface);
 	color: var(--text);
 }
 
-.page-recipes .modal-header {
+body.page-recipes .modal-header {
 	background: var(--color-primary);
 	border-bottom: 1px solid #e5e7eb;
 }
 
-.page-recipes .modal-title {
+body.page-recipes .modal-title {
 	font-weight: 700;
 }
 
-.page-recipes .modal-footer {
+body.page-recipes .modal-footer {
 	border-top: 1px solid #e5e7eb;
 }
 
-.page-recipes .badge.text-bg-light {
+body.page-recipes .badge.text-bg-light {
 	background: #f3f4f6 !important;
 	color: var(--text) !important;
 	border: 1px solid #e5e7eb;
 	font-weight: 600;
 }
 
-.page-recipes .modal .btn-primary {
+body.page-recipes .modal .btn-primary {
 	background-color: var(--color-secondary);
 	border-color: var(--color-secondary);
 	font-weight: 600;
 }
 
-.page-recipes .modal .btn-primary:hover {
+body.page-recipes .modal .btn-primary:hover {
 	opacity: 0.9;
 }
 
-.page-recipes .modal .btn-danger {
+body.page-recipes .modal .btn-danger {
 	background-color: transparent;
 	border-color: #c94259;
 	font-weight: 600;
     color: #c94259;
 }
 
-.page-recipes .modal .btn-danger:hover {
+body.page-recipes .modal .btn-danger:hover {
 	opacity: 0.9;
 }
 
-.page-recipes .modal .btn-outline-secondary {
+body.page-recipes .modal .btn-outline-secondary {
 	border-color: #d1d5db;
 	color: var(--text);
 	font-weight: 600;
 }
 
-.page-recipes .modal .btn-outline-secondary:hover {
+body.page-recipes .modal .btn-outline-secondary:hover {
 	background: #f3f4f6;
 }
 
-.page-recipes .modal-header .btn-close {
+body.page-recipes .modal-header .btn-close {
 	opacity: 0.85;
 }
 
-.page-recipes .modal-header .btn-close:hover {
+body.page-recipes .modal-header .btn-close:hover {
 	opacity: 1;
 }
 
 /* AI LANDING -------------------------- */
-.page-ai main {
+body.page-ai main {
 	display: block;
 	padding: var(--space-lg) 0;
 }
 
-.page-ai .ai-main .container {
+body.page-ai .ai-main .container {
 	display: block;
 }
 
-.page-ai h2 {
+body.page-ai h2 {
 	margin: 0 0 var(--space-sm);
 	font-size: 1.25rem;
 }
 
 /* Response preview card */
-.page-ai .response-container {
+body.page-ai .response-container {
 	background: var(--surface);
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
@@ -923,19 +889,19 @@ CALENDAR PAGE ----------------------
 	margin: var(--space-md) 0 var(--space-lg);
 }
 
-.page-ai .response-container ul {
+body.page-ai .response-container ul {
 	margin: var(--space-sm) 0;
 	padding-left: 1.1rem;
 }
 
 
-.page-ai #aiOutput.code-block {
+body.page-ai #aiOutput.code-block {
 	margin: var(--space-sm) 0 0;
 	white-space: pre-wrap;
 	word-break: break-word;
 }
 
-.page-ai .prefs {
+body.page-ai .prefs {
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
 	background: var(--surface);
@@ -943,22 +909,22 @@ CALENDAR PAGE ----------------------
 	overflow: hidden;
 }
 
-.page-ai .prefs summary {
+body.page-ai .prefs summary {
 	cursor: pointer;
 	padding: var(--space-sm) var(--space-md);
 	font-weight: 700;
 	background: #f3f4f6;
 }
 
-.page-ai .prefs summary::-webkit-details-marker {
+body.page-ai .prefs summary::-webkit-details-marker {
 	display: none;
 }
 
-.page-ai .prefs-content {
+body.page-ai .prefs-content {
 	padding: var(--space-sm);
 }
 
-.page-ai .form-actions {
+body.page-ai .form-actions {
 	display: flex;
 	gap: var(--space-sm);
 	flex-wrap: wrap;
@@ -967,58 +933,58 @@ CALENDAR PAGE ----------------------
 	max-width: 420px;
 }
 
-.page-ai .form-actions button {
+body.page-ai .form-actions button {
 	flex: 1 1 180px;
 	width: auto;
 }
 
 /* Primary submit */
-.page-ai .form-actions button[type="submit"] {
+body.page-ai .form-actions button[type="submit"] {
 	background: var(--color-secondary);
 	color: #fff;
-	border: none;
+	border: nones q	a;
 }
 
 /* Secondary reset */
-.page-ai .form-actions button[type="reset"] {
+body.page-ai .form-actions button[type="reset"] {
 	background: var(--surface);
 	color: var(--text);
 	border: 1px solid #d1d5db;
 }
 
-.page-ai .form-actions button[type="reset"]:hover {
+body.page-ai .form-actions button[type="reset"]:hover {
 	background: #f3f4f6;
 }
 
 @media (min-width: 900px) {
-	.page-ai .ai-main .container > section {
+	body.page-ai .ai-main .container > section {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: var(--space-lg);
 		align-items: start;
 	}
 
-	.page-ai .response-container {
+	body.page-ai .response-container {
 		margin: 0;
 	}
 }
 
 @media (max-width: 1024px) {
-	.page-recipes .recipe-grid {
+	body.page-recipes .recipe-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 }
 
 @media (max-width: 768px) {
-	.page-pantry .category-content {
+	body.page-pantry .category-content {
 		padding: var(--space-sm);
 	}
 
-	.page-pantry .item-list li {
-		padding: 6px;
+	body.page-pantry .item-list li {
+		padding: var(--space-sm);
 	}
 
-	.page-recipes .recipe-grid {
+	body.page-recipes .recipe-grid {
 		grid-template-columns: 1fr;
 	}
 
@@ -1038,25 +1004,25 @@ CALENDAR PAGE ----------------------
 
 	/* Mobile calendar: switch from grid to day cards */
 
-	.page-calendar .meal-calendar {
+	body.page-calendar .meal-calendar {
 		width: 100%;
 		border: none;
 		background: transparent;
 		border-collapse: separate;
 	}
 
-	.page-calendar .meal-calendar thead {
+	body.page-calendar .meal-calendar thead {
 		display: none;
 	}
 
-	.page-calendar .meal-calendar,
-	.page-calendar .meal-calendar tbody,
-	.page-calendar .meal-calendar tr {
+	body.page-calendar .meal-calendar,
+	body.page-calendar .meal-calendar tbody,
+	body.page-calendar .meal-calendar tr {
 		display: block;
 		width: 100%;
 	}
 
-	.page-calendar .meal-calendar td {
+	body.page-calendar .meal-calendar td {
 		display: block;
 		width: 100%;
 		margin-bottom: var(--space-md);
@@ -1065,36 +1031,36 @@ CALENDAR PAGE ----------------------
 		border-radius: var(--radius);
 		background: var(--surface);
 	}
-	.page-calendar .meal-calendar td::before {
+	body.page-calendar .meal-calendar td::before {
 		display: block;
 		font-weight: 700;
 		margin-bottom: var(--space-sm);
 		color: var(--text);
 	}
 
-	.page-calendar .meal-calendar td[data-day="monday"]::before {
+	body.page-calendar .meal-calendar td[data-day="monday"]::before {
 		content: "Mon:";
 	}
-	.page-calendar .meal-calendar td[data-day="tuesday"]::before {
+	body.page-calendar .meal-calendar td[data-day="tuesday"]::before {
 		content: "Tue:";
 	}
-	.page-calendar .meal-calendar td[data-day="wednesday"]::before {
+	body.page-calendar .meal-calendar td[data-day="wednesday"]::before {
 		content: "Wed:";
 	}
-	.page-calendar .meal-calendar td[data-day="thursday"]::before {
+	body.page-calendar .meal-calendar td[data-day="thursday"]::before {
 		content: "Thu:";
 	}
-	.page-calendar .meal-calendar td[data-day="friday"]::before {
+	body.page-calendar .meal-calendar td[data-day="friday"]::before {
 		content: "Fri:";
 	}
-	.page-calendar .meal-calendar td[data-day="saturday"]::before {
+	body.page-calendar .meal-calendar td[data-day="saturday"]::before {
 		content: "Sat:";
 	}
-	.page-calendar .meal-calendar td[data-day="sunday"]::before {
+	body.page-calendar .meal-calendar td[data-day="sunday"]::before {
 		content: "Sun";
 	}
 
-	.page-calendar .meal-cell {
+	body.page-calendar .meal-cell {
 		padding: 0;
 		background: transparent;
 	}
