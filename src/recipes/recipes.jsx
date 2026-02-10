@@ -1,4 +1,6 @@
 import React from "react";
+import "../global.css";
+import "./recipes.css";
 import { NavLink } from "react-router-dom";
 
 export function Recipes() {

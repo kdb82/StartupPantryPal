@@ -1,0 +1,103 @@
+/* AI LANDING -------------------------- */
+.page-ai main {
+	display: block;
+	padding: var(--space-lg) 0;
+}
+
+.page-ai .ai-main .container {
+	display: block;
+}
+
+.page-ai h2 {
+	margin: 0 0 var(--space-sm);
+	font-size: 1.25rem;
+}
+
+/* Response preview card */
+.page-ai .response-container {
+	background: var(--surface);
+	border: 1px solid #e5e7eb;
+	border-radius: var(--radius);
+	padding: var(--space-md);
+	margin: var(--space-md) 0 var(--space-lg);
+}
+
+.page-ai .response-container ul {
+	margin: var(--space-sm) 0;
+	padding-left: 1.1rem;
+}
+
+
+.page-ai #aiOutput.code-block {
+	margin: var(--space-sm) 0 0;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.page-ai .prefs {
+	border: 1px solid #e5e7eb;
+	border-radius: var(--radius);
+	background: var(--surface);
+	margin: var(--space-md) 0;
+	overflow: hidden;
+}
+
+.page-ai .prefs summary {
+	cursor: pointer;
+	padding: var(--space-sm) var(--space-md);
+	font-weight: 700;
+	background: #f3f4f6;
+}
+
+.page-ai .prefs summary::-webkit-details-marker {
+	display: none;
+}
+
+.page-ai .prefs-content {
+	padding: var(--space-sm);
+}
+
+.page-ai .form-actions {
+	display: flex;
+	gap: var(--space-sm);
+	flex-wrap: wrap;
+	margin-top: var(--space-md);
+	width: 100%;
+	max-width: 420px;
+}
+
+.page-ai .form-actions button {
+	flex: 1 1 180px;
+	width: auto;
+}
+
+/* Primary submit */
+.page-ai .form-actions button[type="submit"] {
+	background: var(--color-secondary);
+	color: #fff;
+	border: none;
+}
+
+/* Secondary reset */
+.page-ai .form-actions button[type="reset"] {
+	background: var(--surface);
+	color: var(--text);
+	border: 1px solid #d1d5db;
+}
+
+.page-ai .form-actions button[type="reset"]:hover {
+	background: #f3f4f6;
+}
+
+@media (min-width: 900px) {
+	.page-ai .ai-main .container > section {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--space-lg);
+		align-items: start;
+	}
+
+	.page-ai .response-container {
+		margin: 0;
+	}
+}
