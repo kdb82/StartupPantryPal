@@ -1,0 +1,366 @@
+/* GLOBAL/ SHARED COMPONENTS */
+
+/* @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap");
+
+:root {
+	--color-primary: #b6d6b7;
+	--color-secondary: #e3b267;
+	--font-base:
+		"Manrope", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+	--bg: #f7f9f8;
+	--surface: #ffffff;
+	--text: #1f2933;
+	--muted: #6b7280;
+
+	--space-sm: 0.5rem;
+	--space-md: 1rem;
+	--space-lg: 2rem;
+
+	--radius: 10px;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	font-family: var(--font-base);
+	line-height: 1.5;
+	background-color: var(--bg);
+	color: var(--text);
+}
+
+h1 {
+	font-weight: 700;
+}
+
+.muted {
+	color: var(--muted);
+}
+
+
+.app {
+	min-height: 100vh;
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+}
+
+header {
+	background-color: var(--color-primary);
+	border-bottom: 1px solid #e5e7eb;
+	padding: var(--space-sm) var(--space-md) var(--space-md);
+}
+
+.nav-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	display: flex;
+	gap: var(--space-md);
+	flex-wrap: wrap;
+}
+
+.checkbox-text {
+	margin-right: var(--space-sm);
+	color: var(--text);
+}
+
+nav a {
+	text-decoration: none;
+	color: var(--text);
+	font-weight: 500;
+}
+
+nav a:hover {
+	color: var(--color-secondary);
+}
+
+.container {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 0 var(--space-md);
+}
+
+.logo {
+	width: 100px;
+	height: auto;
+	margin-bottom: var(--space-md);
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-lg);
+	padding: var(--space-lg) var(--space-md);
+}
+
+.app-main .container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+header h1 {
+	margin: 0;
+	font-size: 1.25rem;
+}
+
+form {
+	width: 100%;
+	max-width: 420px;
+	background: var(--surface);
+	border: 1px solid #e5e7eb;
+	border-radius: var(--radius);
+	padding: var(--space-md);
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-md);
+}
+
+.email_field,
+.password_field,
+.confirm_password_field {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
+}
+
+label {
+	font-weight: 500;
+}
+
+input {
+	padding: var(--space-sm);
+	border: 1px solid #d1d5db;
+	border-radius: var(--radius);
+	font-size: 1rem;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+	outline: 2px solid var(--color-secondary);
+	outline-offset: 1px;
+}
+
+textarea,
+select {
+	padding: var(--space-sm);
+	border: 1px solid #d1d5db;
+	border-radius: var(--radius);
+	font-size: 1rem;
+	font-family: inherit;
+	background: var(--surface);
+	color: var(--text);
+}
+
+textarea {
+	width: 100%;
+	resize: vertical;
+	min-height: 140px;
+}
+
+select {
+	width: 100%;
+}
+
+.form-actions {
+	margin-top: var(--space-sm);
+}
+
+.form-actions button {
+	width: 100%;
+	padding: var(--space-sm) var(--space-sm);
+	border: none;
+	border-radius: var(--radius);
+	background: var(--color-secondary);
+	color: white;
+	font-size: 1rem;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.form-actions button:hover {
+	opacity: 0.85;
+}
+
+header .container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-md);
+	flex-wrap: wrap;
+}
+
+[hidden] {
+	display: none !important;
+}
+
+.error-message,
+.success-message {
+	margin-top: var(--space-sm);
+	padding: var(--space-sm);
+	border-radius: var(--radius);
+	font-size: 0.95rem;
+}
+
+.error-message {
+	background: #fee2e2;
+	color: #991b1b;
+	border: 1px solid #fecaca;
+}
+
+.success-message {
+	background: #dcfce7;
+	color: #166534;
+	border: 1px solid #bbf7d0;
+}
+
+footer {
+	margin-top: var(--space-lg);
+	margin-bottom: 0;
+	padding: var(--space-md) 0;
+	background: var(--color-primary);
+	border-top: 1px solid #e5e7eb;
+}
+
+footer p {
+	margin: 0;
+}
+
+footer .container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-md);
+	flex-wrap: wrap;
+}
+
+.built-by {
+	margin: 0;
+	font-weight: 500;
+}
+
+.github-link {
+	margin: 0;
+}
+
+.copyright {
+	margin: 0;
+}
+
+.github-link a {
+	color: var(--text);
+	font-weight: 500;
+	text-decoration: none;
+}
+
+.github-link a:hover {
+	text-decoration: underline;
+}
+
+nav a:focus-visible,
+.github-link a:focus-visible {
+	outline: 2px solid var(--color-secondary);
+	outline-offset: 3px;
+	border-radius: 6px;
+}
+
+nav a[aria-current="page"] {
+	text-decoration: underline;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 6px;
+}
+
+.placeholder-card {
+	background: var(--surface);
+	border: 1px solid #e5e7eb;
+	border-radius: var(--radius);
+	padding: var(--space-md);
+	margin-bottom: var(--space-lg);
+}
+
+.placeholder-card h3 {
+	margin: 0 0 var(--space-sm);
+	font-size: 1rem;
+}
+
+.inline-form {
+	display: flex;
+	align-items: center;
+	gap: var(--space-sm);
+	flex-wrap: wrap;
+	margin-top: var(--space-sm);
+}
+
+.inline-form label {
+	margin: 0;
+	font-weight: 600;
+}
+
+.inline-form input {
+	flex: 1 240px;
+	min-width: 220px;
+}
+
+.inline-form button {
+	padding: var(--space-sm) var(--space-md);
+	border: none;
+	border-radius: var(--radius);
+	background: var(--color-secondary);
+	color: #fff;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.inline-form button:hover {
+	opacity: 0.85;
+}
+
+.api-results {
+	list-style: none;
+	margin: var(--space-md) 0 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
+}
+
+.api-results li {
+	background: #f9fafb;
+	border: 1px solid #e5e7eb;
+	border-radius: var(--radius);
+	padding: var(--space-sm) var(--space-md);
+}
+
+@media (max-width: 768px) {
+	header .container {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	footer .container {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.nav-list {
+		gap: var(--space-sm);
+	}
+}

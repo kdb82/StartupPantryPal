@@ -1,0 +1,199 @@
+/*
+CALENDAR PAGE ----------------------
+ */
+
+.page-calendar main {
+	display: block;
+	padding: var(--space-lg) 0;
+}
+
+.page-calendar #main-content .container {
+	display: block;
+}
+
+.page-calendar h2 {
+	margin: 0 0 var(--space-sm);
+	font-size: 1.1rem;
+	font-weight: 700;
+}
+
+.page-calendar .calendar-controls {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-md);
+	flex-wrap: nowrap;
+	margin: var(--space-md) 0;
+}
+
+.page-calendar .calendar-controls button {
+	font-size: .7rem;
+	padding: var(--space-sm) var(--space-md);
+	border: none;
+	border-radius: var(--radius);
+	background: var(--color-secondary);
+	color: #fff;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.page-calendar .calendar-controls button:hover {
+	opacity: 0.85;
+}
+
+.page-calendar #week-range {
+	margin: 0;
+}
+
+.page-calendar .meal-calendar {
+	width: 100%;
+	border-collapse: collapse;
+	background: var(--surface);
+	border: 1px solid #e5e7eb;
+	border-radius: var(--radius);
+	overflow: auto;
+}
+
+.page-calendar .meal-calendar th,
+.page-calendar .meal-calendar td {
+	border: 1px solid #e5e7eb;
+	vertical-align: top;
+}
+
+.page-calendar .meal-calendar th {
+	background: var(--color-primary);
+	text-align: left;
+	padding: var(--space-sm);
+	font-weight: 700;
+}
+
+.page-calendar .meal-calendar td {
+	padding: var(--space-sm);
+	min-height: 110px;
+}
+
+.page-calendar .meal-cell {
+	background: #ffffff;
+	border-radius: var(--radius);
+	padding: var(--space-sm);
+}
+
+#shopping-title {
+	margin-top: var(--space-sm);
+}
+
+.page-calendar .shopping-list {
+	list-style: none;
+	margin: var(--space-sm) 0 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
+}
+
+.page-calendar .shopping-list li {
+	background: var(--surface);
+	border: 1px solid #e5e7eb;
+	border-radius: var(--radius);
+	padding: var(--space-sm) var(--space-md);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-md);
+	flex-wrap: wrap;
+}
+
+.page-calendar .shopping-list label {
+	display: flex;
+	align-items: center;
+	gap: var(--space-sm);
+	margin: 0;
+}
+
+.page-calendar .recipe-source {
+	color: var(--muted);
+	font-size: 0.9rem;
+}
+
+.page-calendar .shopping-actions {
+	margin-top: var(--space-md);
+}
+
+.page-calendar .btn-clear {
+	font-size: 0.8rem;
+	padding: var(--space-sm) var(--space-md);
+	border: 1px solid #d1d5db;
+	border-radius: 14px;
+	background: var(--surface);
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.page-calendar .btn-clear:hover {
+	background: #f3f4f6;
+}
+
+@media (max-width: 768px) {
+	/* Mobile calendar: switch from grid to day cards */
+
+	.page-calendar .meal-calendar {
+		width: 100%;
+		border: none;
+		background: transparent;
+		border-collapse: separate;
+	}
+
+	.page-calendar .meal-calendar thead {
+		display: none;
+	}
+
+	.page-calendar .meal-calendar,
+	.page-calendar .meal-calendar tbody,
+	.page-calendar .meal-calendar tr {
+		display: block;
+		width: 100%;
+	}
+
+	.page-calendar .meal-calendar td {
+		display: block;
+		width: 100%;
+		margin-bottom: var(--space-md);
+		padding: var(--space-md);
+		border: 1px solid #e5e7eb;
+		border-radius: var(--radius);
+		background: var(--surface);
+	}
+	.page-calendar .meal-calendar td::before {
+		display: block;
+		font-weight: 700;
+		margin-bottom: var(--space-sm);
+		color: var(--text);
+	}
+
+	.page-calendar .meal-calendar td[data-day="monday"]::before {
+		content: "Mon:";
+	}
+	.page-calendar .meal-calendar td[data-day="tuesday"]::before {
+		content: "Tue:";
+	}
+	.page-calendar .meal-calendar td[data-day="wednesday"]::before {
+		content: "Wed:";
+	}
+	.page-calendar .meal-calendar td[data-day="thursday"]::before {
+		content: "Thu:";
+	}
+	.page-calendar .meal-calendar td[data-day="friday"]::before {
+		content: "Fri:";
+	}
+	.page-calendar .meal-calendar td[data-day="saturday"]::before {
+		content: "Sat:";
+	}
+	.page-calendar .meal-calendar td[data-day="sunday"]::before {
+		content: "Sun";
+	}
+
+	.page-calendar .meal-cell {
+		padding: 0;
+		background: transparent;
+	}
+}
