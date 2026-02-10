@@ -110,7 +110,7 @@ export function Pantry() {
                                         placeholder="Enter protein..."
                                         data-category="protein"
                                     />
-                                    <button type="button">Add</button>
+                                    <button type="button" className ="add-button">Add</button>
                                 </div>
                             </div>
                         </details>
@@ -167,7 +167,7 @@ export function Pantry() {
                                         placeholder="Enter dairy product..."
                                         data-category="dairy"
                                     />
-                                    <button type="button">Add</button>
+                                    <button type="button" className="add-button">Add</button>
                                 </div>
                             </div>
                         </details>
@@ -233,7 +233,7 @@ export function Pantry() {
                                         placeholder="Enter vegetable..."
                                         data-category="vegetables"
                                     />
-                                    <button type="button">Add</button>
+                                    <button type="button" className="add-button">Add</button>
                                 </div>
                             </div>
                         </details>
@@ -290,7 +290,7 @@ export function Pantry() {
                                         placeholder="Enter fruit..."
                                         data-category="fruits"
                                     />
-                                    <button type="button">Add</button>
+                                    <button type="button" className="add-button">Add</button>
                                 </div>
                             </div>
                         </details>
@@ -356,7 +356,7 @@ export function Pantry() {
                                         placeholder="Enter grain..."
                                         data-category="grains"
                                     />
-                                    <button type="button">Add</button>
+                                    <button type="button" className="add-button">Add</button>
                                 </div>
                             </div>
                         </details>
@@ -422,7 +422,7 @@ export function Pantry() {
                                         placeholder="Enter staple..."
                                         data-category="staples"
                                     />
-                                    <button type="button">Add</button>
+                                    <button type="button" className="add-button">Add</button>
                                 </div>
                             </div>
                         </details>
@@ -479,7 +479,7 @@ export function Pantry() {
                                         placeholder="Enter beverage..."
                                         data-category="beverages"
                                     />
-                                    <button type="button">Add</button>
+                                    <button type="button" className="add-button">Add</button>
                                 </div>
                             </div>
                         </details>
