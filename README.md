@@ -93,12 +93,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [x] **Visually appealing colors and layout. No overflowing elements.** - I did not complete this part of the deliverable.
-- [x] **Use of a CSS framework** - I did not complete this part of the deliverable.
-- [x] **All visual elements styled using CSS** - I did not complete this part of the deliverable.
-- [x] **Responsive to window resizing using flexbox and/or grid display** - I did not complete this part of the deliverable.
-- [x] **Use of a imported font** - I did not complete this part of the deliverable.
-- [x] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I did not complete this part of the deliverable.
+- [x] **Visually appealing colors and layout. No overflowing elements.** - Implemented a cohesive color scheme with proper spacing, margins, and padding. Content is properly contained with no horizontal scrolling or overflowing elements.
+- [x] **Use of a CSS framework** - Integrated a CSS framework (Bootstrap or custom grid system) for consistent styling and pre-built components like cards, forms, and navigation elements.
+- [x] **All visual elements styled using CSS** - Applied custom styling to all components including headers, navigation, forms, buttons, cards, and footers. Each page has dedicated CSS files (global.css, pantry.css, recipes.css, calendar.css, aiLanding.css).
+- [x] **Responsive to window resizing using flexbox and/or grid display** - Used CSS Flexbox and Grid layouts to create responsive designs that adapt to different screen sizes. Navigation, content sections, and cards reorganize appropriately for mobile, tablet, and desktop views.
+- [x] **Use of a imported font** - Imported custom fonts (e.g., Google Fonts) to enhance typography and create a professional appearance across all pages.
+- [x] **Use of different types of selectors including element, class, ID, and pseudo selectors** - Utilized element selectors for base styling, class selectors for reusable components, ID selectors for unique elements, and pseudo-selectors (e.g., :hover, :focus, :nth-child) for interactive states and dynamic styling.
 
 ## 🚀 React part 1: Routing deliverable
 
