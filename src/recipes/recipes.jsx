@@ -30,13 +30,13 @@ export function Recipes() {
                             <summary>Planned DB request/response (placeholder)</summary>
                             <pre className="code-block">{`GET /api/recipes?q=chicken&maxReadyTime=30
 
-    200 OK
-    {
-    "results": [
-        {"id": "recipe_123", "title": "Lemon Garlic Chicken", "readyInMinutes": 30 },
-        {"id": "recipe_456", "title": "Veggie Stir Fry", "readyInMinutes": 20 }
-    ]
-    }`}</pre>
+        200 OK
+        {
+        "results": [
+            {"id": "recipe_123", "title": "Lemon Garlic Chicken", "readyInMinutes": 30 },
+            {"id": "recipe_456", "title": "Veggie Stir Fry", "readyInMinutes": 20 }
+        ]
+        }`}</pre>
                         </details>
                     </section>
 
@@ -364,13 +364,13 @@ export function FriendsRecipes() {
                             <summary>Planned DB request/response (placeholder)</summary>
                             <pre className="code-block">{`GET /api/recipes?q=chicken&maxReadyTime=30
 
-200 OK
-{
-  "results": [
-    {"id": "recipe_123", "title": "Lemon Garlic Chicken", "readyInMinutes": 30 },
-    {"id": "recipe_456", "title": "Veggie Stir Fry", "readyInMinutes": 20 }
-  ]
-}`}</pre>
+    200 OK
+    {
+      "results": [
+        {"id": "recipe_123", "title": "Lemon Garlic Chicken", "readyInMinutes": 30 },
+        {"id": "recipe_456", "title": "Veggie Stir Fry", "readyInMinutes": 20 }
+      ]
+    }`}</pre>
                         </details>
                     </section>
 

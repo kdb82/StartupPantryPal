@@ -41,9 +41,8 @@ export function Register() {
                     >
                         Account created successfully! Redirecting...
                     </div>
-                </form>
-
-                <NavLink to="/login">Already have an account? Log in here.</NavLink>
+            </form>
+            <NavLink to="/login">Already have an account? Log in here.</NavLink>
             </div>
         </main>
     );

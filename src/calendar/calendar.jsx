@@ -13,8 +13,8 @@ export function Calendar() {
                             </button>
                             <p id="week-range">
                                 <strong>Week of:</strong>
-                                <span data-start="2026-01-26">Jan 26</span> –
-                                <span data-end="2026-02-01">Feb 1</span>
+                                <span data-start="2026-01-26"> Jan 26</span> – 
+                                <span data-end="2026-02-01"> Feb 1</span>
                             </p>
                             <button type="button" aria-label="View next week">Next →</button>
                         </div>
@@ -38,9 +38,9 @@ export function Calendar() {
                                     <td data-day="monday">
                                         <div className="meal-cell">
                                             <strong>Saved Recipes:</strong> Tacos<br /><em
-                                            >Missing:</em
+                                            >Missing: </em
                                             >
-                                            tortillas
+                                             tortillas
                                         </div>
                                     </td>
                                     <td data-day="tuesday">

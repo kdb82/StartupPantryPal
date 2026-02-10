@@ -41,6 +41,7 @@ body {
 	color: var(--muted);
 }
 
+
 .app {
 	min-height: 100vh;
 	display: grid;
@@ -69,7 +70,7 @@ header {
 }
 
 .checkbox-text {
-	margin-left: var(--space-sm);
+	margin-right: var(--space-sm);
 	color: var(--text);
 }
 
@@ -568,11 +569,12 @@ CALENDAR PAGE ----------------------
 }
 
 .page-pantry .remove-item {
-	padding: 0.35rem 0.7rem;
+	padding: 0.2rem 0.5rem;
 	border: 1px solid #d1d5db;
-	border-radius: var(--radius);
+	border-radius: var(--radius) !important;
 	background: var(--surface);
 	cursor: pointer;
+	font-size: 0.85rem;
 	font-weight: 600;
 }
 
@@ -999,7 +1001,7 @@ CALENDAR PAGE ----------------------
 	}
 
 	.page-pantry .item-list li {
-		padding: var(--space-sm);
+		padding: 6px;
 	}
 
 	.page-recipes .recipe-grid {
