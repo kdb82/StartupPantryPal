@@ -1,5 +1,5 @@
 import React from "react";
-import './styles.css';
+import "./styles.css";
 import { BrowserRouter, NavLink, Routes, Route } from "react-router-dom";
 import { Login } from "./login/login";
 import { Register } from "./register/register";

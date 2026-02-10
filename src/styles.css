@@ -37,15 +37,6 @@ body {
 	color: var(--text);
 }
 
-/* Override Bootstrap font weight resets */
-h1, h2, h3, h4, h5, h6 {
-	font-weight: 700;
-}
-
-strong, b {
-	font-weight: 700;
-}
-
 .muted {
 	color: var(--muted);
 }
@@ -85,7 +76,7 @@ header {
 nav a {
 	text-decoration: none;
 	color: var(--text);
-	font-weight: 500 !important;
+	font-weight: 500;
 }
 
 nav a:hover {
@@ -146,17 +137,7 @@ form {
 }
 
 label {
-	font-weight: 500 !important;
-}
-
-.inline-form label,
-.page-pantry .add-item label,
-.page-ai .prefs-content label {
-	font-weight: 600 !important;
-}
-
-summary {
-	font-weight: 700 !important;
+	font-weight: 500;
 }
 
 input {
@@ -206,7 +187,7 @@ select {
 	background: var(--color-secondary);
 	color: white;
 	font-size: 1rem;
-	font-weight: 500 !important;
+	font-weight: 500;
 	cursor: pointer;
 }
 
@@ -268,7 +249,7 @@ footer .container {
 
 .built-by {
 	margin: 0;
-	font-weight: 500 !important;
+	font-weight: 500;
 }
 
 .github-link {
@@ -281,7 +262,7 @@ footer .container {
 
 .github-link a {
 	color: var(--text);
-	font-weight: 500 !important;
+	font-weight: 500;
 	text-decoration: none;
 }
 
@@ -325,7 +306,7 @@ nav a[aria-current="page"] {
 
 .inline-form label {
 	margin: 0;
-	font-weight: 600 !important;
+	font-weight: 600;
 }
 
 .inline-form input {
@@ -339,7 +320,7 @@ nav a[aria-current="page"] {
 	border-radius: var(--radius);
 	background: var(--color-secondary);
 	color: #fff;
-	font-weight: 600 !important;
+	font-weight: 600;
 	cursor: pointer;
 }
 
@@ -377,28 +358,26 @@ CALENDAR PAGE ----------------------
 }
 
 .page-calendar h2 {
-	margin: 0 0 var(--space-sm) !important;
-	font-size: 1.1rem !important;
-	font-weight: 700 !important;
+	margin: 0 0 var(--space-sm);
+	font-size: 1.1rem;
 }
 
 .page-calendar .calendar-controls {
-	display: flex !important;
+	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	gap: var(--space-md);
 	flex-wrap: nowrap;
-	margin: var(--space-md) 0 !important;
+	margin: var(--space-md) 0;
 }
 
 .page-calendar .calendar-controls button {
-	padding: var(--space-sm) var(--space-md) !important;
-	border: none !important;
+	padding: var(--space-sm) var(--space-md);
+	border: none;
 	border-radius: var(--radius);
-	background: var(--color-secondary) !important;
-	color: #fff !important;
-	font-weight: 600 !important;
-	font-size: 1rem !important;
+	background: var(--color-secondary);
+	color: #fff;
+	font-weight: 600;
 	cursor: pointer;
 }
 
@@ -407,38 +386,33 @@ CALENDAR PAGE ----------------------
 }
 
 .page-calendar #week-range {
-	margin: 0 !important;
-	font-size: 1rem !important;
+	margin: 0;
 }
 
 .page-calendar .meal-calendar {
-	width: 100% !important;
-	border-collapse: collapse !important;
+	width: 100%;
+	border-collapse: collapse;
 	background: var(--surface);
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
 	overflow: auto;
-	font-size: 1rem !important;
-	color: var(--text) !important;
 }
 
 .page-calendar .meal-calendar th,
 .page-calendar .meal-calendar td {
-	border: 1px solid #e5e7eb !important;
-	vertical-align: top !important;
-	padding: var(--space-sm) !important;
+	border: 1px solid #e5e7eb;
+	vertical-align: top;
 }
 
 .page-calendar .meal-calendar th {
-	background: var(--color-primary) !important;
-	text-align: left !important;
-	padding: var(--space-sm) !important;
-	font-weight: 700 !important;
-	border-bottom: 2px solid #e5e7eb !important;
+	background: var(--color-primary);
+	text-align: left;
+	padding: var(--space-sm);
+	font-weight: 700;
 }
 
 .page-calendar .meal-calendar td {
-	padding: var(--space-sm) !important;
+	padding: var(--space-sm);
 	min-height: 110px;
 }
 
@@ -446,8 +420,6 @@ CALENDAR PAGE ----------------------
 	background: #ffffff;
 	border-radius: var(--radius);
 	padding: var(--space-sm);
-	min-height: 90px;
-	font-size: 0.95rem;
 }
 
 /* Shopping list */
@@ -458,15 +430,13 @@ CALENDAR PAGE ----------------------
 }
 
 #shopping-title {
-	margin-top: var(--space-lg) !important;
-	margin-bottom: var(--space-sm) !important;
-	font-weight: 700 !important;
+	margin-top: var(--space-sm);
 }
 
 .page-calendar .shopping-list {
-	list-style: none !important;
-	margin: var(--space-sm) 0 0 !important;
-	padding: 0 !important;
+	list-style: none;
+	margin: var(--space-sm) 0 0;
+	padding: 0;
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-sm);
@@ -476,13 +446,12 @@ CALENDAR PAGE ----------------------
 	background: var(--surface);
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
-	padding: var(--space-sm) var(--space-md) !important;
+	padding: var(--space-sm) var(--space-md);
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	gap: var(--space-md);
 	flex-wrap: wrap;
-	list-style: none !important;
 }
 
 .page-calendar .shopping-list label {
@@ -490,27 +459,24 @@ CALENDAR PAGE ----------------------
 	align-items: center;
 	gap: var(--space-sm);
 	margin: 0;
-	font-weight: 500 !important;
 }
 
 .page-calendar .recipe-source {
-	color: var(--muted) !important;
-	font-size: 0.9rem !important;
+	color: var(--muted);
+	font-size: 0.9rem;
 }
 
 .page-calendar .shopping-actions {
-	margin-top: var(--space-md) !important;
+	margin-top: var(--space-md);
 }
 
 .page-calendar .btn-clear {
-	padding: var(--space-sm) var(--space-md) !important;
-	border: 1px solid #d1d5db !important;
+	padding: var(--space-sm) var(--space-md);
+	border: 1px solid #d1d5db;
 	border-radius: var(--radius);
-	background: var(--surface) !important;
-	color: var(--text) !important;
+	background: var(--surface);
 	cursor: pointer;
-	font-weight: 600 !important;
-	font-size: 1rem !important;
+	font-weight: 600;
 }
 
 .page-calendar .btn-clear:hover {
@@ -560,7 +526,7 @@ CALENDAR PAGE ----------------------
 .page-pantry summary {
 	cursor: pointer;
 	padding: var(--space-sm) var(--space-md);
-	font-weight: 700 !important;
+	font-weight: 700;
 	background: #f3f4f6;
 }
 
@@ -598,7 +564,7 @@ CALENDAR PAGE ----------------------
 	align-items: center;
 	gap: var(--space-sm);
 	margin: 0;
-	font-weight: 500 !important;
+	font-weight: 500;
 }
 
 .page-pantry .remove-item {
@@ -607,7 +573,7 @@ CALENDAR PAGE ----------------------
 	border-radius: var(--radius);
 	background: var(--surface);
 	cursor: pointer;
-	font-weight: 600 !important;
+	font-weight: 600;
 }
 
 .page-pantry .remove-item:hover {
@@ -624,7 +590,7 @@ CALENDAR PAGE ----------------------
 
 .page-pantry .add-item label {
 	margin: 0;
-	font-weight: 600 !important;
+	font-weight: 600;
 }
 
 .page-pantry .add-item input {
@@ -638,7 +604,7 @@ CALENDAR PAGE ----------------------
 	border-radius: var(--radius);
 	background: var(--color-secondary);
 	color: #fff;
-	font-weight: 600 !important;
+	font-weight: 600;
 	cursor: pointer;
 }
 
@@ -682,7 +648,7 @@ CALENDAR PAGE ----------------------
 .page-recipes summary {
 	cursor: pointer;
 	padding: var(--space-sm) var(--space-md);
-	font-weight: 700 !important;
+	font-weight: 700;
 	background: #f3f4f6;
 }
 
@@ -707,7 +673,7 @@ CALENDAR PAGE ----------------------
 	border-radius: var(--radius);
 	background: var(--surface);
 
-	font-weight: 600 !important;
+	font-weight: 600;
 	color: var(--text);
 	text-decoration: none;
 	cursor: pointer;
@@ -824,7 +790,7 @@ CALENDAR PAGE ----------------------
 	border-radius: var(--radius);
 	background: var(--color-secondary);
 	color: #fff;
-	font-weight: 600 !important;
+	font-weight: 600;
 	cursor: pointer;
 }
 
@@ -834,7 +800,7 @@ CALENDAR PAGE ----------------------
 	border-radius: var(--radius);
 	background: var(--surface);
 	color: var(--color-secondary);
-	font-weight: 600 !important;
+	font-weight: 600;
 	cursor: pointer;
 }
 
@@ -864,7 +830,7 @@ CALENDAR PAGE ----------------------
 }
 
 .page-recipes .modal-title {
-	font-weight: 700 !important;
+	font-weight: 700;
 }
 
 .page-recipes .modal-footer {
@@ -875,13 +841,13 @@ CALENDAR PAGE ----------------------
 	background: #f3f4f6 !important;
 	color: var(--text) !important;
 	border: 1px solid #e5e7eb;
-	font-weight: 600 !important;
+	font-weight: 600;
 }
 
 .page-recipes .modal .btn-primary {
 	background-color: var(--color-secondary);
 	border-color: var(--color-secondary);
-	font-weight: 600 !important;
+	font-weight: 600;
 }
 
 .page-recipes .modal .btn-primary:hover {
@@ -891,7 +857,7 @@ CALENDAR PAGE ----------------------
 .page-recipes .modal .btn-danger {
 	background-color: transparent;
 	border-color: #c94259;
-	font-weight: 600 !important;
+	font-weight: 600;
     color: #c94259;
 }
 
@@ -902,7 +868,7 @@ CALENDAR PAGE ----------------------
 .page-recipes .modal .btn-outline-secondary {
 	border-color: #d1d5db;
 	color: var(--text);
-	font-weight: 600 !important;
+	font-weight: 600;
 }
 
 .page-recipes .modal .btn-outline-secondary:hover {
@@ -964,7 +930,7 @@ CALENDAR PAGE ----------------------
 .page-ai .prefs summary {
 	cursor: pointer;
 	padding: var(--space-sm) var(--space-md);
-	font-weight: 700 !important;
+	font-weight: 700;
 	background: #f3f4f6;
 }
 
@@ -974,12 +940,6 @@ CALENDAR PAGE ----------------------
 
 .page-ai .prefs-content {
 	padding: var(--space-sm);
-}
-
-.page-ai .prefs-content label {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--space-sm);
 }
 
 .page-ai .form-actions {
@@ -1063,37 +1023,37 @@ CALENDAR PAGE ----------------------
 	/* Mobile calendar: switch from grid to day cards */
 
 	.page-calendar .meal-calendar {
-		width: 100% !important;
-		border: none !important;
-		background: transparent !important;
-		border-collapse: separate !important;
+		width: 100%;
+		border: none;
+		background: transparent;
+		border-collapse: separate;
 	}
 
 	.page-calendar .meal-calendar thead {
-		display: none !important;
+		display: none;
 	}
 
 	.page-calendar .meal-calendar,
 	.page-calendar .meal-calendar tbody,
 	.page-calendar .meal-calendar tr {
-		display: block !important;
-		width: 100% !important;
+		display: block;
+		width: 100%;
 	}
 
 	.page-calendar .meal-calendar td {
-		display: block !important;
-		width: 100% !important;
+		display: block;
+		width: 100%;
 		margin-bottom: var(--space-md);
-		padding: var(--space-md) !important;
-		border: 1px solid #e5e7eb !important;
+		padding: var(--space-md);
+		border: 1px solid #e5e7eb;
 		border-radius: var(--radius);
-		background: var(--surface) !important;
+		background: var(--surface);
 	}
 	.page-calendar .meal-calendar td::before {
 		display: block;
-		font-weight: 700 !important;
+		font-weight: 700;
 		margin-bottom: var(--space-sm);
-		color: var(--text) !important;
+		color: var(--text);
 	}
 
 	.page-calendar .meal-calendar td[data-day="monday"]::before {
@@ -1119,7 +1079,7 @@ CALENDAR PAGE ----------------------
 	}
 
 	.page-calendar .meal-cell {
-		padding: 0 !important;
-		background: transparent !important;
+		padding: 0;
+		background: transparent;
 	}
 }
