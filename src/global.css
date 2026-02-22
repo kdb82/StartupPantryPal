@@ -135,7 +135,8 @@ form {
 
 .email_field,
 .password_field,
-.confirm_password_field {
+.confirm_password_field,
+.username_field {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-sm);

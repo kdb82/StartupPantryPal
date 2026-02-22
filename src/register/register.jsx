@@ -16,6 +16,10 @@ export function Register() {
                         <label htmlFor="email">Email:</label>
                         <input type="email" id="email" name="email" required />
                     </div>
+                    <div className="username_field">
+                        <label htmlFor="username">Username:</label>
+                        <input type="text" id="username" name="username" required />
+                    </div>
                     <div className="password_field">
                         <label htmlFor="password">Password:</label>
                         <input type="password" id="password" name="password" required />

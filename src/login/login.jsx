@@ -12,9 +12,9 @@ export function Login() {
 						className="logo"
 					/>
 					<form id="loginForm" method="post" action="/api/login">
-						<div className="email_field">
-							<label htmlFor="email">Email:</label>
-							<input type="email" id="email" name="email" required />
+						<div className="username_field">
+							<label htmlFor="username">Username:</label>
+							<input type="text" id="username" name="username" required />
 						</div>
 						<div className="password_field">
 							<label htmlFor="password">Password:</label>
