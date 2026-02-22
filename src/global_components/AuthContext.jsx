@@ -2,6 +2,11 @@ import React from "react";
 import { createContext, useContext, useState, useEffect } from "react";
 import bcrypt from "bcryptjs";
 
+
+const USERS_KEY = "pantrypal_users";
+const CURRENT_USER_KEY = "pantrypal_currentUser";
+const AUTH_CHANGED_EVENT = "pantrypal_auth_changed";
+
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -13,19 +18,82 @@ export const AuthProvider = ({ children }) => {
 
     // Load current user from localStorage on mount
     useEffect(() => {
-        const storedUser = localStorage.getItem("currentUser");
+        const storedUser = localStorage.getItem(CURRENT_USER_KEY);
         if (storedUser) {
             try {
                 setCurrentUser(JSON.parse(storedUser));
             } catch (error) {
                 console.error("Error parsing stored user:", error);
-                localStorage.removeItem("currentUser");
+                localStorage.removeItem(CURRENT_USER_KEY);
             }
         }
     }, []);
 
+    const register = async (username, email, password) => {
+        const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+        
+        if (!username || !email || !password) {
+            throw new Error("All fields are required");
+        }
+        
+        if (users.find((u) => u.email === email)) {
+            throw new Error("Email already in use");
+        }
+        
+        if (users.find((u) => u.username === username)) {
+            throw new Error("Username already in use");
+        }
+
+        try {
+            const passwordHash = await bcrypt.hash(password, 10);
+            const newUser = { username, email, passwordHash };
+            users.push(newUser);
+            localStorage.setItem(USERS_KEY, JSON.stringify(users));
+            
+            const { passwordHash: _, ...userWithoutPassword } = newUser;
+            localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
+            setCurrentUser(userWithoutPassword);
+            
+            console.log("User registered successfully:", userWithoutPassword);
+            return true;
+        } catch (error) {
+            console.error("Error during registration:", error);
+            throw new Error("Failed to register user");
+        }
+    };
+
+    const login = (email, password) => {
+        const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+        const user = users.find((u) => u.email === email);
+        
+        if (!user) {
+            throw new Error("Invalid email or password");
+        }
+
+        const passwordMatch = bcrypt.compareSync(password, user.passwordHash);
+        if (!passwordMatch) {
+            throw new Error("Invalid email or password");
+        }
+
+        const { passwordHash: _, ...userWithoutPassword } = user;
+        localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
+        setCurrentUser(userWithoutPassword);
+        
+        console.log("User logged in successfully:", userWithoutPassword);
+        return true;
+    };
+
+    const logout = () => {
+        localStorage.removeItem(CURRENT_USER_KEY);
+        setCurrentUser(null);
+        console.log("User logged out");
+    };
+
     const value = {
         currentUser,
+        register,
+        login,
+        logout,
         isAuthenticated: currentUser !== null
     };
 
@@ -36,71 +104,3 @@ export const AuthProvider = ({ children }) => {
     );
 }
 
-export function getUsers() {
-    const users = localStorage.getItem("users");
-    return users ? JSON.parse(users) : [];
-}
-
-export function saveUsers(users) {
-    localStorage.setItem("users", JSON.stringify(users));
-}
-
-export function getCurrentUser() {
-    const user = localStorage.getItem("currentUser");
-    return user ? JSON.parse(user) : null;
-}
-
-export function setCurrentUser(user) {
-    localStorage.setItem("currentUser", JSON.stringify(user));
-}
-
-export function removeCurrentUser() {
-    localStorage.removeItem("currentUser");
-}
-
-export async function registerUser(username, email, password) {
-    const users = getUsers();
-    if (users.find((u) => u.email === email)) {
-        throw new Error("Email already in use");
-    }
-    if (users.find((u) => u.username === username)) {
-        throw new Error("Username already in use");
-    }
-
-    try {
-        const hashedPassword = await bcrypt.hash(password, 10);
-    } catch (error) {
-        console.error("Error hashing password:", error);
-        throw new Error("Failed to register user");
-    }
-    const newUser = { username, email, password: hashedPassword };
-    users.push(newUser);
-    saveUsers(users);
-    setCurrentUser(newUser);
-    console.log("User register success:", newUser);
-    return true;
-}
-
-export async function loginUser(email, password) {
-    const users = getUsers();
-    const user = users.find((u) => u.email === email);
-    if (!user) {
-        console.error("Login failed: User not found for email", email);
-        throw new Error("User not found");
-    }
-
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-        console.error("Login failed: Incorrect password for user", user.username);
-        throw new Error("Incorrect password");
-    }
-
-    setCurrentUser(user);
-    console.log("User login success:", user);
-    return true;
-}
-
-export const logoutUser = () => {
-    removeCurrentUser();
-    console.log("User logged out");
-};
