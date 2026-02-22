@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const login = (email, password) => {
+    const login = async (email, password) => {
         const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
         const user = users.find((u) => u.email === email);
         
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
             throw new Error("Invalid email or password");
         }
 
-        const passwordMatch = bcrypt.compareSync(password, user.passwordHash);
+        const passwordMatch = await bcrypt.compare(password, user.passwordHash);
         if (!passwordMatch) {
             throw new Error("Invalid email or password");
         }
