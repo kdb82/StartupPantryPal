@@ -7,6 +7,7 @@ import { Pantry } from "./pantry/pantry";
 import { FriendsRecipes, Recipes } from "./recipes/recipes";
 import { Calendar } from "./calendar/calendar";
 import { AILanding } from "./aiLanding/ailanding";
+import { ProtectedRoute } from "./global_components/ProtectedRoute";
 
 export default function App() {
 	return (
@@ -32,12 +33,12 @@ export default function App() {
 				<Routes>
 					<Route path="/login" element={<Login />} />
 					<Route path="/" element={<Login />} />
-					<Route path="/recipes" element={<Recipes />} />
-					<Route path="/recipes/friends" element={<FriendsRecipes />} />
+					<Route path="/recipes" element={<ProtectedRoute><Recipes /></ProtectedRoute>} />
+					<Route path="/recipes/friends" element={<ProtectedRoute><FriendsRecipes /></ProtectedRoute>} />
 					<Route path="/register" element={<Register />} />
-					<Route path="/pantry" element={<Pantry />} />
-					<Route path="/calendar" element={<Calendar />} />
-					<Route path="/ai-assistant" element={<AILanding />} />
+					<Route path="/pantry" element={<ProtectedRoute><Pantry /></ProtectedRoute>} />
+					<Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
+					<Route path="/ai-assistant" element={<ProtectedRoute><AILanding /></ProtectedRoute>} />
 				</Routes>
 
 				<footer className="app-footer">

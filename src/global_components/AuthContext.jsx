@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    const register = async (username, email, password) => {
+    const register = (username, email, password) => {
         const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
         
         if (!username || !email || !password) {
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         try {
-            const passwordHash = await bcrypt.hash(password, 10);
+            const passwordHash = bcrypt.hashSync(password, 10);
             const newUser = { username, email, passwordHash };
             users.push(newUser);
             localStorage.setItem(USERS_KEY, JSON.stringify(users));
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const login = async (email, password) => {
+    const login = (email, password) => {
         const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
         const user = users.find((u) => u.email === email);
         
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
             throw new Error("Invalid email or password");
         }
 
-        const passwordMatch = await bcrypt.compare(password, user.passwordHash);
+        const passwordMatch = bcrypt.compareSync(password, user.passwordHash);
         if (!passwordMatch) {
             throw new Error("Invalid email or password");
         }
