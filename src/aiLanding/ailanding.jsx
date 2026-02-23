@@ -3,8 +3,64 @@ import "../global.css";
 import "./aiLanding.css";
 import { createRecipeAgent } from "../services/recipeAgent";
 import { getActualPantryTool, searchRecipesTool, addToShoppingListTool } from "../services/recipeTools";
+import { useMemo } from "react";
 
 export function AILanding() {
+    const agent = useMemo(() => {
+        const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
+        return createRecipeAgent({
+            apiKey,
+            model: "openrouter/auto",
+            tools: [getActualPantryTool, searchRecipesTool, addToShoppingListTool],
+        });
+    }, []);
+
+    const [prompt, setPrompt] = React.useState("");
+    const [AIStatus, setAIStatus] = React.useState("idle");
+    const [AIOutput, setAIOutput] = React.useState("");
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const servings = formData.get("servings");
+        const timeLimit = formData.get("timeLimit");
+        const diet = formData.get("diet");
+        const usePantry = formData.get("usePantry") === "on";
+
+        const preferenceNote = [
+            `Servings: ${servings || "unspecified"}`,
+            `Time limit: ${timeLimit || "unspecified"} minutes`,
+            `Diet: ${diet || "no preference"}`,
+            `Use pantry items: ${usePantry ? "yes" : "no"}`
+        ].join("\n");
+
+        const fullPrompt = `${prompt}\n\nPreferences:\n${preferenceNote}`;
+
+        setAIOutput("Processing your request...");
+        try {
+            const fullResponse = await agent.send(fullPrompt, {
+                onThinking: () => setAIStatus("thinking"),
+                onStream: (delta, fullText) => setAIOutput(fullText),
+                onToolCall: (name, args) => {
+                    console.log(`Tool called: ${name} with args`, args);
+                    setAIOutput((prev) => prev + `\n[Tool called: ${name}]`);
+                },
+                onComplete: (fullText) => {
+                    setAIStatus("complete");
+                    setAIOutput(fullText);
+                },
+                onError: (error) => {
+                    setAIStatus("error");
+                    setAIOutput(`Error: ${error.message}`);
+                },
+            });
+        } catch (error) {
+            setAIStatus("error");
+            console.error("Error sending message to agent:", error);
+            setAIOutput(`Error: ${error.message}`);
+        }
+    }
+
     return (
         <div className="page-ai">
             <main className="ai-main">
@@ -43,14 +99,14 @@ export function AILanding() {
                                 </li>
                             </ul>
                             <p id="aiStatus" className="muted" role="status" aria-live="polite">
-                                Not connected (placeholder).
+                                {AIStatus === "idle" ? "Idle" : AIStatus}
                             </p>
                             <pre id="aiOutput" className="code-block" aria-label="AI output text">
-                                Waiting for a prompt…</pre
-                            >
+                                {AIOutput || "Waiting for a prompt..."}
+                            </pre>
                         </section>
 
-                        <form id="aiPromptForm" method="post" action="/api/ai">
+                        <form id="aiPromptForm" onSubmit={handleSubmit} className="ai-form">
                             <label htmlFor="prompt">Prompt</label>
                             <textarea
                                 id="prompt"
@@ -59,6 +115,8 @@ export function AILanding() {
                                 placeholder="Example: I want to make an Italian dinner with ingredients I have."
                                 data-field="recipe-prompt"
                                 required
+                                value={prompt}
+                                onChange={(e) => setPrompt(e.target.value)}
                             ></textarea>
 
                             <details className="prefs" open>
