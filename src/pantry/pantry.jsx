@@ -7,7 +7,11 @@ const PANTRY_KEY = "user_pantry_data";
 
 export function Pantry() {
     const [items, setItems] = React.useState([]);
-    const [proteinInput, setProteinInput] = React.useState("");
+    const [categories, setCategories] = React.useState([
+        "protein", "dairy", "vegetables", "fruits", "grains", "staples", "beverages"
+    ]);
+    const [itemInputs, setItemInputs] = React.useState({});
+    const [newCategoryInput, setNewCategoryInput] = React.useState("");
 
     // Helpers
     function getPantry() {
@@ -33,14 +37,15 @@ export function Pantry() {
         localStorage.setItem(PANTRY_KEY, JSON.stringify(newItems));
     };
 
-    const addProtein = () => {
-        if (!proteinInput.trim()) return;
+    const addItem = (category) => {
+        const input = itemInputs[category] || "";
+        if (!input.trim()) return;
 
         const newItem = {
             id: crypto.randomUUID(),
-            name: proteinInput.trim(),
-            quantity: 1, 
-            category: "protein",
+            name: input.trim(),
+            quantity: 1,
+            category: category,
             checked: false,
             addedAt: new Date().toISOString(),
             addedBy: "currentUser" // Placeholder, replace with actual user info
@@ -48,7 +53,36 @@ export function Pantry() {
 
         const updated = [...items, newItem];
         savePantry(updated);
-        setProteinInput("");
+        setItemInputs({ ...itemInputs, [category]: "" });
+    };
+
+    const addCategory = () => {
+        if (!newCategoryInput.trim()) return;
+        const categoryId = newCategoryInput.trim().toLowerCase().replace(/\s+/g, '-');
+        if (categories.includes(categoryId)) {
+            alert("Category already exists");
+            return;
+        }
+        setCategories([...categories, categoryId]);
+        setNewCategoryInput("");
+    };
+
+    const deleteCategory = (categoryId) => {
+        if (!window.confirm(`Delete "${categoryId}" category and all its items?`)) return;
+        setCategories(categories.filter(c => c !== categoryId));
+        const updatedItems = items.filter(item => item.category !== categoryId);
+        savePantry(updatedItems);
+    };
+
+    const handleItemInputChange = (category, value) => {
+        setItemInputs({ ...itemInputs, [category]: value });
+    };
+
+    const formatCategoryName = (category) => {
+        return category
+            .split('-')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
     };
 
     useEffect(() => {
@@ -120,429 +154,103 @@ export function Pantry() {
                         </ul>
                     </section>
 
-                    {/* Proteins Section */}
-                <section className="pantry-category">
-                    <details open>
-                        <summary>Proteins</summary>
-                        <div className="category-content">
-                            <ul className="item-list">
-                                {items
-                                    .filter((item) => item.category === "protein")
-                                    .map((item) => (
-                                        <li key={item.id}>
-                                            <label>
-                                                <input type="checkbox" />
-                                                {item.name} (quantity: {item.quantity})
-                                            </label>
-                                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                                                <button
-                                                    type="button"
-                                                    className="quantity-btn"
-                                                    onClick={() => updateQuantity(item.id, -1)}
-                                                >
-                                                    -
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    className="quantity-btn"
-                                                    onClick={() => updateQuantity(item.id, 1)}
-                                                >
-                                                    +
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    className="remove-item"
-                                                    onClick={() => removeItem(item.id)}
-                                                >
-                                                    Remove
-                                                </button>
-                                            </div>
-                                        </li>
-                                    ))}
-                            </ul>
-                            <div className="add-item">
-                                <label htmlFor="proteinInput">Add item:</label>
-                                <input
-                                    type="text"
-                                    id="proteinInput"
-                                    placeholder="Enter protein..."
-                                    data-category="protein"
-                                    value={proteinInput}
-                                    onChange={(e) => setProteinInput(e.target.value)}
-                                />
-                                <button type="button" className="add-button" onClick={addProtein}>Add</button>
-                            </div>
-                        </div>
-                    </details>
-                </section>
-                    {/* Dairy & Eggs Section */}
-                    <section className="pantry-category">
-                        <details open>
-                            <summary>Dairy &amp; Eggs</summary>
-                            <div className="category-content">
-                                <ul className="item-list">
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="dairy" value="milk" />
-                                            Milk
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="milk">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="dairy" value="cheese" />
-                                            Cheese
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="cheese">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="dairy" value="yogurt" />
-                                            Yogurt
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="yogurt">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="dairy" value="butter" />
-                                            Butter
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="butter">
-                                            Remove
-                                        </button>
-                                    </li>
-                                </ul>
-                                <div className="add-item">
-                                    <label htmlFor="dairyInput">Add item:</label>
-                                    <input
-                                        type="text"
-                                        id="dairyInput"
-                                        placeholder="Enter dairy product..."
-                                        data-category="dairy"
-                                    />
-                                    <button type="button" className="add-button">Add</button>
-                                </div>
-                            </div>
-                        </details>
-                    </section>
-
-                    {/* Vegetables Section */}
-                    <section className="pantry-category">
-                        <details open>
-                            <summary>Vegetables</summary>
-                            <div className="category-content">
-                                <ul className="item-list">
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="vegetables" value="broccoli" />
-                                            Broccoli
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="broccoli">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="vegetables" value="carrots" />
-                                            Carrots
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="carrots">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="vegetables" value="spinach" />
-                                            Spinach
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="spinach">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="vegetables" value="tomatoes" />
-                                            Tomatoes
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="tomatoes">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="vegetables" value="peppers" />
-                                            Peppers
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="peppers">
-                                            Remove
-                                        </button>
-                                    </li>
-                                </ul>
-                                <div className="add-item">
-                                    <label htmlFor="vegetableInput">Add item:</label>
-                                    <input
-                                        type="text"
-                                        id="vegetableInput"
-                                        placeholder="Enter vegetable..."
-                                        data-category="vegetables"
-                                    />
-                                    <button type="button" className="add-button">Add</button>
-                                </div>
-                            </div>
-                        </details>
-                    </section>
-
-                    {/* Fruits Section */}
-                    <section className="pantry-category">
+                    {/* Category Management */}
+                    <section className="pantry-category" style={{ background: 'var(--color-body-bg)'}}>
                         <details>
-                            <summary>Fruits</summary>
+                            <summary style={{background: '#efe4ce'}}>Manage Categories</summary>
                             <div className="category-content">
-                                <ul className="item-list">
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="fruits" value="apples" />
-                                            Apples
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="apples">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="fruits" value="bananas" />
-                                            Bananas
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="bananas">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="fruits" value="berries" />
-                                            Berries
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="berries">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="fruits" value="oranges" />
-                                            Oranges
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="oranges">
-                                            Remove
-                                        </button>
-                                    </li>
-                                </ul>
                                 <div className="add-item">
-                                    <label htmlFor="fruitInput">Add item:</label>
+                                    <label htmlFor="newCategoryInput">Add new category:</label>
                                     <input
                                         type="text"
-                                        id="fruitInput"
-                                        placeholder="Enter fruit..."
-                                        data-category="fruits"
+                                        id="newCategoryInput"
+                                        placeholder="Enter category name..."
+                                        value={newCategoryInput}
+                                        onChange={(e) => setNewCategoryInput(e.target.value)}
                                     />
-                                    <button type="button" className="add-button">Add</button>
+                                    <button type="button" className="add-button" onClick={addCategory}>
+                                        Add Category
+                                    </button>
                                 </div>
                             </div>
                         </details>
                     </section>
 
-                    {/* Grains & Carbs Section */}
-                    <section className="pantry-category">
-                        <details>
-                            <summary>Grains &amp; Carbs</summary>
-                            <div className="category-content">
-                                <ul className="item-list">
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="grains" value="rice" />
-                                            Rice
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="rice">
-                                            Remove
+                    {/* Dynamic Category Sections */}
+                    {categories.map((category) => (
+                        <section key={category} className="pantry-category">
+                            <details open>
+                                <summary>{formatCategoryName(category)}</summary>
+                                <div className="category-content" style={{ position: 'relative' }}>
+                                    <button
+                                        type="button"
+                                        className="remove-item"
+                                        onClick={() => deleteCategory(category)}
+                                        style={{ 
+                                            position: 'absolute', 
+                                            top: '-2rem', 
+                                            right: '1rem',
+                                            zIndex: 1
+                                        }}
+                                    >
+                                        Delete Category
+                                    </button>
+                                    <ul className="item-list">
+                                        {items
+                                            .filter((item) => item.category === category)
+                                            .map((item) => (
+                                                <li key={item.id}>
+                                                    <label>
+                                                        <input type="checkbox" />
+                                                        {item.name} (quantity: {item.quantity})
+                                                    </label>
+                                                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                        <button
+                                                            type="button"
+                                                            className="quantity-btn"
+                                                            onClick={() => updateQuantity(item.id, -1)}
+                                                        >
+                                                            -
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            className="quantity-btn"
+                                                            onClick={() => updateQuantity(item.id, 1)}
+                                                        >
+                                                            +
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            className="remove-item"
+                                                            onClick={() => removeItem(item.id)}
+                                                        >
+                                                            Remove
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                    </ul>
+                                    <div className="add-item">
+                                        <label htmlFor={`${category}Input`}>Add item:</label>
+                                        <input
+                                            type="text"
+                                            id={`${category}Input`}
+                                            placeholder={`Enter ${category}...`}
+                                            value={itemInputs[category] || ''}
+                                            onChange={(e) => handleItemInputChange(category, e.target.value)}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="add-button"
+                                            onClick={() => addItem(category)}
+                                        >
+                                            Add
                                         </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="grains" value="pasta" />
-                                            Pasta
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="pasta">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="grains" value="bread" />
-                                            Bread
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="bread">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="grains" value="oats" />
-                                            Oats
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="oats">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="grains" value="potatoes" />
-                                            Potatoes
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="potatoes">
-                                            Remove
-                                        </button>
-                                    </li>
-                                </ul>
-                                <div className="add-item">
-                                    <label htmlFor="grainInput">Add item:</label>
-                                    <input
-                                        type="text"
-                                        id="grainInput"
-                                        placeholder="Enter grain..."
-                                        data-category="grains"
-                                    />
-                                    <button type="button" className="add-button">Add</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </details>
-                    </section>
-
-                    {/* Pantry Staples Section */}
-                    <section className="pantry-category">
-                        <details>
-                            <summary>Pantry Staples</summary>
-                            <div className="category-content">
-                                <ul className="item-list">
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="staples" value="oil" />
-                                            Oil
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="oil">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="staples" value="salt" />
-                                            Salt
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="salt">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="staples" value="spices" />
-                                            Spices
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="spices">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="staples" value="vinegar" />
-                                            Vinegar
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="vinegar">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="staples" value="flour" />
-                                            Flour
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="flour">
-                                            Remove
-                                        </button>
-                                    </li>
-                                </ul>
-                                <div className="add-item">
-                                    <label htmlFor="stapleInput">Add item:</label>
-                                    <input
-                                        type="text"
-                                        id="stapleInput"
-                                        placeholder="Enter staple..."
-                                        data-category="staples"
-                                    />
-                                    <button type="button" className="add-button">Add</button>
-                                </div>
-                            </div>
-                        </details>
-                    </section>
-
-                    {/* Beverages Section */}
-                    <section className="pantry-category">
-                        <details>
-                            <summary>Beverages</summary>
-                            <div className="category-content">
-                                <ul className="item-list">
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="beverages" value="water" />
-                                            Water
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="water">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="beverages" value="juice" />
-                                            Juice
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="juice">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="beverages" value="coffee" />
-                                            Coffee
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="coffee">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="beverages" value="tea" />
-                                            Tea
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="tea">
-                                            Remove
-                                        </button>
-                                    </li>
-                                </ul>
-                                <div className="add-item">
-                                    <label htmlFor="beverageInput">Add item:</label>
-                                    <input
-                                        type="text"
-                                        id="beverageInput"
-                                        placeholder="Enter beverage..."
-                                        data-category="beverages"
-                                    />
-                                    <button type="button" className="add-button">Add</button>
-                                </div>
-                            </div>
-                        </details>
-                    </section>
+                            </details>
+                        </section>
+                    ))}
                 </div>
             </main>
         </div>
