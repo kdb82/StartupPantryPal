@@ -101,6 +101,22 @@
 	background: #f3f4f6;
 }
 
+.page-pantry .quantity-btn {
+	padding: 0.2rem 0.5rem;
+	min-width: 28px;
+	border: 1px solid #d1d5db;
+	border-radius: var(--radius) !important;
+	background: transparent;
+	color: var(--text);
+	cursor: pointer;
+	font-size: 0.9rem;
+	font-weight: 700;
+}
+
+.page-pantry .quantity-btn:hover {
+	opacity: 0.85;
+}
+
 .page-pantry .add-item {
 	display: flex;
 	align-items: center;

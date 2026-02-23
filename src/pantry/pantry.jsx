@@ -60,6 +60,17 @@ export function Pantry() {
         savePantry(updatedItems);
     };
 
+    const updateQuantity = (itemId, change) => {
+        const updatedItems = items.map((item) => {
+            if (item.id === itemId) {
+                const newQuantity = Math.max(1, item.quantity + change);
+                return { ...item, quantity: newQuantity };
+            }
+            return item;
+        });
+        savePantry(updatedItems);
+    };
+
     return (
         <div className="page-pantry">
             <main id="main-content">
@@ -121,15 +132,31 @@ export function Pantry() {
                                         <li key={item.id}>
                                             <label>
                                                 <input type="checkbox" />
-                                                {item.name}
+                                                {item.name} (quantity: {item.quantity})
                                             </label>
-                                            <button
-                                                type="button"
-                                                className="remove-item"
-                                                onClick={() => removeItem(item.id)}
-                                            >
-                                                Remove
-                                            </button>
+                                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                                <button
+                                                    type="button"
+                                                    className="quantity-btn"
+                                                    onClick={() => updateQuantity(item.id, -1)}
+                                                >
+                                                    -
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="quantity-btn"
+                                                    onClick={() => updateQuantity(item.id, 1)}
+                                                >
+                                                    +
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="remove-item"
+                                                    onClick={() => removeItem(item.id)}
+                                                >
+                                                    Remove
+                                                </button>
+                                            </div>
                                         </li>
                                     ))}
                             </ul>
