@@ -42,7 +42,6 @@ export function Pantry() {
         if (!input.trim()) return;
 
         const newItem = {
-            id: crypto.randomUUID(),
             name: input.trim(),
             quantity: 1,
             category: category,

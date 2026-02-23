@@ -46,7 +46,8 @@ export const AuthProvider = ({ children }) => {
 
         try {
             const passwordHash = bcrypt.hashSync(password, 10);
-            const newUser = { username, email, passwordHash };
+            const userID = crypto.randomUUID();
+            const newUser = { id: userID, username, email, passwordHash };
             users.push(newUser);
             localStorage.setItem(USERS_KEY, JSON.stringify(users));
             
