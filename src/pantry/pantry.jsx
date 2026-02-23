@@ -29,7 +29,10 @@ export function Pantry() {
 
     const loadPantry = () => {
         const storedItems = getPantry();
-        setItems(storedItems);
+        const migratedItems = storedItems.map((item) => 
+            item.id ? item : { ...item, id: Date.now() + Math.random() }
+        );
+        setItems(migratedItems);
     };
 
     const savePantry = (newItems) => {

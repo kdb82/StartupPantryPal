@@ -3,21 +3,40 @@ import "../global.css";
 import "./aiLanding.css";
 import { createRecipeAgent } from "../services/recipeAgent";
 import { getActualPantryTool, searchRecipesTool, addToShoppingListTool } from "../services/recipeTools";
-import { useMemo } from "react";
+import { useEffect } from "react";
 
-export function AILanding() {
-    const agent = useMemo(() => {
+// Create agent once at module level (survives navigation)
+let agentInstance = null;
+
+function getOrCreateAgent() {
+    if (!agentInstance) {
         const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-        return createRecipeAgent({
+        agentInstance = createRecipeAgent({
             apiKey,
             model: "openrouter/auto",
             tools: [getActualPantryTool, searchRecipesTool, addToShoppingListTool],
         });
-    }, []);
+    }
+    return agentInstance;
+}
+
+export function AILanding() {
+    const agent = getOrCreateAgent();
 
     const [prompt, setPrompt] = React.useState("");
     const [AIStatus, setAIStatus] = React.useState("idle");
     const [AIOutput, setAIOutput] = React.useState("");
+
+    // Load last response on mount
+    useEffect(() => {
+        const messages = agent.getMessages();
+        if (messages.length > 0) {
+            const lastMessage = messages[messages.length - 1];
+            if (lastMessage.role === "assistant") {
+                setAIOutput(lastMessage.content);
+            }
+        }
+    }, [agent]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -128,7 +147,7 @@ export function AILanding() {
                                 disabled={AIStatus === "thinking"}
                             ></textarea>
 
-                            <details className="prefs" open>
+                            <details className="prefs" closed="true">
                                 <summary>Preferences</summary>
 
                                 <div className="prefs-content">

@@ -7,10 +7,8 @@ const PANTRY_KEY = "user_pantry_data";
 export const getActualPantryTool = tool({
 	name: "get_user_pantry",
 	description: "Check the user's actual pantry inventory",
-	inputSchema: z.object({
-		userId: z.string().optional().describe("The unique identifier of the user"),
-	}),
-	execute: async ({ userId }) => {
+	inputSchema: z.object({}),
+	execute: async () => {
 		// For now, we will just return the pantry data from localStorage
 		const pantryData = localStorage.getItem(PANTRY_KEY);
 		if (pantryData) {
@@ -19,13 +17,12 @@ export const getActualPantryTool = tool({
 				const qty = item.quantity ? ` (${item.quantity})` : "";
 				return `${item.name}${qty}`;
 			});
+            console.log(flatItems);
 			return {
-				userId: userId || "anonymous",
 				items: flatItems,
 			};
 		}
 		return {
-			userId: userId || "anonymous",
 			items: [],
 		};
 	},
