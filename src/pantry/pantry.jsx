@@ -1,8 +1,38 @@
 import React from "react";
 import "../global.css";
 import "./pantry.css";
+import { useEffect } from "react";
+
+const PANTRY_KEY = "user_pantry_data";
 
 export function Pantry() {
+    const [items, setItems] = React.useState([]);
+
+    // Helpers
+    const loadPantry = () => {
+        const storedData = localStorage.getItem(PANTRY_KEY);
+        if (storedData) {
+            setItems(JSON.parse(storedData));
+        }
+    };
+
+    const savePantry = (newItems) => {
+        setItems(newItems);
+        localStorage.setItem(PANTRY_KEY, JSON.stringify(newItems));
+    };
+
+    useEffect(() => {
+        loadPantry();
+    }, []);
+
+    const addItemHandler = (e) => {
+        e.preventDefault();
+        const itemObject = extractItemFromForm(e.target);
+        savePantry([...items, itemObject]);
+    };
+
+    removeItemHandler = (itemId) => { };
+
     return (
         <div className="page-pantry">
             <main id="main-content">
@@ -54,68 +84,70 @@ export function Pantry() {
 
                     {/* Proteins Section */}
                     <section className="pantry-category">
-                        <details open>
-                            <summary>Proteins</summary>
-                            <div className="category-content">
-                                <ul className="item-list">
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="protein" value="chicken" />
-                                            Chicken
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="chicken">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="protein" value="beef" />
-                                            Beef
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="beef">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="protein" value="salmon" />
-                                            Salmon
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="salmon">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="protein" value="eggs" />
-                                            Eggs
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="eggs">
-                                            Remove
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <label>
-                                            <input type="checkbox" name="protein" value="tofu" />
-                                            Tofu
-                                        </label>
-                                        <button type="button" className="remove-item" data-value="tofu">
-                                            Remove
-                                        </button>
-                                    </li>
-                                </ul>
-                                <div className="add-item">
-                                    <label htmlFor="proteinInput">Add item:</label>
-                                    <input
-                                        type="text"
-                                        id="proteinInput"
-                                        placeholder="Enter protein..."
-                                        data-category="protein"
-                                    />
-                                    <button type="button" className ="add-button">Add</button>
+                        <form onSubmit={addItemHandler} className="add-item-form">
+                            <details open>
+                                <summary>Proteins</summary>
+                                <div className="category-content">
+                                    <ul className="item-list">
+                                        <li>
+                                            <label>
+                                                <input type="checkbox" name="protein" value="chicken" />
+                                                Chicken
+                                            </label>
+                                            <button type="button" className="remove-item" data-value="chicken">
+                                                Remove
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <input type="checkbox" name="protein" value="beef" />
+                                                Beef
+                                            </label>
+                                            <button type="button" className="remove-item" data-value="beef">
+                                                Remove
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <input type="checkbox" name="protein" value="salmon" />
+                                                Salmon
+                                            </label>
+                                            <button type="button" className="remove-item" data-value="salmon">
+                                                Remove
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <input type="checkbox" name="protein" value="eggs" />
+                                                Eggs
+                                            </label>
+                                            <button type="button" className="remove-item" data-value="eggs">
+                                                Remove
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <input type="checkbox" name="protein" value="tofu" />
+                                                Tofu
+                                            </label>
+                                            <button type="button" className="remove-item" data-value="tofu">
+                                                Remove
+                                            </button>
+                                        </li>
+                                    </ul>
+                                    <div className="add-item">
+                                        <label htmlFor="proteinInput">Add item:</label>
+                                        <input
+                                            type="text"
+                                            id="proteinInput"
+                                            placeholder="Enter protein..."
+                                            data-category="protein"
+                                        />
+                                        <button type="submit" className="add-button">Add</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </details>
+                            </details>
+                        </form>
                     </section>
 
                     {/* Dairy & Eggs Section */}
