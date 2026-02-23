@@ -36,22 +36,24 @@ export function AILanding() {
 
         const fullPrompt = `${prompt}\n\nPreferences:\n${preferenceNote}`;
 
+        setPrompt("");
         setAIOutput("Processing your request...");
         try {
-            const fullResponse = await agent.send(fullPrompt, {
+            await agent.send(fullPrompt, {
                 onThinking: () => setAIStatus("thinking"),
                 onStream: (delta, fullText) => setAIOutput(fullText),
                 onToolCall: (name, args) => {
                     console.log(`Tool called: ${name} with args`, args);
-                    setAIOutput((prev) => prev + `\n[Tool called: ${name}]`);
                 },
                 onComplete: (fullText) => {
                     setAIStatus("complete");
                     setAIOutput(fullText);
+                    setTimeout(() => setAIStatus("idle"), 1500);
                 },
                 onError: (error) => {
                     setAIStatus("error");
                     setAIOutput(`Error: ${error.message}`);
+                    setTimeout(() => setAIStatus("idle"), 2000);
                 },
             });
         } catch (error) {
@@ -99,7 +101,13 @@ export function AILanding() {
                                 </li>
                             </ul>
                             <p id="aiStatus" className="muted" role="status" aria-live="polite">
-                                {AIStatus === "idle" ? "Idle" : AIStatus}
+                                {AIStatus === "thinking"
+                                    ? "Thinking..."
+                                    : AIStatus === "complete"
+                                        ? "Done"
+                                        : AIStatus === "error"
+                                            ? "Error"
+                                            : "Idle"}
                             </p>
                             <pre id="aiOutput" className="code-block" aria-label="AI output text">
                                 {AIOutput || "Waiting for a prompt..."}
@@ -117,6 +125,7 @@ export function AILanding() {
                                 required
                                 value={prompt}
                                 onChange={(e) => setPrompt(e.target.value)}
+                                disabled={AIStatus === "thinking"}
                             ></textarea>
 
                             <details className="prefs" open>
@@ -132,6 +141,7 @@ export function AILanding() {
                                         max="12"
                                         defaultValue="2"
                                         data-field="recipe-servings"
+                                        disabled={AIStatus === "thinking"}
                                     />
                                 </div>
 
@@ -145,12 +155,13 @@ export function AILanding() {
                                         max="180"
                                         defaultValue="30"
                                         data-field="time-limit"
+                                        disabled={AIStatus === "thinking"}
                                     />
                                 </div>
 
                                 <div className="prefs-content">
                                     <label htmlFor="diet">Diet</label>
-                                    <select id="diet" name="diet">
+                                    <select id="diet" name="diet" disabled={AIStatus === "thinking"}>
                                         <option value="No preference">No preference</option>
                                         <option value="vegetarian">Vegetarian</option>
                                         <option value="vegan">Vegan</option>
@@ -165,6 +176,7 @@ export function AILanding() {
                                             className="checkbox-text"
                                             name="usePantry"
                                             defaultChecked
+                                            disabled={AIStatus === "thinking"}
                                         />
                                         Use my pantry items (DB placeholder)
                                     </label>
@@ -172,8 +184,12 @@ export function AILanding() {
                             </details>
 
                             <div className="form-actions">
-                                <button type="submit">Generate recipe ideas</button>
-                                <button type="reset">Clear</button>
+                                <button type="submit" disabled={AIStatus === "thinking"}>
+                                    Generate recipe ideas
+                                </button>
+                                <button type="reset" disabled={AIStatus === "thinking"}>
+                                    Clear
+                                </button>
                             </div>
                         </form>
                     </section>

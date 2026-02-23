@@ -42,6 +42,7 @@ export function Pantry() {
         if (!input.trim()) return;
 
         const newItem = {
+            id: Date.now() + Math.random(),
             name: input.trim(),
             quantity: 1,
             category: category,
