@@ -39,6 +39,7 @@ export function Pantry() {
         const newItem = {
             id: crypto.randomUUID(),
             name: proteinInput.trim(),
+            quantity: 1, 
             category: "protein",
             checked: false,
             addedAt: new Date().toISOString(),
@@ -53,11 +54,6 @@ export function Pantry() {
     useEffect(() => {
         loadPantry();
     }, []);
-
-    const addItemHandler = (e) => {
-        e.preventDefault();
-        addProtein();
-    };
 
     const removeItem = (itemId) => {
         const updatedItems = items.filter((item) => item.id !== itemId);
@@ -114,47 +110,44 @@ export function Pantry() {
                     </section>
 
                     {/* Proteins Section */}
-                    <form className="pantry-category" onSubmit={addItemHandler}>
-                        <section className="pantry-category">
-                            <details open>
-                                <summary>Proteins</summary>
-                                <div className="category-content">
-                                    <ul className="item-list">
-                                        {items
-                                            .filter((item) => item.category === "protein")
-                                            .map((item) => (
-                                                <li key={item.id}>
-                                                    <label>
-                                                        <input type="checkbox" checked={item.checked} readOnly />
-                                                        {item.name}
-                                                    </label>
-                                                    <button
-                                                        type="button"
-                                                        className="remove-item"
-                                                        onClick={() => removeItem(item.id)}
-                                                    >
-                                                        Remove
-                                                    </button>
-                                                </li>
-                                            ))}
-                                    </ul>
-                                    <div className="add-item">
-                                        <label htmlFor="proteinInput">Add item:</label>
-                                        <input
-                                            type="text"
-                                            id="proteinInput"
-                                            placeholder="Enter protein..."
-                                            data-category="protein"
-                                            value={proteinInput}
-                                            onChange={(e) => setProteinInput(e.target.value)}
-                                        />
-                                        <button type="button" className="add-button" onClick={addProtein}>Add</button>
-                                    </div>
-                                </div>
-                            </details>
-                        </section>
-                    </form>
-
+                <section className="pantry-category">
+                    <details open>
+                        <summary>Proteins</summary>
+                        <div className="category-content">
+                            <ul className="item-list">
+                                {items
+                                    .filter((item) => item.category === "protein")
+                                    .map((item) => (
+                                        <li key={item.id}>
+                                            <label>
+                                                <input type="checkbox" />
+                                                {item.name}
+                                            </label>
+                                            <button
+                                                type="button"
+                                                className="remove-item"
+                                                onClick={() => removeItem(item.id)}
+                                            >
+                                                Remove
+                                            </button>
+                                        </li>
+                                    ))}
+                            </ul>
+                            <div className="add-item">
+                                <label htmlFor="proteinInput">Add item:</label>
+                                <input
+                                    type="text"
+                                    id="proteinInput"
+                                    placeholder="Enter protein..."
+                                    data-category="protein"
+                                    value={proteinInput}
+                                    onChange={(e) => setProteinInput(e.target.value)}
+                                />
+                                <button type="button" className="add-button" onClick={addProtein}>Add</button>
+                            </div>
+                        </div>
+                    </details>
+                </section>
                     {/* Dairy & Eggs Section */}
                     <section className="pantry-category">
                         <details open>
