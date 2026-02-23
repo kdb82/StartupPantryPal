@@ -6,6 +6,9 @@
  */
 
 import { OpenRouter } from '@openrouter/sdk';
+import { getActualPantryTool, searchRecipesTool, addToShoppingListTool } from './recipeTools';
+
+const TOOLS = [getActualPantryTool, searchRecipesTool, addToShoppingListTool];
 
 /**
  * Creates a recipe assistant agent

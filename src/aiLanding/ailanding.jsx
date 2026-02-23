@@ -1,6 +1,8 @@
 import React from "react";
 import "../global.css";
 import "./aiLanding.css";
+import { createRecipeAgent } from "../services/recipeAgent";
+import { getActualPantryTool, searchRecipesTool, addToShoppingListTool } from "../services/recipeTools";
 
 export function AILanding() {
     return (

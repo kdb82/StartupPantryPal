@@ -16,16 +16,16 @@ export const getActualPantryTool = tool({
 		if (pantryData) {
 			const parsedItems = JSON.parse(pantryData);
 			const flatItems = parsedItems.map((item) => {
-				const qty = item.quantity ? ` (${item.quantity})` : '';
+				const qty = item.quantity ? ` (${item.quantity})` : "";
 				return `${item.name}${qty}`;
 			});
 			return {
-				userId: userId || 'anonymous',
-				items: flatItems
+				userId: userId || "anonymous",
+				items: flatItems,
 			};
 		}
 		return {
-			userId: userId || 'anonymous',
+			userId: userId || "anonymous",
 			items: [],
 		};
 	},
@@ -60,56 +60,56 @@ export const searchRecipesTool = tool({
 		return {
 			recipes: [
 				{
-					id: 'recipe_pasta_001',
-					name: 'Garlic Chicken Pasta',
+					id: "recipe_pasta_001",
+					name: "Garlic Chicken Pasta",
 					timeMinutes: 30,
 					servings: 2,
-					ingredients: ['chicken', 'pasta', 'garlic', 'olive oil', 'parmesan'],
+					ingredients: ["chicken", "pasta", "garlic", "olive oil", "parmesan"],
 					steps: [
-						'Boil pasta until al dente.',
-						'Saute chicken with garlic in olive oil.',
-						'Toss pasta with chicken and parmesan.'
+						"Boil pasta until al dente.",
+						"Saute chicken with garlic in olive oil.",
+						"Toss pasta with chicken and parmesan.",
 					],
-					cuisine: 'Italian',
-					difficulty: 'easy',
+					cuisine: "Italian",
+					difficulty: "easy",
 					missingItems: buildMissingItems([
-						'chicken',
-						'pasta',
-						'garlic',
-						'olive oil',
-						'parmesan'
-					])
+						"chicken",
+						"pasta",
+						"garlic",
+						"olive oil",
+						"parmesan",
+					]),
 				},
 				{
-					id: 'recipe_stirfry_002',
-					name: 'Chicken Veggie Stir Fry',
+					id: "recipe_stirfry_002",
+					name: "Chicken Veggie Stir Fry",
 					timeMinutes: 25,
 					servings: 2,
-					ingredients: ['chicken', 'broccoli', 'soy sauce', 'garlic', 'rice'],
+					ingredients: ["chicken", "broccoli", "soy sauce", "garlic", "rice"],
 					steps: [
-						'Cook rice according to package.',
-						'Stir fry chicken and broccoli with garlic.',
-						'Add soy sauce and serve over rice.'
+						"Cook rice according to package.",
+						"Stir fry chicken and broccoli with garlic.",
+						"Add soy sauce and serve over rice.",
 					],
-					cuisine: 'Asian',
-					difficulty: 'easy',
+					cuisine: "Asian",
+					difficulty: "easy",
 					missingItems: buildMissingItems([
-						'chicken',
-						'broccoli',
-						'soy sauce',
-						'garlic',
-						'rice'
-					])
-				}
+						"chicken",
+						"broccoli",
+						"soy sauce",
+						"garlic",
+						"rice",
+					]),
+				},
 			],
 			matchCount: 2,
 			criteria: {
 				ingredients,
 				normalizedIngredients,
 				timeLimit: timeLimit || null,
-                servings: servings || null,
-                dietaryPreferences: dietaryPreferences || null
-			}
+				servings: servings || null,
+				dietaryPreferences: dietaryPreferences || null,
+			},
 		};
 	},
 });
@@ -129,7 +129,7 @@ export const addToShoppingListTool = tool({
 			success: true,
 			addedItems: ingredients,
 			count: ingredients.length,
-			message: `Added ${ingredients.length} items to shopping list`
+			message: `Added ${ingredients.length} items to shopping list`,
 		};
 	},
 });
