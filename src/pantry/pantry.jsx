@@ -111,7 +111,7 @@ export function Pantry() {
                 <div className="container">
                     <h2>My Pantry</h2>
 
-                    <section aria-labelledby="ws-title" className="placeholder-card">
+                    {/* <section aria-labelledby="ws-title" className="placeholder-card">
                         <h3 id="ws-title">Live updates (WebSocket placeholder)</h3>
                         <p className="muted">
                             Planned: use WebSockets for real-time pantry updates (multi-device
@@ -152,7 +152,7 @@ export function Pantry() {
                                 <span className="muted"> (placeholder message)</span>
                             </li>
                         </ul>
-                    </section>
+                    </section> */}
 
                     {/* Category Management */}
                     <section className="pantry-category" style={{ background: 'var(--color-body-bg)'}}>
