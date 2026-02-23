@@ -93,32 +93,7 @@ export function AILanding() {
                             add missing ingredients to your shopping list.
                         </p>
 
-                        <section
-                            className="response-container"
-                            aria-label="AI response (placeholder)"
-                        >
-                            <p className="muted">
-                                AI response (placeholder). Later this will call <b>third-party API</b>
-                                and display the real model output.
-                            </p>
-                            <p>
-                                <strong>Example prompt:</strong> “I have chicken, rice, and
-                                broccoli. I want a 30-minute dinner.”
-                            </p>
-                            <p><strong>Example response:</strong></p>
-                            <ul>
-                                <li>
-                                    <strong>Idea:</strong> Chicken &amp; Broccoli Stir Fry Bowl
-                                </li>
-                                <li>
-                                    <strong>Steps:</strong> sauté chicken → add broccoli → sauce →
-                                    serve over rice
-                                </li>
-                                <li>
-                                    <strong>Missing items:</strong> soy sauce, ginger (added to
-                                    Shopping List)
-                                </li>
-                            </ul>
+                        <section className="response-container" aria-label="AI response">
                             <p id="aiStatus" className="muted" role="status" aria-live="polite">
                                 {AIStatus === "thinking"
                                     ? "Thinking..."
