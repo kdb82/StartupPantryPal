@@ -44,7 +44,7 @@ export function Login() {
 						<input type="password" id="password" name="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
 					</div>
 					<div className="form-actions">
-						<button type="submit" className="login-button">Login</button>
+						<button type="submit" className="login-button" disabled={success}>Login</button>
 					</div>
 					{error && <div className="error-message" id="loginError">{error}</div>}
 					{success && <div className="success-message" id="loginSuccess">Login successful! Redirecting...</div>}
