@@ -1,8 +1,16 @@
 import React from 'react';
 import "../global.css";
 import { NavLink } from 'react-router-dom';
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../global_components/AuthContext";
 
 export function Login() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
+  const from = location.state?.from?.pathname || "/";
+
   return (
     <main id="main" className="app-main">
 				<div className="container">
