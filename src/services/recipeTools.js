@@ -14,9 +14,14 @@ export const getActualPantryTool = tool({
 		// For now, we will just return the pantry data from localStorage
 		const pantryData = localStorage.getItem(PANTRY_KEY);
 		if (pantryData) {
+			const parsedItems = JSON.parse(pantryData);
+			const flatItems = parsedItems.map((item) => {
+				const qty = item.quantity ? ` (${item.quantity})` : '';
+				return `${item.name}${qty}`;
+			});
 			return {
 				userId: userId || 'anonymous',
-				items: JSON.parse(pantryData),
+				items: flatItems
 			};
 		}
 		return {
@@ -38,11 +43,73 @@ export const searchRecipesTool = tool({
 			.describe("Dietary preferences or restrictions"),
 		servings: z.number().optional().describe("Number of servings needed"),
 	}),
-	execute: async ({ ingredients, timeLimit }) => {
+	execute: async ({ ingredients, timeLimit, servings, dietaryPreferences }) => {
 		// For demonstration, we will return some dummy recipes
+		const normalizeIngredient = (item) =>
+			item
+				.replace(/\s*\(\s*\d+\s*\)\s*$/, "")
+				.trim()
+				.toLowerCase();
+		const normalizedIngredients = ingredients.map(normalizeIngredient);
+		const hasIngredient = (name) =>
+			normalizedIngredients.includes(normalizeIngredient(name));
+
+		const buildMissingItems = (recipeIngredients) =>
+			recipeIngredients.filter((item) => !hasIngredient(item));
+
 		return {
-			recipes: ["Pasta", "Stir Fry"],
+			recipes: [
+				{
+					id: 'recipe_pasta_001',
+					name: 'Garlic Chicken Pasta',
+					timeMinutes: 30,
+					servings: 2,
+					ingredients: ['chicken', 'pasta', 'garlic', 'olive oil', 'parmesan'],
+					steps: [
+						'Boil pasta until al dente.',
+						'Saute chicken with garlic in olive oil.',
+						'Toss pasta with chicken and parmesan.'
+					],
+					cuisine: 'Italian',
+					difficulty: 'easy',
+					missingItems: buildMissingItems([
+						'chicken',
+						'pasta',
+						'garlic',
+						'olive oil',
+						'parmesan'
+					])
+				},
+				{
+					id: 'recipe_stirfry_002',
+					name: 'Chicken Veggie Stir Fry',
+					timeMinutes: 25,
+					servings: 2,
+					ingredients: ['chicken', 'broccoli', 'soy sauce', 'garlic', 'rice'],
+					steps: [
+						'Cook rice according to package.',
+						'Stir fry chicken and broccoli with garlic.',
+						'Add soy sauce and serve over rice.'
+					],
+					cuisine: 'Asian',
+					difficulty: 'easy',
+					missingItems: buildMissingItems([
+						'chicken',
+						'broccoli',
+						'soy sauce',
+						'garlic',
+						'rice'
+					])
+				}
+			],
 			matchCount: 2,
+			criteria: {
+				ingredients,
+				normalizedIngredients,
+				timeLimit: timeLimit || null,
+                servings: servings || null,
+                dietaryPreferences: dietaryPreferences || null
+			}
 		};
 	},
 });
@@ -58,6 +125,11 @@ export const addToShoppingListTool = tool({
 	execute: async ({ ingredients }) => {
 		// For demonstration, we will just log the ingredients
 		console.log("Adding to shopping list:", ingredients);
-		return { success: true };
+		return {
+			success: true,
+			addedItems: ingredients,
+			count: ingredients.length,
+			message: `Added ${ingredients.length} items to shopping list`
+		};
 	},
 });
