@@ -62,17 +62,17 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const login = (email, password) => {
+    const login = (username, password) => {
         const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
-        const user = users.find((u) => u.email === email);
+        const user = users.find((u) => u.username === username);
         
         if (!user) {
-            throw new Error("Invalid email or password");
+            throw new Error("Invalid username or password");
         }
 
         const passwordMatch = bcrypt.compareSync(password, user.passwordHash);
         if (!passwordMatch) {
-            throw new Error("Invalid email or password");
+            throw new Error("Invalid username or password");
         }
 
         const { passwordHash: _, ...userWithoutPassword } = user;

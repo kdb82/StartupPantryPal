@@ -11,11 +11,11 @@ export function Login() {
 	const [error, setError] = React.useState(null);
 	const [success, setSuccess] = React.useState(false);
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
 		setError(null);
 		try {
-			await login(username, password);
+			login(username, password);
 			setSuccess(true);
 			setTimeout(() => {
 				navigate("/pantry", {replace: true}); // Redirect to pantry page after successful login
@@ -34,7 +34,7 @@ export function Login() {
 					alt="PantryPal Logo"
 					className="logo"
 				/>
-				<form id="loginForm" method="post" action="/api/login" onSubmit={handleSubmit}>
+				<form id="loginForm" onSubmit={handleSubmit}>
 					<div className="username_field">
 						<label htmlFor="username">Username:</label>
 						<input type="text" id="username" name="username" required value={username} onChange={(e) => setUsername(e.target.value)} />
@@ -46,12 +46,8 @@ export function Login() {
 					<div className="form-actions">
 						<button type="submit" className="login-button">Login</button>
 					</div>
-					<div className="error-message" id="loginError" hidden>
-						{error}
-					</div>
-					<div className="success-message" id="loginSuccess" hidden>
-						Login successful! Redirecting...
-					</div>
+					{error && <div className="error-message" id="loginError">{error}</div>}
+					{success && <div className="success-message" id="loginSuccess">Login successful! Redirecting...</div>}
 				</form>
 				<NavLink to="/register">New user? Create an account.</NavLink>
 
