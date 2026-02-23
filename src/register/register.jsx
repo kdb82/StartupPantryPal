@@ -1,8 +1,41 @@
 import React from "react";
 import "../global.css";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../global_components/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export function Register() {
+    const navigate = useNavigate();
+    const { register } = useAuth();
+    const [email, setEmail] = React.useState("");
+    const [username, setUsername] = React.useState("");
+    const [password, setPassword] = React.useState("");
+    const [confirmPassword, setConfirmPassword] = React.useState("");
+    const [error, setError] = React.useState(null);
+    const [success, setSuccess] = React.useState(false);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setError(null);
+        
+        // Validate password match
+        if (password !== confirmPassword) {
+            setError("Passwords do not match");
+            return;
+        }
+        
+        try {
+            register(username, email, password);
+            setSuccess(true);
+            setTimeout(() => {
+                navigate("/pantry", { replace: true }); // Redirect to pantry page after successful registration
+            }, 1000);
+        } catch (err) {
+            setSuccess(false);
+            setError(err.message);
+        }
+    };
+
     return (
         <main id="main" className="app-main">
             <div className="container">
@@ -11,18 +44,18 @@ export function Register() {
                     alt="PantryPal Logo"
                     className="logo"
                 />
-                <form id="registerForm" method="post" action="/api/register">
+                <form id="registerForm" onSubmit={handleSubmit}>
                     <div className="email_field">
                         <label htmlFor="email">Email:</label>
-                        <input type="email" id="email" name="email" required />
+                        <input type="email" id="email" name="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="username_field">
                         <label htmlFor="username">Username:</label>
-                        <input type="text" id="username" name="username" required />
+                        <input type="text" id="username" name="username" required value={username} onChange={(e) => setUsername(e.target.value)} />
                     </div>
                     <div className="password_field">
                         <label htmlFor="password">Password:</label>
-                        <input type="password" id="password" name="password" required />
+                        <input type="password" id="password" name="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <div className="confirm_password_field">
                         <label htmlFor="confirmPassword">Confirm Password:</label>
@@ -31,22 +64,16 @@ export function Register() {
                             id="confirmPassword"
                             name="confirmPassword"
                             required
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                     </div>
                     <div className="form-actions">
                         <button type="submit">Create Account</button>
                     </div>
-                    <div className="error-message" id="registerError" style={{display: "none"}}>
-                        Registration failed. Please try again.
-                    </div>
-                    <div
-                        className="success-message"
-                        id="registerSuccess"
-                        style={{display: "none"}}
-                    >
-                        Account created successfully! Redirecting...
-                    </div>
-            </form>
+                    {error && <div className="error-message" id="registerError">{error}</div>}
+                    {success && <div className="success-message" id="registerSuccess">Account created successfully! Redirecting...</div>}
+                </form>
             <NavLink to="/login">Already have an account? Log in here.</NavLink>
             </div>
         </main>
