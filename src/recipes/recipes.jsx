@@ -191,6 +191,16 @@ export function Recipes() {
                                                 <li key={idx}>{step}</li>
                                             ))}
                                         </ol>
+                                        <h6>Missing Ingredients</h6>
+                                        <ul>
+                                            {recipe.missingIngredients && recipe.missingIngredients.length > 0 ? (
+                                                recipe.missingIngredients.map((ingredient, idx) => (
+                                                    <li key={idx}>{ingredient}</li>
+                                                ))
+                                            ) : (
+                                                <li>None! You have all the ingredients.</li>
+                                            )}
+                                        </ul>
                                     </div>
                                     <div className="modal-footer">
                                         <button
@@ -200,6 +210,14 @@ export function Recipes() {
                                         >
                                             Close
                                         </button>
+                                        {recipe.missingIngredients && recipe.missingIngredients.length > 0 && (
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() => handleSaveIngredients(recipe.missingIngredients.join(', '))}
+                                            >
+                                                Save Missing Ingredients to Shopping List
+                                            </button>
+                                        )}
                                         <button
                                             type="button"
                                             className="btn btn-danger delete-recipe"

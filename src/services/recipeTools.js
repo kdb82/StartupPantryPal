@@ -144,12 +144,34 @@ export const saveRecipeTool = tool({
 	}),
 	execute: async ({recipeName, recipeId, recipeTime, recipeDescription, recipeIngredients, recipeSteps}) => {
 		console.log("Saving recipe:", recipeId, recipeName);
+		
+		// Get user's pantry and calculate missing ingredients
+		const normalizeIngredient = (item) =>
+			item
+				.replace(/\s*\(\s*\d+\s*\)\s*$/, "")
+				.trim()
+				.toLowerCase();
+		
+		// Get pantry items
+		const pantryData = localStorage.getItem("user_pantry_data");
+		let pantryItems = [];
+		if (pantryData) {
+			const parsedItems = JSON.parse(pantryData);
+			pantryItems = parsedItems.map(item => normalizeIngredient(item.name));
+		}
+		
+		// Calculate missing ingredients
+		const missingIngredients = recipeIngredients.filter(
+			ingredient => !pantryItems.includes(normalizeIngredient(ingredient))
+		);
+		
 		const recipe = {
 			recipeId,
 			name: recipeName,
 			time: recipeTime || null,
 			description: recipeDescription || null,
 			ingredients: recipeIngredients,
+			missingIngredients: missingIngredients,
 			steps: recipeSteps,
 		}
 		localStorage.setItem(`recipe_${recipeId}`, JSON.stringify(recipe));

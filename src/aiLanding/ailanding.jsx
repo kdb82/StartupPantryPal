@@ -20,12 +20,24 @@ function getOrCreateAgent() {
     return agentInstance;
 }
 
+function ThinkingIndicator() {
+    const [dots, setDots] = React.useState(".");
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setDots((prev => prev === "..." ? "." : prev + "."));
+        }, 500);
+        return () => clearInterval(interval);
+    }, []);
+    return <span>Thinking{dots}</span>;
+}
+
 export function AILanding() {
     const agent = getOrCreateAgent();
-
     const [prompt, setPrompt] = React.useState("");
     const [AIStatus, setAIStatus] = React.useState("idle");
     const [AIOutput, setAIOutput] = React.useState("");
+    const [conversations, setConversations] = React.useState([]);
 
     // Load last response on mount
     useEffect(() => {
@@ -96,7 +108,7 @@ export function AILanding() {
                         <section className="response-container" aria-label="AI response">
                             <p id="aiStatus" className="muted" role="status" aria-live="polite">
                                 {AIStatus === "thinking"
-                                    ? "Thinking..."
+                                    ? <ThinkingIndicator />
                                     : AIStatus === "complete"
                                         ? "Done"
                                         : AIStatus === "error"
