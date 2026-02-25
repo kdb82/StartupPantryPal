@@ -2,8 +2,52 @@ import React from "react";
 import "../global.css";
 import "./recipes.css";
 import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { addToShoppingListTool } from "../services/recipeTools";
 
 export function Recipes() {
+    const [notifications, setNotifications] = useState([]);
+    const [shoppingListMessage, setShoppingListMessage] = useState("");
+
+    // Mock WebSocket notifications - users saving recipes
+    useEffect(() => {
+        const mockUserNames = ["Sarah", "Mike", "Alex", "Jessica", "Tom", "Emma", "Chris"];
+        const mockRecipeNames = ["Garlic Pasta", "Chicken Salad", "Cookies", "Salmon Teriyaki", "Stir Fry", "Tacos"];
+
+        const notificationInterval = setInterval(() => {
+            const randomUser = mockUserNames[Math.floor(Math.random() * mockUserNames.length)];
+            const randomRecipe = mockRecipeNames[Math.floor(Math.random() * mockRecipeNames.length)];
+            
+            const newNotification = {
+                id: Date.now(),
+                message: `${randomUser} saved "${randomRecipe}" to their recipes`,
+                timestamp: new Date().toLocaleTimeString()
+            };
+
+            setNotifications(prev => [newNotification, ...prev].slice(0, 2)); // Keep last 5
+        }, 3000);
+
+        return () => clearInterval(notificationInterval);
+    }, []);
+
+    // Handle save ingredients
+    const handleSaveIngredients = async (missingIngredients) => {
+        try {
+            const ingredientsList = missingIngredients.split(',').map(i => i.trim());
+            await addToShoppingListTool.execute({ ingredients: ingredientsList });
+            setShoppingListMessage(`✓ Added ${ingredientsList.length} items to shopping list`);
+            setTimeout(() => setShoppingListMessage(""), 3000);
+        } catch (error) {
+            console.error("Error saving ingredients:", error);
+            setShoppingListMessage("Error adding to shopping list");
+        }
+    };
+
+    // Handle delete recipe
+    const handleDeleteRecipe = (recipeName) => {
+        alert(`Recipe "${recipeName}" deleted (mock)`);
+    };
+
     return (
         <div className="page-recipes">
             <main id="main-content">
@@ -12,34 +56,28 @@ export function Recipes() {
 
                     <section aria-labelledby="recipe-api-title" className="placeholder-card">
                         <h3 id="recipe-api-title">
-                            Discover new recipes (Database placeholder)
+                            Friends' Activity (Mock WebSocket)
                         </h3>
                         <p className="muted">
-                            This section will be show recipes stored by the DB. For now it
-                            shows mock renderings of DB data.
+                            Real-time notifications of friends saving recipes
                         </p>
 
-                        <p
-                            id="recipeApiStatus"
-                            className="muted"
-                            role="status"
-                            aria-live="polite"
-                        >
-                            Not connected (placeholder).
-                        </p>
+                        <ul className="notification-feed" role="log" aria-live="polite" aria-label="Recipe notifications">
+                            {notifications.length === 0 ? (
+                                <li className="muted">Waiting for notifications...</li>
+                            ) : (
+                                notifications.map(notif => (
+                                    <li key={notif.id}>
+                                        <span className="notification-message">{notif.message}</span>
+                                        <span className="notification-time">{notif.timestamp}</span>
+                                    </li>
+                                ))
+                            )}
+                        </ul>
 
-                        <details>
-                            <summary>Planned DB request/response (placeholder)</summary>
-                            <pre className="code-block">{`GET /api/recipes?q=chicken&maxReadyTime=30
-
-        200 OK
-        {
-        "results": [
-            {"id": "recipe_123", "title": "Lemon Garlic Chicken", "readyInMinutes": 30 },
-            {"id": "recipe_456", "title": "Veggie Stir Fry", "readyInMinutes": 20 }
-        ]
-        }`}</pre>
-                        </details>
+                        {shoppingListMessage && (
+                            <p className="feedback-message" role="status">{shoppingListMessage}</p>
+                        )}
                     </section>
 
                     {/* View Toggle */}
@@ -180,17 +218,22 @@ export function Recipes() {
                                     <button
                                         type="button"
                                         className="btn btn-primary save-ingredients"
-                                        data-recipe="garlic-pasta"
-                                        data-missing="garlic,parmesan"
-                                        data-bs-dismiss="modal"
+                                        onClick={() => {
+                                            handleSaveIngredients("garlic,parmesan");
+                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-garlic-pasta"));
+                                            if (modal) modal.hide();
+                                        }}
                                     >
                                         Save ingredients
                                     </button>
                                     <button
                                         type="button"
                                         className="btn btn-danger delete-recipe"
-                                        data-recipe="garlic-pasta"
-                                        data-bs-dismiss="modal"
+                                        onClick={() => {
+                                            handleDeleteRecipe("Garlic Pasta");
+                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-garlic-pasta"));
+                                            if (modal) modal.hide();
+                                        }}
                                     >
                                         Delete recipe
                                     </button>
@@ -247,17 +290,22 @@ export function Recipes() {
                                     <button
                                         type="button"
                                         className="btn btn-primary save-ingredients"
-                                        data-recipe="chicken-salad"
-                                        data-missing="mixed-greens,vinaigrette"
-                                        data-bs-dismiss="modal"
+                                        onClick={() => {
+                                            handleSaveIngredients("mixed-greens,vinaigrette");
+                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-chicken-salad"));
+                                            if (modal) modal.hide();
+                                        }}
                                     >
                                         Save ingredients
                                     </button>
                                     <button
                                         type="button"
                                         className="btn btn-danger delete-recipe"
-                                        data-recipe="chicken-salad"
-                                        data-bs-dismiss="modal"
+                                        onClick={() => {
+                                            handleDeleteRecipe("Grilled Chicken Salad");
+                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-chicken-salad"));
+                                            if (modal) modal.hide();
+                                        }}
                                     >
                                         Delete recipe
                                     </button>
@@ -313,17 +361,22 @@ export function Recipes() {
                                     <button
                                         type="button"
                                         className="btn btn-primary save-ingredients"
-                                        data-recipe="cookies"
-                                        data-missing="chocolate-chips,sugar"
-                                        data-bs-dismiss="modal"
+                                        onClick={() => {
+                                            handleSaveIngredients("chocolate-chips,sugar");
+                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-cookies"));
+                                            if (modal) modal.hide();
+                                        }}
                                     >
                                         Save ingredients
                                     </button>
                                     <button
                                         type="button"
                                         className="btn btn-danger delete-recipe"
-                                        data-recipe="cookies"
-                                        data-bs-dismiss="modal"
+                                        onClick={() => {
+                                            handleDeleteRecipe("Chocolate Chip Cookies");
+                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-cookies"));
+                                            if (modal) modal.hide();
+                                        }}
                                     >
                                         Delete recipe
                                     </button>
@@ -338,6 +391,48 @@ export function Recipes() {
 }
 
 export function FriendsRecipes() {
+    const [notifications, setNotifications] = useState([]);
+    const [shoppingListMessage, setShoppingListMessage] = useState("");
+
+    // Mock WebSocket notifications - users saving recipes
+    useEffect(() => {
+        const mockUserNames = ["Sarah", "Mike", "Alex", "Jessica", "Tom", "Emma", "Chris"];
+        const mockRecipeNames = ["Garlic Pasta", "Chicken Salad", "Cookies", "Salmon Teriyaki", "Stir Fry", "Tacos"];
+
+        const notificationInterval = setInterval(() => {
+            const randomUser = mockUserNames[Math.floor(Math.random() * mockUserNames.length)];
+            const randomRecipe = mockRecipeNames[Math.floor(Math.random() * mockRecipeNames.length)];
+            
+            const newNotification = {
+                id: Date.now(),
+                message: `${randomUser} saved "${randomRecipe}" to their recipes`,
+                timestamp: new Date().toLocaleTimeString()
+            };
+
+            setNotifications(prev => [newNotification, ...prev].slice(0, 5)); // Keep last 5
+        }, 2000);
+
+        return () => clearInterval(notificationInterval);
+    }, []);
+
+    // Handle save ingredients
+    const handleSaveIngredients = async (missingIngredients) => {
+        try {
+            const ingredientsList = missingIngredients.split(',').map(i => i.trim());
+            await addToShoppingListTool.execute({ ingredients: ingredientsList });
+            setShoppingListMessage(`✓ Added ${ingredientsList.length} items to shopping list`);
+            setTimeout(() => setShoppingListMessage(""), 3000);
+        } catch (error) {
+            console.error("Error saving ingredients:", error);
+            setShoppingListMessage("Error adding to shopping list");
+        }
+    };
+
+    // Handle delete recipe
+    const handleDeleteRecipe = (recipeName) => {
+        alert(`Recipe "${recipeName}" deleted (mock)`);
+    };
+
     return (
         <div className="page-recipes">
             <main id="main-content">
@@ -346,34 +441,28 @@ export function FriendsRecipes() {
 
                     <section aria-labelledby="recipe-api-title" className="placeholder-card">
                         <h3 id="recipe-api-title">
-                            Discover new recipes (Database placeholder)
+                            Friends' Activity (Mock WebSocket)
                         </h3>
                         <p className="muted">
-                            This section will be show recipes stored by the DB. For now it
-                            shows mock renderings of DB data.
+                            Real-time notifications of friends saving recipes
                         </p>
 
-                        <p
-                            id="recipeApiStatus"
-                            className="muted"
-                            role="status"
-                            aria-live="polite"
-                        >
-                            Not connected (placeholder).
-                        </p>
+                        <ul className="notification-feed" role="log" aria-live="polite" aria-label="Recipe notifications">
+                            {notifications.length === 0 ? (
+                                <li className="muted">Waiting for notifications...</li>
+                            ) : (
+                                notifications.map(notif => (
+                                    <li key={notif.id}>
+                                        <span className="notification-message">{notif.message}</span>
+                                        <span className="notification-time">{notif.timestamp}</span>
+                                    </li>
+                                ))
+                            )}
+                        </ul>
 
-                        <details>
-                            <summary>Planned DB request/response (placeholder)</summary>
-                            <pre className="code-block">{`GET /api/recipes?q=chicken&maxReadyTime=30
-
-    200 OK
-    {
-      "results": [
-        {"id": "recipe_123", "title": "Lemon Garlic Chicken", "readyInMinutes": 30 },
-        {"id": "recipe_456", "title": "Veggie Stir Fry", "readyInMinutes": 20 }
-      ]
-    }`}</pre>
-                        </details>
+                        {shoppingListMessage && (
+                            <p className="feedback-message" role="status">{shoppingListMessage}</p>
+                        )}
                     </section>
 
                     {/* View Toggle */}
@@ -513,17 +602,22 @@ export function FriendsRecipes() {
                                     <button
                                         type="button"
                                         className="btn btn-primary save-ingredients"
-                                        data-recipe="salmon-teriyaki"
-                                        data-missing="ginger,soy-sauce"
-                                        data-bs-dismiss="modal"
+                                        onClick={() => {
+                                            handleSaveIngredients("ginger,soy-sauce");
+                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-salmon-teriyaki"));
+                                            if (modal) modal.hide();
+                                        }}
                                     >
                                         Save ingredients
                                     </button>
                                     <button
                                         type="button"
                                         className="btn btn-danger delete-recipe"
-                                        data-recipe="salmon-teriyaki"
-                                        data-bs-dismiss="modal"
+                                        onClick={() => {
+                                            handleDeleteRecipe("Salmon Teriyaki");
+                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-salmon-teriyaki"));
+                                            if (modal) modal.hide();
+                                        }}
                                     >
                                         Delete recipe
                                     </button>
@@ -579,17 +673,22 @@ export function FriendsRecipes() {
                                     <button
                                         type="button"
                                         className="btn btn-primary save-ingredients"
-                                        data-recipe="veg-stir-fry"
-                                        data-missing="ginger,soy-sauce"
-                                        data-bs-dismiss="modal"
+                                        onClick={() => {
+                                            handleSaveIngredients("ginger,soy-sauce");
+                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-veg-stir-fry"));
+                                            if (modal) modal.hide();
+                                        }}
                                     >
                                         Save ingredients
                                     </button>
                                     <button
                                         type="button"
                                         className="btn btn-danger delete-recipe"
-                                        data-recipe="veg-stir-fry"
-                                        data-bs-dismiss="modal"
+                                        onClick={() => {
+                                            handleDeleteRecipe("Vegetable Stir Fry");
+                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-veg-stir-fry"));
+                                            if (modal) modal.hide();
+                                        }}
                                     >
                                         Delete recipe
                                     </button>
@@ -646,17 +745,22 @@ export function FriendsRecipes() {
                                     <button
                                         type="button"
                                         className="btn btn-primary save-ingredients"
-                                        data-recipe="spicy-tacos"
-                                        data-missing="tortillas,cilantro,lime,jalapenos"
-                                        data-bs-dismiss="modal"
+                                        onClick={() => {
+                                            handleSaveIngredients("tortillas,cilantro,lime");
+                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-spicy-tacos"));
+                                            if (modal) modal.hide();
+                                        }}
                                     >
                                         Save ingredients
                                     </button>
                                     <button
                                         type="button"
                                         className="btn btn-danger delete-recipe"
-                                        data-recipe="spicy-tacos"
-                                        data-bs-dismiss="modal"
+                                        onClick={() => {
+                                            handleDeleteRecipe("Spicy Tacos");
+                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-spicy-tacos"));
+                                            if (modal) modal.hide();
+                                        }}
                                     >
                                         Delete recipe
                                     </button>
