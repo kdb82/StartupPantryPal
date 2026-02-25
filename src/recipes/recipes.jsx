@@ -4,10 +4,13 @@ import "./recipes.css";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { addToShoppingListTool } from "../services/recipeTools";
+import { useAuth } from "../global_components/AuthContext";
 
 export function Recipes() {
+    const { currentUser } = useAuth();
     const [notifications, setNotifications] = useState([]);
     const [shoppingListMessage, setShoppingListMessage] = useState("");
+    const [recipes, setRecipes] = useState([]);
 
     // Mock WebSocket notifications - users saving recipes
     useEffect(() => {
@@ -24,10 +27,27 @@ export function Recipes() {
                 timestamp: new Date().toLocaleTimeString()
             };
 
-            setNotifications(prev => [newNotification, ...prev].slice(0, 2)); // Keep last 5
+            setNotifications(prev => [newNotification, ...prev].slice(0, 2)); // Keep last 2
         }, 3000);
 
         return () => clearInterval(notificationInterval);
+    }, []);
+
+    useEffect(() => {
+        const loadRecipes = () => {
+            const savedRecipes = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith("recipe_")) {
+                    const recipeData = localStorage.getItem(key);
+                    if (recipeData) {
+                        savedRecipes.push(JSON.parse(recipeData));
+                    }
+                }
+            }
+            setRecipes(savedRecipes);
+        };
+        loadRecipes();
     }, []);
 
     // Handle save ingredients
@@ -44,8 +64,9 @@ export function Recipes() {
     };
 
     // Handle delete recipe
-    const handleDeleteRecipe = (recipeName) => {
-        alert(`Recipe "${recipeName}" deleted (mock)`);
+    const handleDeleteRecipe = (recipeId) => {
+        localStorage.removeItem(`recipe_${recipeId}`);
+        setRecipes(recipes.filter(recipe => recipe.recipeId !== recipeId));
     };
 
     return (
@@ -102,288 +123,96 @@ export function Recipes() {
                     <section id="my-recipes" className="recipe-view active">
                         <h3>Your Saved Recipes</h3>
                         <div className="recipe-grid">
-                            <button
-                                type="button"
-                                className="recipe-card-trigger"
-                                data-bs-toggle="modal"
-                                data-bs-target="#recipeModal-garlic-pasta"
-                            >
-                                <article className="recipe-card">
-                                    <h4>Garlic Pasta</h4>
-                                    <p className="recipe-meta">Shared by You</p>
-                                    <p className="recipe-description">
-                                        Creamy garlic pasta with fresh herbs and parmesan cheese.
-                                    </p>
-                                    <ul className="recipe-ingredients">
-                                        <li>Pasta</li>
-                                        <li>Garlic</li>
-                                        <li>Olive Oil</li>
-                                        <li>Parmesan</li>
-                                    </ul>
-                                </article>
-                            </button>
+                            {recipes.length === 0 ? (<p className="muted">You haven't saved any recipes yet.</p>) : (
+                                recipes.map(recipe => (
+                                    <button
+                                        key={recipe.recipeId}
+                                        type="button"
+                                        className="recipe-card-trigger"
+                                        data-bs-toggle="modal"
+                                        data-bs-target={`#recipeModal-${recipe.recipeId}`}
+                                    >
+                                        <article className="recipe-card">
+                                            <h4>{recipe.name}</h4>
+                                            <p className="recipe-meta">Shared by You</p>
+                                            <p className="recipe-description">
+                                                {recipe.description || "No description provided."}
+                                            </p>
+                                            <ul className="recipe-ingredients">
+                                                {recipe.ingredients.map((ingredient, idx) => (
+                                                    <li key={idx}>{ingredient}</li>
+                                                ))}
+                                            </ul>
+                                        </article>
+                                    </button>
+                                ))
+                            )}
+                            </div>
 
-                            <button
-                                type="button"
-                                className="recipe-card-trigger"
-                                data-bs-toggle="modal"
-                                data-bs-target="#recipeModal-chicken-salad"
-                            >
-                                <article className="recipe-card">
-                                    <h4>Grilled Chicken Salad</h4>
-                                    <p className="recipe-meta">Shared by You</p>
-                                    <p className="recipe-description">
-                                        Healthy grilled chicken with mixed greens and vinaigrette.
-                                    </p>
-                                    <ul className="recipe-ingredients">
-                                        <li>Chicken</li>
-                                        <li>Mixed Greens</li>
-                                        <li>Tomatoes</li>
-                                        <li>Vinaigrette</li>
-                                    </ul>
-                                </article>
-                            </button>
-
-                            <button
-                                type="button"
-                                className="recipe-card-trigger"
-                                data-bs-toggle="modal"
-                                data-bs-target="#recipeModal-cookies"
-                            >
-                                <article className="recipe-card">
-                                    <h4>Chocolate Chip Cookies</h4>
-                                    <p className="recipe-meta">Shared by You</p>
-                                    <p className="recipe-description">
-                                        Classic homemade chocolate chip cookies.
-                                    </p>
-                                    <ul className="recipe-ingredients">
-                                        <li>Flour</li>
-                                        <li>Butter</li>
-                                        <li>Sugar</li>
-                                        <li>Chocolate Chips</li>
-                                        <li>Eggs</li>
-                                    </ul>
-                                </article>
-                            </button>
+                    {/* Dynamic Recipe Modals */}
+                    {recipes.map(recipe => (
+                        <div
+                            key={recipe.recipeId}
+                            className="modal fade"
+                            id={`recipeModal-${recipe.recipeId}`}
+                            tabIndex="-1"
+                            aria-hidden="true"
+                        >
+                            <div className="modal-dialog modal-dialog-centered modal-lg">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">{recipe.name}</h5>
+                                        <button
+                                            type="button"
+                                            className="btn-close"
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close"
+                                        ></button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <p className="text-muted mb-3">
+                                            Shared by You{recipe.time ? ` • ${recipe.time} minutes` : ''}
+                                        </p>
+                                        <p>{recipe.description || "No description"}</p>
+                                        <h6>Ingredients</h6>
+                                        <ul>
+                                            {recipe.ingredients.map((ingredient, idx) => (
+                                                <li key={idx}>{ingredient}</li>
+                                            ))}
+                                        </ul>
+                                        <h6>Steps</h6>
+                                        <ol>
+                                            {recipe.steps.map((step, idx) => (
+                                                <li key={idx}>{step}</li>
+                                            ))}
+                                        </ol>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-secondary"
+                                            data-bs-dismiss="modal"
+                                        >
+                                            Close
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="btn btn-danger delete-recipe"
+                                            onClick={() => {
+                                                handleDeleteRecipe(recipe.recipeId);
+                                                const modal = bootstrap.Modal.getInstance(document.getElementById(`recipeModal-${recipe.recipeId}`));
+                                                if (modal) modal.hide();
+                                            }}
+                                        >
+                                            Delete recipe
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    ))}
+
                     </section>
-
-                    {/* Recipe Modals (Bootstrap) */}
-
-                    <div
-                        className="modal fade"
-                        id="recipeModal-garlic-pasta"
-                        tabIndex="-1"
-                        aria-hidden="true"
-                    >
-                        <div className="modal-dialog modal-dialog-centered modal-lg">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title">Garlic Pasta</h5>
-                                    <button
-                                        type="button"
-                                        className="btn-close"
-                                        data-bs-dismiss="modal"
-                                        aria-label="Close"
-                                    ></button>
-                                </div>
-                                <div className="modal-body">
-                                    <p className="text-muted mb-3">
-                                        Shared by You • 20–30 minutes (placeholder)
-                                    </p>
-                                    <p>
-                                        Creamy garlic pasta with fresh herbs and parmesan cheese.
-                                    </p>
-                                    <h6>Ingredients</h6>
-                                    <ul>
-                                        <li>Pasta</li>
-                                        <li>Garlic</li>
-                                        <li>Olive Oil</li>
-                                        <li>Parmesan</li>
-                                    </ul>
-                                    <h6>Missing (to add to shopping list)</h6>
-                                    <p className="mb-0">
-                                        <span className="badge text-bg-light">Garlic</span>
-                                        <span className="badge text-bg-light">Parmesan</span>
-                                    </p>
-                                </div>
-                                <div className="modal-footer">
-                                    <button
-                                        type="button"
-                                        className="btn btn-outline-secondary"
-                                        data-bs-dismiss="modal"
-                                    >
-                                        Close
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary save-ingredients"
-                                        onClick={() => {
-                                            handleSaveIngredients("garlic,parmesan");
-                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-garlic-pasta"));
-                                            if (modal) modal.hide();
-                                        }}
-                                    >
-                                        Save ingredients
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn btn-danger delete-recipe"
-                                        onClick={() => {
-                                            handleDeleteRecipe("Garlic Pasta");
-                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-garlic-pasta"));
-                                            if (modal) modal.hide();
-                                        }}
-                                    >
-                                        Delete recipe
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div
-                        className="modal fade"
-                        id="recipeModal-chicken-salad"
-                        tabIndex="-1"
-                        aria-hidden="true"
-                    >
-                        <div className="modal-dialog modal-dialog-centered modal-lg">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title">Grilled Chicken Salad</h5>
-                                    <button
-                                        type="button"
-                                        className="btn-close"
-                                        data-bs-dismiss="modal"
-                                        aria-label="Close"
-                                    ></button>
-                                </div>
-                                <div className="modal-body">
-                                    <p className="text-muted mb-3">
-                                        Shared by You • 20–30 minutes (placeholder)
-                                    </p>
-                                    <p>
-                                        Healthy grilled chicken with mixed greens and vinaigrette.
-                                    </p>
-                                    <h6>Ingredients</h6>
-                                    <ul>
-                                        <li>Chicken</li>
-                                        <li>Mixed Greens</li>
-                                        <li>Tomatoes</li>
-                                        <li>Vinaigrette</li>
-                                    </ul>
-                                    <h6>Missing (to add to shopping list)</h6>
-                                    <p className="mb-0">
-                                        <span className="badge text-bg-light">Mixed Greens</span>
-                                        <span className="badge text-bg-light">Vinaigrette</span>
-                                    </p>
-                                </div>
-                                <div className="modal-footer">
-                                    <button
-                                        type="button"
-                                        className="btn btn-outline-secondary"
-                                        data-bs-dismiss="modal"
-                                    >
-                                        Close
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary save-ingredients"
-                                        onClick={() => {
-                                            handleSaveIngredients("mixed-greens,vinaigrette");
-                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-chicken-salad"));
-                                            if (modal) modal.hide();
-                                        }}
-                                    >
-                                        Save ingredients
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn btn-danger delete-recipe"
-                                        onClick={() => {
-                                            handleDeleteRecipe("Grilled Chicken Salad");
-                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-chicken-salad"));
-                                            if (modal) modal.hide();
-                                        }}
-                                    >
-                                        Delete recipe
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div
-                        className="modal fade"
-                        id="recipeModal-cookies"
-                        tabIndex="-1"
-                        aria-hidden="true"
-                    >
-                        <div className="modal-dialog modal-dialog-centered modal-lg">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title">Chocolate Chip Cookies</h5>
-                                    <button
-                                        type="button"
-                                        className="btn-close"
-                                        data-bs-dismiss="modal"
-                                        aria-label="Close"
-                                    ></button>
-                                </div>
-                                <div className="modal-body">
-                                    <p className="text-muted mb-3">
-                                        Shared by You • 30–45 minutes (placeholder)
-                                    </p>
-                                    <p>Classic homemade chocolate chip cookies.</p>
-                                    <h6>Ingredients</h6>
-                                    <ul>
-                                        <li>Flour</li>
-                                        <li>Butter</li>
-                                        <li>Sugar</li>
-                                        <li>Chocolate Chips</li>
-                                        <li>Eggs</li>
-                                    </ul>
-                                    <h6>Missing (to add to shopping list)</h6>
-                                    <p className="mb-0">
-                                        <span className="badge text-bg-light">Chocolate Chips</span>
-                                        <span className="badge text-bg-light">Sugar</span>
-                                    </p>
-                                </div>
-                                <div className="modal-footer">
-                                    <button
-                                        type="button"
-                                        className="btn btn-outline-secondary"
-                                        data-bs-dismiss="modal"
-                                    >
-                                        Close
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary save-ingredients"
-                                        onClick={() => {
-                                            handleSaveIngredients("chocolate-chips,sugar");
-                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-cookies"));
-                                            if (modal) modal.hide();
-                                        }}
-                                    >
-                                        Save ingredients
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn btn-danger delete-recipe"
-                                        onClick={() => {
-                                            handleDeleteRecipe("Chocolate Chip Cookies");
-                                            const modal = bootstrap.Modal.getInstance(document.getElementById("recipeModal-cookies"));
-                                            if (modal) modal.hide();
-                                        }}
-                                    >
-                                        Delete recipe
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </main>
         </div>

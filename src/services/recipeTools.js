@@ -130,3 +130,59 @@ export const addToShoppingListTool = tool({
 		};
 	},
 });
+
+export const saveRecipeTool = tool({
+	name: "save_recipe",
+	description: "Save a recipe to the user's collection",
+	inputSchema: z.object({
+		recipeId: z.string().describe("Unique identifier for the recipe"),
+		recipeName: z.string().describe("Name of the recipe to save"),
+		recipeTime: z.number().optional().describe("Cooking time in minutes"),
+		recipeDescription: z.string().optional().describe("Description of the recipe to save"),
+		recipeIngredients: z.array(z.string()).describe("List of ingredients in the recipe"),
+		recipeSteps: z.array(z.string()).describe("List of steps to prepare the recipe"),
+	}),
+	execute: async ({recipeName, recipeId, recipeTime, recipeDescription, recipeIngredients, recipeSteps}) => {
+		console.log("Saving recipe:", recipeId, recipeName);
+		const recipe = {
+			recipeId,
+			name: recipeName,
+			time: recipeTime || null,
+			description: recipeDescription || null,
+			ingredients: recipeIngredients,
+			steps: recipeSteps,
+		}
+		localStorage.setItem(`recipe_${recipeId}`, JSON.stringify(recipe));
+		return {
+			success: true,
+			recipeId: recipeId,
+			message: `Recipe "${recipeName}" saved successfully`,
+		};
+	},
+});
+
+
+export const getRecipesTool = tool({
+    name: "get_user_recipes",
+    description: "Retrieve all of the user's saved recipes",
+    inputSchema: z.object({}),
+    execute: async () => {
+        const recipes = [];
+        // Loop through all localStorage keys
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            // Check if this key is a recipe (starts with "recipe_")
+            if (key && key.startsWith("recipe_")) {
+                const recipeData = localStorage.getItem(key);
+                if (recipeData) {
+                    recipes.push(JSON.parse(recipeData));
+                }
+            }
+        }
+        return {
+            success: true,
+            count: recipes.length,
+            recipes: recipes,
+        };
+    },
+});
