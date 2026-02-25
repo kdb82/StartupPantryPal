@@ -6,11 +6,18 @@
 
 .page-ai .ai-main .container {
 	display: block;
+	max-width: 100%;
+	width: 100%;
+	padding: 0 2.5%;
 }
 
 .page-ai h2 {
 	margin: 0 0 var(--space-sm);
 	font-size: 1.25rem;
+}
+
+.page-ai section {
+	width: 100%;
 }
 
 /* Response preview card */
@@ -19,8 +26,62 @@
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
 	padding: var(--space-md);
-	margin: var(--space-md) 0 var(--space-lg);
+	margin: var(--space-md) 0 var(--space-sm);
+	display: flex;
+	flex-direction: column;
+	max-height: 500px;
+	overflow-y: auto;
+	width: 100%;
 }
+
+.page-ai .ai-form {
+	background: var(--surface);
+	border: 1px solid #e5e7eb;
+	border-radius: var(--radius);
+	padding: var(--space-md);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
+	position: relative;
+	width: 100%;
+	max-width: none;
+	box-sizing: border-box;
+}
+
+.page-ai .ai-conversation-history {
+	flex: 1;
+	padding: var(--space-sm);
+}
+
+.page-ai .conversation-pair {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-xs);
+	margin-bottom: var(--space-md);
+}
+
+.page-ai .user-message {
+	align-self: flex-start;
+	background: #f3f4f6;
+	border: 1px solid #e5e7eb;
+	border-radius: 999px;
+	padding: 0.35rem 0.7rem;
+	margin: 8px 0;
+	max-width: 85%;
+	font-size: 0.9rem;
+}
+
+.page-ai .ai-message pre {
+	margin: 0;
+	white-space: pre-wrap;
+	word-break: break-word;
+	background: #f8fafc;
+	border: 1px solid #e5e7eb;
+	border-radius: var(--radius);
+	padding: var(--space-sm);
+}
+
+
 
 .page-ai .response-container ul {
 	margin: var(--space-sm) 0;
@@ -38,7 +99,7 @@
 	border: 1px solid #e5e7eb;
 	border-radius: var(--radius);
 	background: var(--surface);
-	margin: var(--space-md) 0;
+	margin: var(--space-sm) 0;
 	overflow: hidden;
 }
 
@@ -89,15 +150,30 @@
 	background: #f3f4f6;
 }
 
-@media (min-width: 900px) {
-	.page-ai .ai-main .container > section {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: var(--space-lg);
-		align-items: start;
-	}
+.page-ai .scroll-hint {
+	position: sticky;
+	bottom: 0;
+	text-align: center;
+	font-size: 0.75rem;
+	color: #6b7280;
+	padding: 0.35rem 0;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, var(--surface) 60%);
+	margin-top: auto;
+}
 
-	.page-ai .response-container {
-		margin: 0;
-	}
+#aiPromptForm {
+	width: 100%;
+	max-width: none;
+}
+
+#aiPromptForm textarea {
+	height: 48px !important;
+	min-height: 48px;
+	max-height: 48px;
+	resize: none;
+}
+
+#aiStatus {
+	color: var(--text);
+	margin-bottom: 5px;
 }
