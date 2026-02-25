@@ -2,7 +2,7 @@ import React from "react";
 import "../global.css";
 import "./aiLanding.css";
 import { createRecipeAgent } from "../services/recipeAgent";
-import { getActualPantryTool, searchRecipesTool, addToShoppingListTool } from "../services/recipeTools";
+import { getActualPantryTool, searchRecipesTool, addToShoppingListTool, saveRecipeTool } from "../services/recipeTools";
 import { useEffect } from "react";
 
 // Create agent once at module level (survives navigation)
@@ -14,7 +14,7 @@ function getOrCreateAgent() {
         agentInstance = createRecipeAgent({
             apiKey,
             model: "openrouter/auto",
-            tools: [getActualPantryTool, searchRecipesTool, addToShoppingListTool],
+            tools: [getActualPantryTool, searchRecipesTool, addToShoppingListTool, saveRecipeTool],
         });
     }
     return agentInstance;

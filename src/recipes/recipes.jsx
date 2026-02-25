@@ -64,9 +64,14 @@ export function Recipes() {
     };
 
     // Handle delete recipe
-    const handleDeleteRecipe = (recipeId) => {
-        localStorage.removeItem(`recipe_${recipeId}`);
-        setRecipes(recipes.filter(recipe => recipe.recipeId !== recipeId));
+    const handleDeleteRecipe = (recipeId, recipeName) => {
+        const confirmed = window.confirm(`Are you sure you want to delete "${recipeName}"? This action cannot be undone.`);
+        if (confirmed) {
+            localStorage.removeItem(`recipe_${recipeId}`);
+            setRecipes(recipes.filter(recipe => recipe.recipeId !== recipeId));
+            return true;
+        }
+        return false;
     };
 
     return (
@@ -199,9 +204,11 @@ export function Recipes() {
                                             type="button"
                                             className="btn btn-danger delete-recipe"
                                             onClick={() => {
-                                                handleDeleteRecipe(recipe.recipeId);
-                                                const modal = bootstrap.Modal.getInstance(document.getElementById(`recipeModal-${recipe.recipeId}`));
-                                                if (modal) modal.hide();
+                                                const deleted = handleDeleteRecipe(recipe.recipeId, recipe.name);
+                                                if (deleted) {
+                                                    const modal = bootstrap.Modal.getInstance(document.getElementById(`recipeModal-${recipe.recipeId}`));
+                                                    if (modal) modal.hide();
+                                                }
                                             }}
                                         >
                                             Delete recipe
