@@ -1,8 +1,69 @@
 import React from "react";
 import "../global.css";
 import "./calendar.css";
+import { useState, useEffect } from "react";
 
 export function Calendar() {
+    const SHOPPING_LIST_KEY = "shopping_list_items";
+    const [shoppingList, setShoppingList] = useState([]);
+    const [newIngredient, setNewIngredient] = useState("");
+    const [weekStart, setWeekStart] = useState(new Date());
+
+    useEffect(() => {
+        const storedList = localStorage.getItem(SHOPPING_LIST_KEY);
+        if (storedList) {
+            try {
+                setShoppingList(JSON.parse(storedList));
+            } catch (error) {
+                console.error("Error parsing shopping list:", error);
+                localStorage.removeItem(SHOPPING_LIST_KEY);
+            }
+        }
+    }, []);
+
+    const saveShoppingList = (list) => {
+        localStorage.setItem(SHOPPING_LIST_KEY, JSON.stringify(list));
+        setShoppingList(list);
+    };
+
+    const handleToggleItem = (itemId) => {
+        const updatedList = shoppingList.map(item =>
+            item.id === itemId ? { ...item, checked: !item.checked } : item
+        );
+        saveShoppingList(updatedList);
+    };
+
+    const handleClearList = (clearAll) => {
+        if (!clearAll) {
+            const uncheckedItems = shoppingList.filter(item => !item.checked);
+            saveShoppingList(uncheckedItems);
+        } else {
+            if (window.confirm("Are you sure you want to clear your ENTIRE shopping list?")) {
+                saveShoppingList([]);
+            }
+        }
+    }
+
+    const handleAddItem = () => {
+        const ingredient = newIngredient.trim();
+        const exists = shoppingList.find(item => item.name.toLowerCase() === ingredient.toLowerCase());
+
+        if (exists) {
+            alert("This ingredient is already in your shopping list.");
+            return;
+        }
+
+        const newItem = {
+            id: `manual_${Date.now()}`,
+            name: ingredient,
+            checked: false,
+            neededFor: ["Manually Added"]
+        }
+
+        saveShoppingList([...shoppingList, newItem]);
+        setNewIngredient("");
+    };
+
     return (
         <div className="page-calendar">
             <main id="main-content">
@@ -15,7 +76,7 @@ export function Calendar() {
                             </button>
                             <p id="week-range">
                                 <strong>Week of:</strong>
-                                <span data-start="2026-01-26"> Jan 26</span> – 
+                                <span data-start="2026-01-26"> Jan 26</span> –
                                 <span data-end="2026-02-01"> Feb 1</span>
                             </p>
                             <button type="button" aria-label="View next week">Next →</button>
@@ -42,7 +103,7 @@ export function Calendar() {
                                             <strong>Saved Recipes:</strong> Tacos<br /><em
                                             >Missing: </em
                                             >
-                                             tortillas
+                                            tortillas
                                         </div>
                                     </td>
                                     <td data-day="tuesday">
@@ -85,58 +146,47 @@ export function Calendar() {
                         <h2 id="shopping-title">Shopping List</h2>
                         <p className="muted">Missing ingredients from your saved recipes</p>
                         <ul className="shopping-list">
-                            <li>
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name="shopping-item"
-                                        value="tortillas"
-                                    />
-                                    Tortillas
-                                </label>
-                                <span className="recipe-source">Needed for: Tacos</span>
-                            </li>
-                            <li>
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name="shopping-item"
-                                        value="mixed-greens"
-                                    />
-                                    Mixed Greens
-                                </label>
-                                <span className="recipe-source">Needed for: Chicken Salad</span>
-                            </li>
-                            <li>
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name="shopping-item"
-                                        value="chocolate-chips"
-                                    />
-                                    Chocolate Chips
-                                </label>
-                                <span className="recipe-source">Needed for: Cookies</span>
-                            </li>
-                            <li>
-                                <label>
-                                    <input type="checkbox" name="shopping-item" value="sugar" />
-                                    Sugar
-                                </label>
-                                <span className="recipe-source">Needed for: Cookies</span>
-                            </li>
-                            <li>
-                                <label>
-                                    <input type="checkbox" name="shopping-item" value="ginger" />
-                                    Ginger
-                                </label>
-                                <span className="recipe-source"
-                                >Needed for: Salmon Teriyaki, Stir Fry</span
-                                >
-                            </li>
+                            {shoppingList.length === 0 ? (
+                                <li className="empty-message">
+                                    <p className="muted">Your shopping list is empty! Missing ingredients from your saved recipes will appear here.</p>
+                                    <p className="muted">You can add missing ingredients by recipe with the AI, directly from your saved recipes, or with the add button below.</p>
+                                </li>
+                            ) : (
+                                shoppingList.map(item => (
+                                    <li key={item.id} className={item.checked ? "checked" : ""}>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={item.checked}
+                                                name="shopping-item"
+                                                onChange={() => handleToggleItem(item.id)}
+                                            />
+                                            {item.name}
+                                        </label>
+                                        {item.neededFor && <span className="recipe-source">
+                                            Needed for: {item.neededFor.join(", ")}
+                                        </span>}
+                                    </li>
+                                ))
+                            )}
                         </ul>
                         <div className="shopping-actions">
-                            <button type="button" className="btn-clear">Clear List</button>
+                            <input
+                                type="text"
+                                placeholder="Add ingredient..."
+                                value={newIngredient}
+                                onChange={(e) => setNewIngredient(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleAddItem()}
+                            />
+                            <button type="button" className="btn-add" onClick={handleAddItem}>
+                                Add Item
+                            </button>
+                            <button type="button" className="btn-clear" onClick={() => handleClearList(false)}>
+                                Clear Checked Items
+                            </button>
+                            <button type="button" className="btn-clear" id="clear-all" onClick={() => handleClearList(true)}>
+                                Clear Entire List
+                            </button>
                         </div>
                     </section>
                 </div>

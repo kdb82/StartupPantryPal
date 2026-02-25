@@ -133,6 +133,17 @@ CALENDAR PAGE ----------------------
 	background: #f3f4f6;
 }
 
+.shopping-list li.checked label {
+	text-decoration: line-through;
+	opacity: 0.6;
+}
+
+.shopping-list li.empty-message {
+	list-style: none;
+	text-align: center;
+	padding: var(--space-lg) 0;
+}
+
 @media (max-width: 768px) {
 	/* Mobile calendar: switch from grid to day cards */
 
@@ -197,3 +208,56 @@ CALENDAR PAGE ----------------------
 		background: transparent;
 	}
 }
+
+.shopping-actions {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.shopping-actions input[type="text"] {
+    flex: 1;
+    min-width: 200px;
+    padding: var(--space-sm);
+    border: 1px solid #d1d5db;
+    border-radius: var(--radius);
+}
+
+.shopping-actions button {
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.shopping-actions .btn-add {
+    background: var(--color-secondary);
+    color: white;
+}
+
+.shopping-actions .btn-add:hover {
+    opacity: 0.9;
+}
+
+.shopping-actions .btn-clear {
+    background: #f3f4f6;
+    color: var(--text);
+    border: 1px solid #d1d5db;
+}
+
+#clear-all {
+	background: #fee2e2;
+	color: #991b1b;
+	border: 1px solid #fca5a5;
+}
+
+#clear-all:hover {
+	background: #fecaca;
+}
+
+.shopping-actions .btn-clear:hover {
+    background: #e5e7eb;
+}
+
