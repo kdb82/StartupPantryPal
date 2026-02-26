@@ -3,7 +3,7 @@ import "../global.css";
 import "./aiLanding.css";
 import ReactMarkdown from "react-markdown";
 import { createRecipeAgent } from "../services/recipeAgent";
-import { getActualPantryTool, addIngredientToPantryTool, removeIngredientFromPantryTool, searchRecipesTool, addToShoppingListTool, removeFromShoppingListTool, getShoppingListTool, saveRecipeTool, getRecipesTool, addCategoryToPantryTool, removeCategoryFromPantryTool, addRecipeToCalendarTool } from "../services/recipeTools";
+import { getActualPantryTool, addIngredientToPantryTool, removeIngredientFromPantryTool, searchRecipesTool, addToShoppingListTool, removeFromShoppingListTool, getShoppingListTool, saveRecipeTool, getRecipesTool, addCategoryToPantryTool, removeCategoryFromPantryTool, addRecipeToCalendarTool, removeRecipeFromCalendarTool } from "../services/recipeTools";
 import { useEffect } from "react";
 
 // Create agent once at module level (survives navigation)
@@ -39,7 +39,8 @@ function getOrCreateAgent() {
                 getRecipesTool,
                 addCategoryToPantryTool,
                 removeCategoryFromPantryTool,
-                addRecipeToCalendarTool
+                addRecipeToCalendarTool,
+                removeRecipeFromCalendarTool
             ],
         });
     }

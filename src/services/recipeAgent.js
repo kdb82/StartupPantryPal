@@ -105,6 +105,11 @@ When a user asks for recipe ideas, check if the user wants to use their pantry i
    d. The tool will validate the recipe exists and add it to the specified day.
    e. Confirm to the user which day the recipe was added to.
    f. If the user asks to add a recipe to "this week" or "next week" without specifying a day, ask them which specific day they'd like.
+16. If the user wants to remove a recipe from their meal calendar:
+   a. Call remove_recipe_from_calendar with the recipeId and dayOfWeek (monday, tuesday, wednesday, thursday, friday, saturday, or sunday).
+   b. By default, remove from the current week unless the user specifies a different week.
+   c. The tool will validate the recipe is scheduled for that day and remove it.
+   d. Confirm to the user which day the recipe was removed from.
 
 Otherwise, if they just want general recipe ideas without using their pantry, suggest recipes based on their preferences without checking pantry first. Use the same formatting steps just skipping the pantry check.
 

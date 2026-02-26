@@ -816,3 +816,77 @@ export const addRecipeToCalendarTool = tool({
         };
     },
 });
+
+export const removeRecipeFromCalendarTool = tool({
+    name: "remove_recipe_from_calendar",
+    description: "Remove a recipe from a specific day on the meal calendar",
+    inputSchema: z.object({
+        recipeId: z.string().describe("ID of the recipe to remove (e.g., 'recipe_pasta_001' or 'pasta_001')"),
+        dayOfWeek: z.enum(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]).describe("Day of the week to remove the recipe from"),
+        weekStartDate: z.string().optional().describe("ISO date string for the start of the week (Monday). If not provided, uses current week.")
+    }),
+    execute: async ({ recipeId, dayOfWeek, weekStartDate } = {}) => {
+        if (!recipeId || !dayOfWeek) {
+            return { success: false, message: "Recipe ID and day of week are required." };
+        }
+        
+        // Normalize recipe ID (add 'recipe_' prefix if missing)
+        const normalizedRecipeId = recipeId.startsWith('recipe_') ? recipeId : `recipe_${recipeId}`;
+        
+        // Calculate week start date (Monday)
+        const startOfWeek = (date) => {
+            const d = new Date(date);
+            const day = d.getDay();
+            const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+            return new Date(d.setDate(diff));
+        };
+        
+        const weekStart = weekStartDate ? new Date(weekStartDate) : startOfWeek(new Date());
+        const weekStartISO = weekStart.toISOString().split('T')[0];
+        
+        // Load meal plan
+        const MEAL_PLAN_KEY = "meal_plan_data";
+        const mealPlanData = localStorage.getItem(MEAL_PLAN_KEY);
+        const mealPlan = mealPlanData ? JSON.parse(mealPlanData) : {};
+        
+        // Create key for this day
+        const dayKey = `${weekStartISO}_${dayOfWeek.toLowerCase()}`;
+        
+        // Check if day has any recipes
+        if (!mealPlan[dayKey] || mealPlan[dayKey].length === 0) {
+            return {
+                success: false,
+                message: `No recipes scheduled for ${dayOfWeek} (week of ${weekStartISO}).`
+            };
+        }
+        
+        // Find the recipe to get its name for confirmation message
+        const recipeToRemove = mealPlan[dayKey].find(r => r.id === normalizedRecipeId);
+        if (!recipeToRemove) {
+            return {
+                success: false,
+                message: `Recipe with ID "${recipeId}" is not scheduled for ${dayOfWeek} of that week.`
+            };
+        }
+        
+        const recipeName = recipeToRemove.name || "Unnamed Recipe";
+        
+        // Remove the recipe
+        mealPlan[dayKey] = mealPlan[dayKey].filter(r => r.id !== normalizedRecipeId);
+        
+        // Clean up empty day entries
+        if (mealPlan[dayKey].length === 0) {
+            delete mealPlan[dayKey];
+        }
+        
+        // Save meal plan
+        localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(mealPlan));
+        
+        return {
+            success: true,
+            message: `"${recipeName}" has been removed from ${dayOfWeek} (week of ${weekStartISO}).`,
+            dayKey: dayKey,
+            recipeName: recipeName
+        };
+    },
+});
