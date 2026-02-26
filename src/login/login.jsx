@@ -51,7 +51,7 @@ export function Login() {
 				</form>
 				<NavLink to="/register">New user? Create an account.</NavLink>
 
-				<section aria-labelledby="about-title" className="placeholder-card">
+				{/* <section aria-labelledby="about-title" className="placeholder-card">
 					<h2 id="about-title">What PantryPal does</h2>
 					<p>
 						PantryPal helps you track pantry items, discover recipes, and plan
@@ -76,7 +76,7 @@ export function Login() {
 						set up so the real backend integrations can be wired in later with
 						minimal HTML changes.
 					</p>
-				</section>
+				</section> */}
 			</div>
 		</main>
 	);

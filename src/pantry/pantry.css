@@ -20,6 +20,13 @@
 	font-size: 1.25rem;
 }
 
+.page-pantry .pantry-description {
+	margin: 0 0 var(--space-lg);
+	color: var(--muted);
+	font-size: 0.95rem;
+	line-height: 1.5;
+}
+
 .page-pantry code {
 	background: #f3f4f6;
 	border: 1px solid #e5e7eb;

@@ -245,7 +245,7 @@ export function Recipes() {
                     <section id="my-recipes" className="recipe-view active">
                         <h3>Your Saved Recipes</h3>
                         <div className="recipe-grid">
-                            {recipes.length === 0 ? (<p className="muted">You haven't saved any recipes yet.</p>) : (
+                            {recipes.length === 0 ? (<p className="muted">You haven't saved any recipes yet. Find recipes with the AI assistant to start!</p>) : (
                                 recipes.map(recipe => (
                                     <button
                                         key={recipe.recipeId}
@@ -484,7 +484,7 @@ export function FriendsRecipes() {
 
             setNotifications(prev => [newNotification, ...prev].slice(0, 2));
             setFriendsRecipes(prev => [mockRecipe, ...prev]);
-        }, 5000);
+        }, 3000);
 
         return () => clearInterval(notificationInterval);
     }, []);

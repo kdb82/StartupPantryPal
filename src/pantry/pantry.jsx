@@ -113,6 +113,7 @@ export function Pantry() {
             <main id="main-content">
                 <div className="container">
                     <h2>My Pantry</h2>
+                    <p className="pantry-description">Track the ingredients you have at home. This helps us find recipes you can make with what you already own.</p>
 
                     {/* <section aria-labelledby="ws-title" className="placeholder-card">
                         <h3 id="ws-title">Live updates (WebSocket placeholder)</h3>

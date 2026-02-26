@@ -30,8 +30,8 @@ function AppContent() {
 								<>
 									<li><NavLink to="/pantry">Pantry</NavLink></li>
 									<li><NavLink to="/recipes">Recipes</NavLink></li>
-									<li><NavLink to="/calendar">Planner</NavLink></li>
 									<li><NavLink to="/ai-assistant">AI Assistant</NavLink></li>
+									<li><NavLink to="/calendar">Planner</NavLink></li>
 									<li className="user-info"><em>Welcome, {currentUser.username}!</em></li>
 									<li><button onClick={handleLogout} className="logout-button">Logout</button></li>
 								</>
