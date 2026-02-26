@@ -203,8 +203,9 @@ export function AILanding() {
                     <section aria-labelledby="ai-title">
                         <h2 id="ai-title">AI Recipe Assistant</h2>
                         <p className="muted">
-                            Describe what you want to cook. PantryPal will suggest recipes and
-                            add missing ingredients to your shopping list.
+                            Your personal recipe advisor. Ask me to suggest recipes based on what's in your pantry, 
+                            manage your ingredients and shopping list, plan your meals, or handle pantry organization. 
+                            I can generate custom recipes, add items to your calendar, update categories, and more.
                         </p>
 
                         <section className="response-container" aria-label="AI response" ref={responseContainerRef}>
