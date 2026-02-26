@@ -139,3 +139,93 @@ Completed the HTML structure for the PantryPal startup application. Created six 
 - Avoided inline styles—all styling done through CSS classes and the organized CSS files
 - Proper nesting of elements and no unnecessary wrapper divs
 - Forms prepared with POST methods and data attributes for future backend integration
+## PantryPal – React Reactivity & State Management
+
+### useState Hook Patterns
+- **Multiple state variables per component**: Managed separate pieces of state (recipes, shopping list, meal plan, pantry items, modal visibility, selected items, form inputs)
+- **State initialization from localStorage**: Used `useState(() => JSON.parse(localStorage.getItem('key')) || defaultValue)` pattern for persistence
+- **Complex state objects**: Managed arrays of objects with unique IDs for recipes, shopping list items, and pantry items
+- **Modal state management**: Tracked multiple modal visibility states (`showDaySelector`, `showAddRecipeModal`) and selected items for context
+- **Form input state**: Used object state (`itemInputs`) to track multiple category inputs dynamically by key
+
+### useEffect Hook Usage
+- **Data loading on mount**: Used `useEffect(() => { loadData(); }, [])` pattern with empty dependency array to load data once when component mounts
+- **Mock WebSocket with setInterval**: Implemented friend activity feed using `setInterval` inside useEffect with cleanup function:
+```javascript
+useEffect(() => {
+    const interval = setInterval(() => {
+        // Mock WebSocket message
+    }, 5000);
+    return () => clearInterval(interval);
+}, []);
+```
+- **Cleanup functions**: Always returned cleanup functions from effects that set up intervals or subscriptions
+
+### LocalStorage Patterns
+- **Persistence layer**: Used localStorage as temporary database for pantry items, recipes, meal plans, and shopping lists
+- **Key naming convention**: Used consistent prefixes (`user_pantry_data`, `recipe_${id}`, `friends_recipe_${id}`, `shopping_list_items`, `meal_plan_data`)
+- **Error handling**: Wrapped `JSON.parse()` calls in try-catch blocks to handle corrupted data
+- **State synchronization**: Always updated both React state AND localStorage together to keep them in sync
+```javascript
+const savePantry = (newItems) => {
+    setItems(newItems);
+    localStorage.setItem(PANTRY_KEY, JSON.stringify(newItems));
+};
+```
+
+### Complex State Operations
+- **Duplicate prevention**: Implemented case-insensitive duplicate checking for shopping list items
+```javascript
+const existingItem = shoppingList.find(
+    item => item.name.toLowerCase() === ingredient.toLowerCase()
+);
+```
+- **Array updates**: Used immutable patterns with `.map()`, `.filter()`, and spread operator for state updates
+- **Nested data structures**: Managed meal plan as object with date-keyed arrays of recipes
+- **Multi-recipe tracking**: Updated `neededFor` arrays on existing shopping list items when multiple recipes need same ingredient
+
+### Modal Integration
+- **Bootstrap modal + React state**: Combined Bootstrap's modal instance API with React state management
+- **Opening modals**: Set React state to track selected items, then opened Bootstrap modal
+- **Closing modals**: Used Bootstrap's `Modal.getInstance()` and `.hide()` to programmatically close modals
+```javascript
+const modalElement = document.getElementById(`recipeModal-${recipeId}`);
+const bootstrapModal = bootstrap.Modal.getInstance(modalElement);
+if (bootstrapModal) bootstrapModal.hide();
+```
+- **Context passing**: Used state to pass selected recipe/day between modal opener and action handlers
+
+### Component Reactivity Examples
+- **Calendar week navigation**: Calculated Monday-based week ranges dynamically, updating all date displays
+- **Shopping list with checkboxes**: Toggle checked state on items, apply strikethrough styling via CSS class
+- **Dynamic recipe rendering**: Mapped over recipe arrays to generate cards with unique keys
+- **Add to calendar flow**: Day selector modal → select day → update meal plan → close modals → show success message
+- **Real-time notifications**: Simulated WebSocket with setInterval, adding timestamped notifications to array
+
+### Third-Party API Integration
+- **OpenRouter AI integration**: Connected to OpenRouter API for recipe generation
+- **Environment variables**: Used Vite's `import.meta.env.VITE_OPENROUTER_API_KEY` for secure API key storage
+- **Async/await patterns**: Handled async API calls with proper error handling
+- **Response parsing**: Extracted recipe data from AI responses and saved to localStorage
+
+### State Flow Architecture
+- **Unidirectional data flow**: Props passed down, events bubbled up
+- **Shared state via localStorage**: Multiple components read/write same localStorage keys for shared data
+- **Event handlers**: Created specific handlers for each user action (add, delete, toggle, navigate)
+- **Success feedback**: Displayed temporary success messages using state + setTimeout cleanup
+
+### Challenges & Solutions
+- **Duplicate IDs in loop**: Changed from `id` to `className` for buttons rendered in `.map()` to avoid duplicate IDs
+- **CSS specificity issues**: Inline styles override CSS classes, moved all styling to CSS files for hover effects to work
+- **Multiple matches in edits**: Made old strings more specific when replacing function bodies that appeared in multiple components
+- **Modal z-index conflicts**: Set custom modals to `z-index: 1060` to appear above Bootstrap modals
+- **Case-sensitive vs insensitive**: Used `toLowerCase()` comparison for ingredient matching to prevent duplicates
+
+### Key Learnings
+- useState and useEffect are sufficient for most local state management without additional libraries
+- LocalStorage makes a good temporary backend for development before implementing real database
+- Combining React state with existing libraries (Bootstrap) requires understanding both APIs
+- Always clean up side effects (intervals, subscriptions) in useEffect return functions
+- Immutable state updates prevent subtle bugs and make React re-render predictably
+- Mock functionality (WebSocket with setInterval) helps complete UI before backend is ready
+- Component reusability comes from separating state management logic from presentation
