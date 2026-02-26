@@ -5,10 +5,30 @@
  * designed for React web apps (not CLI/Node.js servers).
  */
 
-import { OpenRouter } from '@openrouter/sdk';
-import { getActualPantryTool, searchRecipesTool, addToShoppingListTool } from './recipeTools';
+import { zodToJsonSchema } from 'zod-to-json-schema';
+const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
+const SITE_NAME = 'PantryPal';
+const SITE_URL = 'https://startup.pantrypal.click';
+const MAX_TOOL_ROUNDS = 3;
 
-const TOOLS = [getActualPantryTool, searchRecipesTool, addToShoppingListTool];
+function buildApiTools(tools) {
+  return tools.map((tool) => ({
+    type: 'function',
+    function: {
+      name: tool.function.name,
+      description: tool.function.description || '',
+      parameters: zodToJsonSchema(tool.function.inputSchema, { target: 'openApi3' })
+    }
+  }));
+}
+
+function safeParseJSON(value, fallback) {
+  try {
+    return JSON.parse(value);
+  } catch (error) {
+    return fallback;
+  }
+}
 
 /**
  * Creates a recipe assistant agent
@@ -25,9 +45,6 @@ export function createRecipeAgent(config) {
     tools = []
   } = config;
 
-  // Initialize OpenRouter client
-  const client = new OpenRouter({ apiKey });
-
   // Store conversation history
   const messages = [];
 
@@ -40,13 +57,15 @@ Your role:
 - Use tools to check their actual pantry inventory
 - Add missing ingredients to their shopping list
 - Be concise and friendly
+- Do not reveal internal software details to the user. If you are unable to do something just say you can't do it, don't mention tools or APIs.
 
 When a user asks for recipe ideas, check if the user wants to use their pantry items (indicated in preferences, you don't need to ask them, that info should be available to you). If so, follow these steps:
 1. First, check their pantry using the get_user_pantry tool
 2. If user has specific preferences (servings, time limit, dietary needs), take those into account when suggesting recipes.
-3. Suggest 2-3 recipes they can make, if possible, only with the ingredients they have. If not, suggest recipes that are close matches and clearly list any missing ingredients.;
+3. Suggest 2-3 recipes they can make, if possible, only with the ingredients they have. If not, suggest recipes that are close matches and clearly list any missing ingredients.
 4. Format responses clearly with recipe names, time to take, steps, and a list of missing items from pantry at the end of the response if applicable.
 5. Upon suggestion always ask if they would like to save any of the recipes, if ingredients are missing, also ask if they would like to add them to shopping list using add_to_shopping_list to add them
+6. If you call save_recipe, always include full details (recipeId, recipeName, recipeTime, recipeDescription, recipeIngredients, recipeSteps). Do not call save_recipe with only an ID.
 
 Otherwise, if they just want general recipe ideas without using their pantry, suggest recipes based on their preferences without checking pantry first. Use the same formatting steps just skipping the pantry check.`;
 
@@ -77,54 +96,87 @@ Otherwise, if they just want general recipe ideas without using their pantry, su
       // Signal that we're thinking
       onThinking();
 
-      // Call the model with streaming
-      const result = client.callModel({
-        model,
-        instructions,
-        input: messages,
-        tools: tools.length > 0 ? tools : undefined,
-      });
+      const apiTools = tools.length > 0 ? buildApiTools(tools) : undefined;
+      const toolMap = new Map(tools.map(t => [t.function.name, t.function.execute]));
+
+      const headers = {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': SITE_URL,
+        'X-Title': SITE_NAME
+      };
 
       let fullText = '';
 
-      // Stream the response using items-based streaming
-      for await (const item of result.getItemsStream()) {
-        // Handle different item types
-        switch (item.type) {
-          case 'message': {
-            // Extract text content from the message
-            const textContent = item.content?.find(c => c.type === 'output_text');
-            if (textContent && textContent.text) {
-              const newText = textContent.text;
-              if (newText !== fullText) {
-                const delta = newText.slice(fullText.length);
-                fullText = newText;
-                onStream(delta, fullText);
-              }
-            }
-            break;
-          }
+      for (let round = 0; round < MAX_TOOL_ROUNDS; round += 1) {
+        const payload = {
+          model,
+          messages: [{ role: 'system', content: instructions }, ...messages],
+          stream: false,
+          ...(apiTools ? { tools: apiTools } : {})
+        };
 
-          case 'function_call': {
-            // AI is calling a tool
-            if (item.status === 'completed') {
-              const args = item.arguments ? JSON.parse(item.arguments) : {};
-              onToolCall(item.name, args);
-            }
-            break;
-          }
+        const response = await fetch(OPENROUTER_URL, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(payload)
+        });
 
-          // We can handle more types later (reasoning, web_search, etc.)
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`OpenRouter HTTP ${response.status}: ${errorText}`);
         }
+
+        const data = await response.json();
+        const message = data?.choices?.[0]?.message;
+
+        if (!message) {
+          throw new Error('OpenRouter returned no message');
+        }
+
+        const toolCalls = Array.isArray(message.tool_calls) ? message.tool_calls : [];
+        if (toolCalls.length > 0) {
+          messages.push({
+            role: 'assistant',
+            content: message.content || '',
+            tool_calls: message.tool_calls
+          });
+
+          for (const toolCall of message.tool_calls) {
+            const toolName = toolCall.function?.name;
+            if (!toolName) {
+              throw new Error('Tool call missing name');
+            }
+            const args = toolCall.function?.arguments
+              ? safeParseJSON(toolCall.function.arguments, {})
+              : {};
+            onToolCall(toolName, args);
+
+            const execute = toolMap.get(toolName);
+            if (!execute) {
+              throw new Error(`Tool not found: ${toolName}`);
+            }
+
+            const result = await execute(args);
+            messages.push({
+              role: 'tool',
+              tool_call_id: toolCall.id,
+              content: JSON.stringify(result ?? null)
+            });
+          }
+
+          // Loop again to let the model incorporate tool outputs.
+          continue;
+        }
+
+        fullText = message.content || '';
+        messages.push({ role: 'assistant', content: fullText });
+        break;
       }
 
-      // If streaming didn't capture text, get it directly
-      if (!fullText) {
-        fullText = await result.getText();
+      if (fullText) {
+        onStream(fullText, fullText);
       }
-
-      // Add assistant response to history
-      messages.push({ role: 'assistant', content: fullText });
 
       // Signal completion
       onComplete(fullText);
@@ -132,6 +184,11 @@ Otherwise, if they just want general recipe ideas without using their pantry, su
       return fullText;
 
     } catch (error) {
+      console.error('Full error details:', {
+        message: error.message,
+        stack: error.stack,
+        error: error
+      });
       onError(error);
       throw error;
     }

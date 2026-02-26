@@ -7,10 +7,22 @@ import { useEffect } from "react";
 
 // Create agent once at module level (survives navigation)
 let agentInstance = null;
+// Cache AI chat state across route changes (clears on full refresh)
+const chatStateCache = {
+    conversations: [],
+    streamingResponse: "",
+    AIOutput: "",
+    AIStatus: "idle",
+    prompt: "",
+};
 
 function getOrCreateAgent() {
     if (!agentInstance) {
         const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
+        console.log('API Key exists:', !!apiKey, 'Length:', apiKey?.length);
+        if (!apiKey) {
+            console.error('VITE_OPENROUTER_API_KEY is not defined!');
+        }
         agentInstance = createRecipeAgent({
             apiKey,
             model: "openrouter/auto",
@@ -34,11 +46,11 @@ function ThinkingIndicator() {
 
 export function AILanding() {
     const agent = getOrCreateAgent();
-    const [prompt, setPrompt] = React.useState("");
-    const [AIStatus, setAIStatus] = React.useState("idle");
-    const [AIOutput, setAIOutput] = React.useState("");
-    const [conversations, setConversations] = React.useState([]);
-    const [streamingResponse, setStreamingResponse] = React.useState("");
+    const [prompt, setPrompt] = React.useState(chatStateCache.prompt || "");
+    const [AIStatus, setAIStatus] = React.useState(chatStateCache.AIStatus || "idle");
+    const [AIOutput, setAIOutput] = React.useState(chatStateCache.AIOutput || "");
+    const [conversations, setConversations] = React.useState(chatStateCache.conversations || []);
+    const [streamingResponse, setStreamingResponse] = React.useState(chatStateCache.streamingResponse || "");
     const promptFormRef = React.useRef(null);
     const responseContainerRef = React.useRef(null);
     const lastMessageRef = React.useRef(null);
@@ -77,17 +89,30 @@ export function AILanding() {
         scrollToBottom();
     }, [conversations, streamingResponse, scrollToBottom]);
 
+    useEffect(() => {
+        chatStateCache.prompt = prompt;
+        chatStateCache.AIStatus = AIStatus;
+        chatStateCache.AIOutput = AIOutput;
+        chatStateCache.conversations = conversations;
+        chatStateCache.streamingResponse = streamingResponse;
+    }, [prompt, AIStatus, AIOutput, conversations, streamingResponse]);
+
     const handlePromptWheel = (event) => {
         const form = promptFormRef.current;
         if (!form) return;
         form.scrollTop += event.deltaY;
-        event.preventDefault();
+        if (event.cancelable) {
+            event.preventDefault();
+        }
     };
 
     const handleClearChat = () => {
         setConversations([]);
         setStreamingResponse("");
         setAIOutput("");
+        chatStateCache.conversations = [];
+        chatStateCache.streamingResponse = "";
+        chatStateCache.AIOutput = "";
     };
 
     const handleSubmit = async (e) => {

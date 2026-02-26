@@ -2,6 +2,21 @@ import { tool } from "@openrouter/sdk";
 import { z } from "zod";
 
 const PANTRY_KEY = "user_pantry_data";
+const lastSearchResults = new Map();
+const MAX_SEARCH_CACHE = 25;
+
+function cacheSearchResult(recipe) {
+	if (!recipe?.id) return;
+	lastSearchResults.set(recipe.id, recipe);
+	if (lastSearchResults.size > MAX_SEARCH_CACHE) {
+		const oldestKey = lastSearchResults.keys().next().value;
+		lastSearchResults.delete(oldestKey);
+	}
+}
+
+function getCachedRecipe(recipeId) {
+	return recipeId ? lastSearchResults.get(recipeId) : null;
+}
 
 // Define the get_user_pantry tool
 export const getActualPantryTool = tool({
@@ -40,21 +55,23 @@ export const searchRecipesTool = tool({
 			.describe("Dietary preferences or restrictions"),
 		servings: z.number().optional().describe("Number of servings needed"),
 	}),
-	execute: async ({ ingredients, timeLimit, servings, dietaryPreferences }) => {
+	execute: async ({ ingredients = [], timeLimit, servings, dietaryPreferences } = {}) => {
 		// For demonstration, we will return some dummy recipes
 		const normalizeIngredient = (item) =>
 			item
 				.replace(/\s*\(\s*\d+\s*\)\s*$/, "")
 				.trim()
 				.toLowerCase();
-		const normalizedIngredients = ingredients.map(normalizeIngredient);
+		const normalizedIngredients = Array.isArray(ingredients)
+			? ingredients.map(normalizeIngredient)
+			: [];
 		const hasIngredient = (name) =>
 			normalizedIngredients.includes(normalizeIngredient(name));
 
 		const buildMissingItems = (recipeIngredients) =>
 			recipeIngredients.filter((item) => !hasIngredient(item));
 
-		return {
+		const result = {
 			recipes: [
 				{
 					id: "recipe_pasta_001",
@@ -108,6 +125,12 @@ export const searchRecipesTool = tool({
 				dietaryPreferences: dietaryPreferences || null,
 			},
 		};
+
+		result.recipes.forEach((recipe) => {
+			cacheSearchResult(recipe);
+		});
+
+		return result;
 	},
 });
 
@@ -123,7 +146,7 @@ export const addToShoppingListTool = tool({
 			.optional()
 			.describe("Name of recipe these ingredients are for"),
 	}),
-	execute: async ({ ingredients, recipeName = "Recipe" }) => {
+	execute: async ({ ingredients = [], recipeName = "Recipe" } = {}) => {
 		const SHOPPING_LIST_KEY = "shopping_list_items";
 		
 		// Get existing shopping list
@@ -139,7 +162,7 @@ export const addToShoppingListTool = tool({
 
 		// Add new ingredients (avoid duplicates)
 		const addedIngredients = [];
-		ingredients.forEach(ingredient => {
+		(ingredients || []).forEach(ingredient => {
 			const exists = shoppingList.find(
 				item => item.name.toLowerCase() === ingredient.toLowerCase()
 			);
@@ -178,8 +201,32 @@ export const saveRecipeTool = tool({
 		recipeIngredients: z.array(z.string()).describe("List of ingredients in the recipe"),
 		recipeSteps: z.array(z.string()).describe("List of steps to prepare the recipe"),
 	}),
-	execute: async ({recipeName, recipeId, recipeTime, recipeDescription, recipeIngredients, recipeSteps}) => {
-		console.log("Saving recipe:", recipeId, recipeName);
+	execute: async ({
+		recipeName,
+		recipeId,
+		recipeTime,
+		recipeDescription,
+		recipeIngredients = [],
+		recipeSteps = []
+	} = {}) => {
+		const resolvedCache = getCachedRecipe(recipeId);
+		const resolvedName = recipeName || resolvedCache?.name || "Saved Recipe";
+		const resolvedTime = recipeTime ?? resolvedCache?.timeMinutes ?? null;
+		const resolvedDescription = recipeDescription ?? resolvedCache?.description ?? null;
+		const resolvedIngredients = Array.isArray(recipeIngredients) && recipeIngredients.length > 0
+			? recipeIngredients
+			: (resolvedCache?.ingredients || []);
+		const resolvedSteps = Array.isArray(recipeSteps) && recipeSteps.length > 0
+			? recipeSteps
+			: (resolvedCache?.steps || []);
+
+		if (!recipeId) {
+			return {
+				success: false,
+				message: "Missing recipeId for save_recipe.",
+			};
+		}
+		console.log("Saving recipe:", recipeId, resolvedName);
 		
 		// Get user's pantry and calculate missing ingredients
 		const normalizeIngredient = (item) =>
@@ -197,24 +244,26 @@ export const saveRecipeTool = tool({
 		}
 		
 		// Calculate missing ingredients
-		const missingIngredients = recipeIngredients.filter(
-			ingredient => !pantryItems.includes(normalizeIngredient(ingredient))
-		);
+		const missingIngredients = Array.isArray(resolvedIngredients)
+			? resolvedIngredients.filter(
+				ingredient => !pantryItems.includes(normalizeIngredient(ingredient))
+			)
+			: [];
 		
 		const recipe = {
 			recipeId,
-			name: recipeName,
-			time: recipeTime || null,
-			description: recipeDescription || null,
-			ingredients: recipeIngredients,
+			name: resolvedName,
+			time: resolvedTime,
+			description: resolvedDescription,
+			ingredients: resolvedIngredients,
 			missingIngredients: missingIngredients,
-			steps: recipeSteps,
+			steps: resolvedSteps,
 		}
 		localStorage.setItem(`recipe_${recipeId}`, JSON.stringify(recipe));
 		return {
 			success: true,
 			recipeId: recipeId,
-			message: `Recipe "${recipeName}" saved successfully`,
+			message: `Recipe "${resolvedName}" saved successfully`,
 		};
 	},
 });
