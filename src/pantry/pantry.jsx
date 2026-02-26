@@ -4,12 +4,11 @@ import "./pantry.css";
 import { useEffect } from "react";
 
 const PANTRY_KEY = "user_pantry_data";
+const PANTRY_CATEGORIES_KEY = "user_pantry_categories";
 
 export function Pantry() {
     const [items, setItems] = React.useState([]);
-    const [categories, setCategories] = React.useState([
-        "protein", "dairy", "vegetables", "fruits", "grains", "staples", "beverages"
-    ]);
+    const [categories, setCategories] = React.useState([]);
     const [itemInputs, setItemInputs] = React.useState({});
     const [newCategoryInput, setNewCategoryInput] = React.useState("");
 
@@ -25,6 +24,23 @@ export function Pantry() {
         }
 
         return JSON.parse(stored);
+    }
+
+    function getCategories() {
+        const stored = localStorage.getItem(PANTRY_CATEGORIES_KEY);
+        if (!stored) {
+            const defaultCategories = [
+                "protein", "dairy", "vegetables", "fruits", "grains", "staples", "beverages"
+            ];
+            localStorage.setItem(PANTRY_CATEGORIES_KEY, JSON.stringify(defaultCategories));
+            return defaultCategories;
+        }
+        return JSON.parse(stored);
+    }
+
+    function saveCategories(newCategories) {
+        setCategories(newCategories);
+        localStorage.setItem(PANTRY_CATEGORIES_KEY, JSON.stringify(newCategories));
     }
 
     const loadPantry = () => {
@@ -66,13 +82,13 @@ export function Pantry() {
             alert("Category already exists");
             return;
         }
-        setCategories([...categories, categoryId]);
+        saveCategories([...categories, categoryId]);
         setNewCategoryInput("");
     };
 
     const deleteCategory = (categoryId) => {
         if (!window.confirm(`Delete "${categoryId}" category and all its items?`)) return;
-        setCategories(categories.filter(c => c !== categoryId));
+        saveCategories(categories.filter(c => c !== categoryId));
         const updatedItems = items.filter(item => item.category !== categoryId);
         savePantry(updatedItems);
     };
@@ -90,6 +106,8 @@ export function Pantry() {
 
     useEffect(() => {
         loadPantry();
+        const storedCategories = getCategories();
+        setCategories(storedCategories);
     }, []);
 
     const removeItem = (itemId) => {

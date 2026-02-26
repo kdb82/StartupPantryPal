@@ -1,8 +1,9 @@
 import React from "react";
 import "../global.css";
 import "./aiLanding.css";
+import ReactMarkdown from "react-markdown";
 import { createRecipeAgent } from "../services/recipeAgent";
-import { getActualPantryTool, searchRecipesTool, addToShoppingListTool, saveRecipeTool } from "../services/recipeTools";
+import { getActualPantryTool, addIngredientToPantryTool, removeIngredientFromPantryTool, searchRecipesTool, addToShoppingListTool, removeFromShoppingListTool, getShoppingListTool, saveRecipeTool, getRecipesTool, addCategoryToPantryTool, removeCategoryFromPantryTool, addRecipeToCalendarTool } from "../services/recipeTools";
 import { useEffect } from "react";
 
 // Create agent once at module level (survives navigation)
@@ -26,7 +27,20 @@ function getOrCreateAgent() {
         agentInstance = createRecipeAgent({
             apiKey,
             model: "openrouter/auto",
-            tools: [getActualPantryTool, searchRecipesTool, addToShoppingListTool, saveRecipeTool],
+            tools: [
+                getActualPantryTool,
+                addIngredientToPantryTool,
+                removeIngredientFromPantryTool,
+                searchRecipesTool,
+                addToShoppingListTool,
+                removeFromShoppingListTool,
+                getShoppingListTool,
+                saveRecipeTool,
+                getRecipesTool,
+                addCategoryToPantryTool,
+                removeCategoryFromPantryTool,
+                addRecipeToCalendarTool
+            ],
         });
     }
     return agentInstance;
@@ -205,9 +219,9 @@ export function AILanding() {
                                                     <div className="user-message">
                                                         <p>{conv.prompt}</p>
                                                     </div>
-                                                    {conv.response && (
+                                                    {conv.response !== null && conv.response !== undefined && (
                                                         <div className="ai-message">
-                                                            <pre>{conv.response}</pre>
+                                                            <ReactMarkdown>{conv.response}</ReactMarkdown>
                                                         </div>
                                                     )}
                                                 </div>
@@ -215,7 +229,7 @@ export function AILanding() {
                                         })}
                                         {streamingResponse && (
                                             <div className="ai-message streaming" ref={lastMessageRef}>
-                                                <pre>{streamingResponse}</pre>
+                                                <ReactMarkdown>{streamingResponse}</ReactMarkdown>
                                             </div>
                                         )}
                                     </>
