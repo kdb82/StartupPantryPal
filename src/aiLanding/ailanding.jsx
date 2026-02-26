@@ -319,7 +319,7 @@ export function AILanding() {
 
                             <div className="form-actions">
                                 <button type="submit" disabled={AIStatus === "thinking"}>
-                                    Generate recipe ideas
+                                    Send Request
                                 </button>
                                 <button type="reset" disabled={AIStatus === "thinking"} onClick={handleClearChat}>
                                     Clear Chat
