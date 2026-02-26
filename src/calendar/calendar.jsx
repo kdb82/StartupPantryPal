@@ -281,7 +281,7 @@ export function Calendar() {
                                 Add Item
                             </button>
                             <button type="button" className="btn-clear" onClick={() => handleClearList(false)}>
-                                Clear Checked Items
+                                Remove Checked Items
                             </button>
                             <button type="button" className="btn-clear" id="clear-all" onClick={() => handleClearList(true)}>
                                 Clear Entire List

@@ -388,3 +388,32 @@
 	margin-top: var(--space-md);
 	animation: slideIn 0.3s ease-out;
 }
+
+.page-recipes .btn-success {
+	background-color: #10b981;
+	border-color: #10b981;
+}
+
+.page-recipes .btn-success:hover {
+	background-color: var(--color-secondary);
+	border-color: var(--color-secondary);
+}
+
+.add-to-calendar-days-btn {
+	width: 100%;
+	text-align: left;
+	padding: var(--space-sm);
+	background-color: #f3f4f6;
+	border: 1px solid #d1d5db;
+	border-radius: var(--radius-sm);
+	cursor: pointer;
+	font-size: 0.95rem;
+	text-transform: capitalize;
+	transition: background-color 150ms ease;
+}
+
+.add-to-calendar-days-btn:hover {
+	background-color: var(--color-secondary);
+	color: white;
+	border-color: var(--color-secondary);
+}

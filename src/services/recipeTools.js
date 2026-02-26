@@ -118,15 +118,51 @@ export const addToShoppingListTool = tool({
 		ingredients: z
 			.array(z.string())
 			.describe("List of ingredients to add to shopping list"),
+		recipeName: z
+			.string()
+			.optional()
+			.describe("Name of recipe these ingredients are for"),
 	}),
-	execute: async ({ ingredients }) => {
-		// For demonstration, we will just log the ingredients
-		console.log("Adding to shopping list:", ingredients);
+	execute: async ({ ingredients, recipeName = "Recipe" }) => {
+		const SHOPPING_LIST_KEY = "shopping_list_items";
+		
+		// Get existing shopping list
+		let shoppingList = [];
+		const storedList = localStorage.getItem(SHOPPING_LIST_KEY);
+		if (storedList) {
+			try {
+				shoppingList = JSON.parse(storedList);
+			} catch (error) {
+				console.error("Error parsing shopping list:", error);
+			}
+		}
+
+		// Add new ingredients (avoid duplicates)
+		const addedIngredients = [];
+		ingredients.forEach(ingredient => {
+			const exists = shoppingList.find(
+				item => item.name.toLowerCase() === ingredient.toLowerCase()
+			);
+			
+			if (!exists) {
+				shoppingList.push({
+					id: `recipe_${Date.now()}_${Math.random()}`,
+					name: ingredient,
+					checked: false,
+					neededFor: [recipeName]
+				});
+				addedIngredients.push(ingredient);
+			}
+		});
+
+		// Save to localStorage
+		localStorage.setItem(SHOPPING_LIST_KEY, JSON.stringify(shoppingList));
+
 		return {
 			success: true,
-			addedItems: ingredients,
-			count: ingredients.length,
-			message: `Added ${ingredients.length} items to shopping list`,
+			addedItems: addedIngredients,
+			count: addedIngredients.length,
+			message: `Added ${addedIngredients.length} items to shopping list`,
 		};
 	},
 });

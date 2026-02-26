@@ -3,7 +3,6 @@ import "../global.css";
 import "./recipes.css";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { addToShoppingListTool } from "../services/recipeTools";
 import { useAuth } from "../global_components/AuthContext";
 
 export function Recipes() {
@@ -11,6 +10,8 @@ export function Recipes() {
     const [notifications, setNotifications] = useState([]);
     const [shoppingListMessage, setShoppingListMessage] = useState("");
     const [recipes, setRecipes] = useState([]);
+    const [showDaySelector, setShowDaySelector] = useState(false);
+    const [selectedRecipeForCalendar, setSelectedRecipeForCalendar] = useState(null);
 
     // Mock WebSocket notifications - users saving recipes
     useEffect(() => {
@@ -51,16 +52,133 @@ export function Recipes() {
     }, []);
 
     // Handle save ingredients
-    const handleSaveIngredients = async (missingIngredients) => {
+    const handleSaveIngredients = async (missingIngredients, recipeName, recipeId) => {
         try {
-            const ingredientsList = missingIngredients.split(',').map(i => i.trim());
-            await addToShoppingListTool.execute({ ingredients: ingredientsList });
-            setShoppingListMessage(`✓ Added ${ingredientsList.length} items to shopping list`);
+            const SHOPPING_LIST_KEY = "shopping_list_items";
+            
+            // Handle both array and string inputs
+            let ingredientsList;
+            if (Array.isArray(missingIngredients)) {
+                ingredientsList = missingIngredients;
+            } else if (typeof missingIngredients === 'string') {
+                ingredientsList = missingIngredients.split(',').map(i => i.trim());
+            } else {
+                throw new Error('Invalid ingredients format');
+            }
+
+            if (ingredientsList.length === 0) {
+                setShoppingListMessage('No ingredients to add');
+                setTimeout(() => setShoppingListMessage(""), 3000);
+                return;
+            }
+
+            // Get existing shopping list
+            let shoppingList = [];
+            const storedList = localStorage.getItem(SHOPPING_LIST_KEY);
+            if (storedList) {
+                try {
+                    shoppingList = JSON.parse(storedList);
+                } catch (error) {
+                    console.error("Error parsing shopping list:", error);
+                }
+            }
+
+            // Add new ingredients (avoid duplicates)
+            const addedIngredients = [];
+            ingredientsList.forEach(ingredient => {
+                const existingItem = shoppingList.find(
+                    item => item.name.toLowerCase() === ingredient.toLowerCase()
+                );
+                
+                if (!existingItem) {
+                    shoppingList.push({
+                        id: `recipe_${Date.now()}_${Math.random()}`,
+                        name: ingredient,
+                        checked: false,
+                        neededFor: [recipeName]
+                    });
+                    addedIngredients.push(ingredient);
+                } else {
+                    // Update neededFor if this recipe isn't already listed
+                    if (!existingItem.neededFor.includes(recipeName)) {
+                        existingItem.neededFor.push(recipeName);
+                    }
+                }
+            });
+
+            // Save to localStorage
+            localStorage.setItem(SHOPPING_LIST_KEY, JSON.stringify(shoppingList));
+
+            if (addedIngredients.length === 0) {
+                setShoppingListMessage('Already added to shopping list');
+            } else {
+                setShoppingListMessage(`✓ Added ${addedIngredients.length} items to shopping list`);
+            }
             setTimeout(() => setShoppingListMessage(""), 3000);
+
+            // Close the Bootstrap modal
+            if (recipeId) {
+                const modalElement = document.getElementById(`recipeModal-${recipeId}`);
+                if (modalElement) {
+                    const bootstrapModal = bootstrap.Modal.getInstance(modalElement);
+                    if (bootstrapModal) bootstrapModal.hide();
+                }
+            }
         } catch (error) {
             console.error("Error saving ingredients:", error);
-            setShoppingListMessage("Error adding to shopping list");
+            setShoppingListMessage(`Error: ${error.message}`);
+            setTimeout(() => setShoppingListMessage(""), 3000);
         }
+    };
+
+    // Handle add recipe to calendar
+    const handleAddRecipeToCalendar = (day) => {
+        if (!selectedRecipeForCalendar) return;
+
+        const MEAL_PLAN_KEY = "meal_plan_data";
+        const recipe = selectedRecipeForCalendar;
+        
+        // Calculate the current week's Monday
+        const today = new Date();
+        const currentDay = today.getDay();
+        const diff = today.getDate() - currentDay + (currentDay === 0 ? -6 : 1);
+        const weekStart = new Date(today.setDate(diff));
+        
+        const key = `${weekStart.toISOString().split('T')[0]}_${day}`;
+        
+        // Get existing meal plan
+        let mealPlan = {};
+        const storedPlan = localStorage.getItem(MEAL_PLAN_KEY);
+        if (storedPlan) {
+            try {
+                mealPlan = JSON.parse(storedPlan);
+            } catch (error) {
+                console.error("Error parsing meal plan:", error);
+            }
+        }
+
+        if (!mealPlan[key]) {
+            mealPlan[key] = [];
+        }
+
+        // Avoid duplicates
+        if (!mealPlan[key].some(r => r.id === recipe.recipeId)) {
+            mealPlan[key].push({ id: recipe.recipeId, name: recipe.name });
+        }
+
+        localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(mealPlan));
+        setShoppingListMessage(`✓ Added "${recipe.name}" to ${day}`);
+        setTimeout(() => setShoppingListMessage(""), 3000);
+        
+        // Close the Bootstrap modal
+        const modalElement = document.getElementById(`recipeModal-${recipe.recipeId}`);
+        if (modalElement) {
+            const bootstrapModal = bootstrap.Modal.getInstance(modalElement);
+            if (bootstrapModal) bootstrapModal.hide();
+        }
+        
+        setShowDaySelector(false);
+        setSelectedRecipeForCalendar(null);
     };
 
     // Handle delete recipe
@@ -75,8 +193,7 @@ export function Recipes() {
     };
 
     return (
-        <div className="page-recipes">
-            <main id="main-content">
+        <div className="page-recipes">\n            <main id="main-content">
                 <div className="container">
                     <h2>Recipes</h2>
 
@@ -213,11 +330,23 @@ export function Recipes() {
                                         {recipe.missingIngredients && recipe.missingIngredients.length > 0 && (
                                             <button
                                                 className="btn btn-primary"
-                                                onClick={() => handleSaveIngredients(recipe.missingIngredients.join(', '))}
+                                                onClick={() => handleSaveIngredients(recipe.missingIngredients, recipe.name, recipe.recipeId)}
                                             >
-                                                Save Missing Ingredients to Shopping List
+                                                Add Missing Ingredients to Shopping List
                                             </button>
                                         )}
+                                        <button
+                                            type="button"
+                                            style={{backgroundColor: "#b6d6b7", borderColor: "white"}}
+                                            id= "add-to-calendar-btn"
+                                            className="btn btn-success"
+                                            onClick={() => {
+                                                setSelectedRecipeForCalendar(recipe);
+                                                setShowDaySelector(true);
+                                            }}
+                                        >
+                                            Add to Calendar
+                                        </button>
                                         <button
                                             type="button"
                                             className="btn btn-danger delete-recipe"
@@ -238,6 +367,71 @@ export function Recipes() {
                     ))}
 
                     </section>
+
+                    {/* Day Selector Modal */}
+                    {showDaySelector && (
+                        <div
+                            style={{
+                                position: "fixed",
+                                inset: 0,
+                                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                zIndex: 1060,
+                            }}
+                            onClick={() => setShowDaySelector(false)}
+                        >
+                            <div
+                                onClick={(e) => e.stopPropagation()}
+                                style={{
+                                    backgroundColor: "white",
+                                    borderRadius: "var(--radius-md)",
+                                    padding: "var(--space-lg)",
+                                    maxWidth: "400px",
+                                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                                }}
+                            >
+                                <h3 style={{ marginTop: 0 }}>Select Day</h3>
+                                <p className="muted">Which day would you like to add this recipe to?</p>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-sm)", marginBottom: "var(--space-md)" }}>
+                                    {["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].map((day) => (
+                                        <button
+                                            key={day}
+                                            onClick={() => handleAddRecipeToCalendar(day)}
+                                            style={{
+                                                width: "100%",
+                                                textAlign: "left",
+                                                padding: "var(--space-sm)",
+                                                backgroundColor: "#f3f4f6",
+                                                border: "1px solid #d1d5db",
+                                                borderRadius: "var(--radius-sm)",
+                                                cursor: "pointer",
+                                                fontSize: "0.95rem",
+                                                textTransform: "capitalize",
+                                            }}
+                                        >
+                                            {day}
+                                        </button>
+                                    ))}
+                                </div>
+                                <button
+                                    onClick={() => setShowDaySelector(false)}
+                                    style={{
+                                        width: "100%",
+                                        padding: "var(--space-sm)",
+                                        backgroundColor: "#f3f4f6",
+                                        border: "1px solid #d1d5db",
+                                        borderRadius: "var(--radius-sm)",
+                                        cursor: "pointer",
+                                        fontSize: "0.95rem",
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </main>
         </div>
@@ -248,6 +442,8 @@ export function FriendsRecipes() {
     const [notifications, setNotifications] = useState([]);
     const [shoppingListMessage, setShoppingListMessage] = useState("");
     const [friendsRecipes, setFriendsRecipes] = useState([]);
+    const [showDaySelector, setShowDaySelector] = useState(false);
+    const [selectedRecipeForCalendar, setSelectedRecipeForCalendar] = useState(null);
 
     // Mock WebSocket notifications - users saving recipes
     useEffect(() => {
@@ -311,17 +507,159 @@ export function FriendsRecipes() {
         loadFriendsRecipes();
     }, []);
 
-    // Handle save ingredients
-    const handleSaveIngredients = async (missingIngredients) => {
+    // Calculate missing ingredients based on user's pantry
+    const calculateMissingIngredients = (recipeIngredients) => {
+        const PANTRY_KEY = "user_pantry_data";
+        const pantryData = localStorage.getItem(PANTRY_KEY);
+        
+        if (!pantryData) {
+            return recipeIngredients; // All ingredients are missing if no pantry
+        }
+
         try {
-            const ingredientsList = missingIngredients.split(',').map(i => i.trim());
-            await addToShoppingListTool.execute({ ingredients: ingredientsList });
-            setShoppingListMessage(`✓ Added ${ingredientsList.length} items to shopping list`);
+            const pantryItems = JSON.parse(pantryData);
+            const normalizeIngredient = (item) =>
+                item.replace(/\s*\(\s*\d+\s*\)\s*$/, "").trim().toLowerCase();
+            
+            const pantryNames = pantryItems.map(item => normalizeIngredient(item.name));
+            
+            return recipeIngredients.filter(ingredient => 
+                !pantryNames.includes(normalizeIngredient(ingredient))
+            );
+        } catch (error) {
+            console.error("Error parsing pantry data:", error);
+            return recipeIngredients;
+        }
+    };
+
+    // Handle save ingredients
+    const handleSaveIngredients = async (missingIngredients, recipeName, recipeId) => {
+        try {
+            const SHOPPING_LIST_KEY = "shopping_list_items";
+            
+            // Handle both array and string inputs
+            let ingredientsList;
+            if (Array.isArray(missingIngredients)) {
+                ingredientsList = missingIngredients;
+            } else if (typeof missingIngredients === 'string') {
+                ingredientsList = missingIngredients.split(',').map(i => i.trim());
+            } else {
+                throw new Error('Invalid ingredients format');
+            }
+
+            if (ingredientsList.length === 0) {
+                setShoppingListMessage('No ingredients to add');
+                setTimeout(() => setShoppingListMessage(""), 3000);
+                return;
+            }
+
+            // Get existing shopping list
+            let shoppingList = [];
+            const storedList = localStorage.getItem(SHOPPING_LIST_KEY);
+            if (storedList) {
+                try {
+                    shoppingList = JSON.parse(storedList);
+                } catch (error) {
+                    console.error("Error parsing shopping list:", error);
+                }
+            }
+
+            // Add new ingredients (avoid duplicates)
+            const addedIngredients = [];
+            ingredientsList.forEach(ingredient => {
+                const existingItem = shoppingList.find(
+                    item => item.name.toLowerCase() === ingredient.toLowerCase()
+                );
+                
+                if (!existingItem) {
+                    shoppingList.push({
+                        id: `recipe_${Date.now()}_${Math.random()}`,
+                        name: ingredient,
+                        checked: false,
+                        neededFor: [recipeName]
+                    });
+                    addedIngredients.push(ingredient);
+                } else {
+                    // Update neededFor if this recipe isn't already listed
+                    if (!existingItem.neededFor.includes(recipeName)) {
+                        existingItem.neededFor.push(recipeName);
+                    }
+                }
+            });
+
+            // Save to localStorage
+            localStorage.setItem(SHOPPING_LIST_KEY, JSON.stringify(shoppingList));
+
+            if (addedIngredients.length === 0) {
+                setShoppingListMessage('Already added to shopping list');
+            } else {
+                setShoppingListMessage(`✓ Added ${addedIngredients.length} items to shopping list`);
+            }
             setTimeout(() => setShoppingListMessage(""), 3000);
+
+            // Close the Bootstrap modal
+            if (recipeId) {
+                const modalElement = document.getElementById(`recipeModal-${recipeId}`);
+                if (modalElement) {
+                    const bootstrapModal = bootstrap.Modal.getInstance(modalElement);
+                    if (bootstrapModal) bootstrapModal.hide();
+                }
+            }
         } catch (error) {
             console.error("Error saving ingredients:", error);
-            setShoppingListMessage("Error adding to shopping list");
+            setShoppingListMessage(`Error: ${error.message}`);
+            setTimeout(() => setShoppingListMessage(""), 3000);
         }
+    };
+
+    // Handle add recipe to calendar
+    const handleAddRecipeToCalendar = (day) => {
+        if (!selectedRecipeForCalendar) return;
+
+        const MEAL_PLAN_KEY = "meal_plan_data";
+        const recipe = selectedRecipeForCalendar;
+        
+        // Calculate the current week's Monday
+        const today = new Date();
+        const currentDay = today.getDay();
+        const diff = today.getDate() - currentDay + (currentDay === 0 ? -6 : 1);
+        const weekStart = new Date(today.setDate(diff));
+        
+        const key = `${weekStart.toISOString().split('T')[0]}_${day}`;
+        
+        // Get existing meal plan
+        let mealPlan = {};
+        const storedPlan = localStorage.getItem(MEAL_PLAN_KEY);
+        if (storedPlan) {
+            try {
+                mealPlan = JSON.parse(storedPlan);
+            } catch (error) {
+                console.error("Error parsing meal plan:", error);
+            }
+        }
+
+        if (!mealPlan[key]) {
+            mealPlan[key] = [];
+        }
+
+        // Avoid duplicates
+        if (!mealPlan[key].some(r => r.id === recipe.recipeId)) {
+            mealPlan[key].push({ id: recipe.recipeId, name: recipe.name });
+        }
+
+        localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(mealPlan));
+        setShoppingListMessage(`✓ Added "${recipe.name}" to ${day}`);
+        setTimeout(() => setShoppingListMessage(""), 3000);
+        
+        // Close the Bootstrap modal
+        const modalElement = document.getElementById(`recipeModal-${recipe.recipeId}`);
+        if (modalElement) {
+            const bootstrapModal = bootstrap.Modal.getInstance(modalElement);
+            if (bootstrapModal) bootstrapModal.hide();
+        }
+        
+        setShowDaySelector(false);
+        setSelectedRecipeForCalendar(null);
     };
 
     // Handle delete recipe
@@ -453,6 +791,19 @@ export function FriendsRecipes() {
                                                 <li key={idx}>{step}</li>
                                             ))}
                                         </ol>
+                                        <h6>Missing Ingredients</h6>
+                                        <ul>
+                                            {(() => {
+                                                const missing = calculateMissingIngredients(recipe.ingredients);
+                                                return missing.length > 0 ? (
+                                                    missing.map((ingredient, idx) => (
+                                                        <li key={idx}>{ingredient}</li>
+                                                    ))
+                                                ) : (
+                                                    <li>None! You have all the ingredients.</li>
+                                                );
+                                            })()}
+                                        </ul>
                                     </div>
                                     <div className="modal-footer">
                                         <button
@@ -461,6 +812,27 @@ export function FriendsRecipes() {
                                             data-bs-dismiss="modal"
                                         >
                                             Close
+                                        </button>
+                                        {(() => {
+                                            const missing = calculateMissingIngredients(recipe.ingredients);
+                                            return missing.length > 0 ? (
+                                                <button
+                                                    className="btn btn-primary"
+                                                    onClick={() => handleSaveIngredients(missing, recipe.name, recipe.recipeId)}
+                                                >
+                                                    Add Missing Ingredients to Shopping List
+                                                </button>
+                                            ) : null;
+                                        })()}
+                                        <button
+                                            type="button"
+                                            className="btn btn-success"
+                                            onClick={() => {
+                                                setSelectedRecipeForCalendar(recipe);
+                                                setShowDaySelector(true);
+                                            }}
+                                        >
+                                            Add to Calendar
                                         </button>
                                         <button
                                             type="button"
@@ -480,6 +852,61 @@ export function FriendsRecipes() {
                             </div>
                         </div>
                     ))}
+
+                    {/* Day Selector Modal */}
+                    {showDaySelector && (
+                        <div
+                            style={{
+                                position: "fixed",
+                                inset: 0,
+                                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                zIndex: 1060,
+                            }}
+                            onClick={() => setShowDaySelector(false)}
+                        >
+                            <div
+                                onClick={(e) => e.stopPropagation()}
+                                style={{
+                                    backgroundColor: "white",
+                                    borderRadius: "var(--radius-md)",
+                                    padding: "var(--space-lg)",
+                                    maxWidth: "400px",
+                                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                                }}
+                            >
+                                <h3 style={{ marginTop: 0 }}>Select Day</h3>
+                                <p className="muted">Which day would you like to add this recipe to?</p>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-sm)", marginBottom: "var(--space-md)" }}>
+                                    {["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].map((day) => (
+                                        <button
+                                            className='add-to-calendar-days-btn'
+                                            key={day}
+                                            onClick={() => handleAddRecipeToCalendar(day)}
+                                        >
+                                            {day}
+                                        </button>
+                                    ))}
+                                </div>
+                                <button
+                                    onClick={() => setShowDaySelector(false)}
+                                    style={{
+                                        width: "100%",
+                                        padding: "var(--space-sm)",
+                                        backgroundColor: "#f3f4f6",
+                                        border: "1px solid #d1d5db",
+                                        borderRadius: "var(--radius-sm)",
+                                        cursor: "pointer",
+                                        fontSize: "0.95rem",
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </main>
         </div>

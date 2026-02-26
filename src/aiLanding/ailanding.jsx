@@ -272,7 +272,7 @@ export function AILanding() {
                                             defaultChecked
                                             disabled={AIStatus === "thinking"}
                                         />
-                                        Use my pantry items (DB placeholder)
+                                        Use my pantry items
                                     </label>
                                 </div>
                             </details>
