@@ -78,6 +78,45 @@ CALENDAR PAGE ----------------------
 	padding: var(--space-sm);
 }
 
+.page-calendar .meal-cell button {
+	padding: var(--space-xs) var(--space-sm);
+	border-radius: var(--radius-sm);
+	border: none;
+	cursor: pointer;
+	font-weight: 500;
+	font-size: 0.8rem;
+	transition: all 0.2s ease;
+}
+
+.page-calendar .meal-cell button:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.page-calendar .meal-cell > button:not([style*="marginLeft"]) {
+	background: var(--color-secondary);
+	color: white;
+	width: 100%;
+	margin-top: var(--space-xs);
+}
+
+.page-calendar .meal-cell > button:not([style*="marginLeft"]):hover {
+	background: var(--color-primary);
+	opacity: 0.95;
+}
+
+.page-calendar .meal-cell button[style*="marginLeft"] {
+	background: #fee2e2;
+	color: #991b1b;
+	border: 1px solid #fca5a5;
+	font-size: 0.7rem;
+	padding: 2px 6px;
+}
+
+.page-calendar .meal-cell button[style*="marginLeft"]:hover {
+	background: #fecaca;
+}
+
 #shopping-title {
 	margin-top: var(--space-sm);
 }
@@ -259,5 +298,77 @@ CALENDAR PAGE ----------------------
 
 .shopping-actions .btn-clear:hover {
     background: #e5e7eb;
+}
+
+/* Modal Styles */
+.page-calendar div[style*="position: fixed"] {
+	animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.page-calendar div[style*="position: fixed"] > div {
+	animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+	from {
+		transform: translateY(20px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+.page-calendar div[style*="position: fixed"] h3 {
+	color: var(--text);
+	font-size: 1.1rem;
+	font-weight: 700;
+	margin-bottom: var(--space-md);
+}
+
+.page-calendar div[style*="position: fixed"] button {
+	transition: all 0.2s ease;
+	font-size: 0.95rem;
+	font-weight: 500;
+}
+
+.page-calendar div[style*="position: fixed"] button:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.page-calendar div[style*="position: fixed"] button:active {
+	transform: translateY(0);
+}
+
+.page-calendar div[style*="maxWidth: 400px"] button:not(:last-child) {
+	background: var(--color-primary);
+	color: white;
+	border: none;
+	transition: background 0.2s ease;
+}
+
+.page-calendar div[style*="maxWidth: 400px"] button:not(:last-child):hover {
+	background: var(--color-secondary);
+}
+
+.page-calendar div[style*="maxWidth: 400px"] > button:last-child {
+	background: #f3f4f6;
+	color: var(--text);
+	border: 1px solid #d1d5db;
+}
+
+.page-calendar div[style*="maxWidth: 400px"] > button:last-child:hover {
+	background: #e5e7eb;
 }
 

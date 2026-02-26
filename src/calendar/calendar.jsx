@@ -30,7 +30,10 @@ export function Calendar() {
     const [weekStart, setWeekStart] = useState(startOfWeek(new Date()));
     const MEAL_PLAN_KEY = "meal_plan_data";
     const [mealPlan, setMealPlan] = useState({});
+    const [showAddRecipeModal, setShowAddRecipeModal] = useState(false);
+    const [selectedDay, setSelectedDay] = useState(null);
 
+    // Load shopping list from localStorage on mount
     useEffect(() => {
         const storedList = localStorage.getItem(SHOPPING_LIST_KEY);
         if (storedList) {
@@ -43,6 +46,7 @@ export function Calendar() {
         }
     }, []);
 
+    // Load meal plan from localStorage on mount
     useEffect(() => {
         const storedPlan = localStorage.getItem(MEAL_PLAN_KEY);
         if (storedPlan) {
@@ -58,6 +62,54 @@ export function Calendar() {
     const saveMealPlan = (plan) => {
         localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(plan));
         setMealPlan(plan);
+    };
+
+    const handleAddRecipeToDay = (dayName, recipeId, recipeName) => {
+        const key = `${weekStart.toISOString().split('T')[0]}_${dayName}`;
+        const updatedPlan = { ...mealPlan };
+
+        if (!updatedPlan[key]) {
+            updatedPlan[key] = [];
+        }
+
+        // Avoid duplicates
+        if (!updatedPlan[key].some(r => r.id === recipeId)) {
+            updatedPlan[key].push({ id: recipeId, name: recipeName });
+        }
+
+        saveMealPlan(updatedPlan);
+    };
+
+    const handleRemoveRecipeFromDay = (dayName, recipeId) => {
+        const key = `${weekStart.toISOString().split('T')[0]}_${dayName}`;
+        const updatedPlan = { ...mealPlan };
+
+        if (updatedPlan[key]) {
+            updatedPlan[key] = updatedPlan[key].filter(r => r.id !== recipeId);
+            if (updatedPlan[key].length === 0) {
+                delete updatedPlan[key];
+            }
+        }
+
+        saveMealPlan(updatedPlan);
+    };
+
+    const getSavedRecipes = () => {
+        const recipes = [];
+        for (let key in localStorage) {
+            if (key.startsWith('recipe_')) {
+                try {
+                    const recipe = JSON.parse(localStorage.getItem(key));
+                    recipes.push({
+                        id: key.replace('recipe_', ''),
+                        name: recipe.name || "Unnamed Recipe"
+                    });
+                } catch (error) {
+                    console.error(`Error parsing ${key}:`, error);
+                }
+            }
+        }
+        return recipes;
     };
 
     const saveShoppingList = (list) => {
@@ -145,44 +197,44 @@ export function Calendar() {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td data-day="monday">
-                                        <div className="meal-cell">
-                                            <strong>Saved Recipes:</strong> Tacos<br /><em
-                                            >Missing: </em
-                                            >
-                                            tortillas
-                                        </div>
-                                    </td>
-                                    <td data-day="tuesday">
-                                        <div className="meal-cell">
-                                            <strong>Saved Recipes:</strong> Stir Fry
-                                        </div>
-                                    </td>
-                                    <td data-day="wednesday">
-                                        <div className="meal-cell">
-                                            <strong>Saved Recipes:</strong> Pasta
-                                        </div>
-                                    </td>
-                                    <td data-day="thursday">
-                                        <div className="meal-cell">
-                                            <strong>Saved Recipes:</strong> Soup
-                                        </div>
-                                    </td>
-                                    <td data-day="friday">
-                                        <div className="meal-cell">
-                                            <strong>Saved Recipes:</strong> Pizza
-                                        </div>
-                                    </td>
-                                    <td data-day="saturday">
-                                        <div className="meal-cell">
-                                            <strong>Saved Recipes:</strong> Salmon
-                                        </div>
-                                    </td>
-                                    <td data-day="sunday">
-                                        <div className="meal-cell">
-                                            <strong>Saved Recipes:</strong> Leftovers
-                                        </div>
-                                    </td>
+                                    {["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].map(day => {
+                                        const key = `${weekStart.toISOString().split('T')[0]}_${day}`;
+                                        const dayRecipes = mealPlan[key] || [];
+                                        
+                                        return (
+                                            <td key={day} data-day={day}>
+                                                <div className="meal-cell">
+                                                    <strong>Saved Recipes:</strong>
+                                                    {dayRecipes.length > 0 ? (
+                                                        <ul style={{ listStyle: "none", padding: 0, margin: "var(--space-sm) 0" }}>
+                                                            {dayRecipes.map(recipe => (
+                                                                <li key={recipe.id} style={{ marginBottom: "var(--space-xs)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                                                    <span>{recipe.name}</span>
+                                                                    <button 
+                                                                        onClick={() => handleRemoveRecipeFromDay(day, recipe.id)}
+                                                                        style={{ marginLeft: "var(--space-xs)", fontSize: "0.7rem", padding: "2px 6px" }}
+                                                                    >
+                                                                        Remove
+                                                                    </button>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    ) : (
+                                                        <p className="muted" style={{ margin: "var(--space-xs) 0" }}>No recipes scheduled</p>
+                                                    )}
+                                                    <button 
+                                                        onClick={() => {
+                                                            setSelectedDay(day);
+                                                            setShowAddRecipeModal(true);
+                                                        }}
+                                                        style={{ fontSize: "0.8rem", marginTop: "var(--space-xs)" }}
+                                                    >
+                                                        + Add Recipe
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        );
+                                    })}
                                 </tr>
                             </tbody>
                         </table>
@@ -237,6 +289,83 @@ export function Calendar() {
                         </div>
                     </section>
                 </div>
+
+                {showAddRecipeModal && (
+                    <div
+                        style={{
+                            position: "fixed",
+                            inset: 0,
+                            backgroundColor: "rgba(0, 0, 0, 0.5)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            zIndex: 1000,
+                        }}
+                        onClick={() => setShowAddRecipeModal(false)}
+                    >
+                        <div
+                            onClick={(e) => e.stopPropagation()}
+                            style={{
+                                backgroundColor: "white",
+                                borderRadius: "var(--radius-md)",
+                                padding: "var(--space-lg)",
+                                maxWidth: "400px",
+                                maxHeight: "80vh",
+                                overflowY: "auto",
+                                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                            }}
+                        >
+                            <h3 style={{ marginTop: 0 }}>Select Recipe for {selectedDay}</h3>
+                            <div style={{ marginBottom: "var(--space-md)" }}>
+                                {getSavedRecipes().length > 0 ? (
+                                    getSavedRecipes().map((recipe) => (
+                                        <div
+                                            key={recipe.id}
+                                            style={{
+                                                padding: "var(--space-sm)",
+                                                borderBottom: "1px solid #e5e7eb",
+                                            }}
+                                        >
+                                            <button
+                                                onClick={() => {
+                                                    handleAddRecipeToDay(selectedDay, recipe.id, recipe.name);
+                                                }}
+                                                style={{
+                                                    width: "100%",
+                                                    textAlign: "left",
+                                                    padding: "var(--space-sm)",
+                                                    backgroundColor: "#f3f4f6",
+                                                    border: "1px solid #d1d5db",
+                                                    borderRadius: "var(--radius-sm)",
+                                                    cursor: "pointer",
+                                                    fontSize: "0.95rem",
+                                                }}
+                                            >
+                                                {recipe.name}
+                                            </button>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="muted">No saved recipes found. Create a recipe first!</p>
+                                )}
+                            </div>
+                            <button
+                                onClick={() => setShowAddRecipeModal(false)}
+                                style={{
+                                    width: "100%",
+                                    padding: "var(--space-sm)",
+                                    backgroundColor: "#f3f4f6",
+                                    border: "1px solid #d1d5db",
+                                    borderRadius: "var(--radius-sm)",
+                                    cursor: "pointer",
+                                    fontSize: "0.95rem",
+                                }}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                )}
             </main>
         </div>
     );
