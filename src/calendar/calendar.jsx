@@ -2,12 +2,34 @@ import React from "react";
 import "../global.css";
 import "./calendar.css";
 import { useState, useEffect } from "react";
+import { date } from "zod";
 
 export function Calendar() {
     const SHOPPING_LIST_KEY = "shopping_list_items";
     const [shoppingList, setShoppingList] = useState([]);
     const [newIngredient, setNewIngredient] = useState("");
-    const [weekStart, setWeekStart] = useState(new Date());
+
+
+    const startOfWeek = (date) => {
+        const d = new Date(date);
+        const day = d.getDay();
+        const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+        return new Date(d.setDate(diff));
+    };
+
+    const formatDate = (date) => {
+        return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    };
+
+    const addDays = (date, days) => {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    };
+
+    const [weekStart, setWeekStart] = useState(startOfWeek(new Date()));
+    const MEAL_PLAN_KEY = "meal_plan_data";
+    const [mealPlan, setMealPlan] = useState({});
 
     useEffect(() => {
         const storedList = localStorage.getItem(SHOPPING_LIST_KEY);
@@ -21,9 +43,34 @@ export function Calendar() {
         }
     }, []);
 
+    useEffect(() => {
+        const storedPlan = localStorage.getItem(MEAL_PLAN_KEY);
+        if (storedPlan) {
+            try {
+                setMealPlan(JSON.parse(storedPlan));
+            } catch (error) {
+                console.error("Error parsing meal plan:", error);
+                localStorage.removeItem(MEAL_PLAN_KEY);
+            }
+        }
+    }, []);
+
+    const saveMealPlan = (plan) => {
+        localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(plan));
+        setMealPlan(plan);
+    };
+
     const saveShoppingList = (list) => {
         localStorage.setItem(SHOPPING_LIST_KEY, JSON.stringify(list));
         setShoppingList(list);
+    };
+
+    const handlePrevWeek = () => {
+        setWeekStart(prev => addDays(prev, -7));
+    };
+
+    const handleNextWeek = () => {
+        setWeekStart(prev => addDays(prev, 7));
     };
 
     const handleToggleItem = (itemId) => {
@@ -71,15 +118,15 @@ export function Calendar() {
                     <section aria-labelledby="calendar-title">
                         <h2 id="calendar-title">This Week’s Meal Plan:</h2>
                         <div className="calendar-controls">
-                            <button type="button" aria-label="View previous week">
+                            <button type="button" aria-label="View previous week" onClick={handlePrevWeek}>
                                 ← Previous
                             </button>
                             <p id="week-range">
-                                <strong>Week of:</strong>
-                                <span data-start="2026-01-26"> Jan 26</span> –
-                                <span data-end="2026-02-01"> Feb 1</span>
+                                <strong>Week of: </strong>
+                                <span data-start={weekStart.toISOString().split('T')[0]}>{formatDate(weekStart)}</span> {" - "}
+                                <span data-end={addDays(weekStart, 6).toISOString().split('T')[0]}>{formatDate(addDays(weekStart, 6))}</span>
                             </p>
-                            <button type="button" aria-label="View next week">Next →</button>
+                            <button type="button" aria-label="View next week" onClick={handleNextWeek}>Next →</button>
                         </div>
                     </section>
                     <section aria-labelledby="week-grid-title">
