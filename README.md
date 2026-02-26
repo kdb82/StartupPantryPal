@@ -112,7 +112,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [x] **All functionality implemented or mocked out** - Fully functional meal planning with calendar, shopping list, recipe management (save, delete, add to calendar/shopping list), pantry tracking with dynamic categories, and AI recipe assistant using OpenRouter API with real recipe generation. Mock WebSocket notifications using setInterval for friends' recipe activity feed. Using localStorage for data persistence (pantry, recipes, meal plans, shopping list, categories) until backend/database is implemented.
+- [x] **All functionality implemented or mocked out** - Fully functional meal planning with calendar, shopping list, recipe management (save, delete, add to calendar/shopping list), pantry tracking with dynamic categories, and AI recipe assistant using OpenRouter third-party API with real recipe generation. Mock WebSocket notifications using setInterval for friends' recipe activity feed on Recipes component. Using localStorage for data persistence (pantry, recipes, meal plans, shopping list, categories) until backend/database is implemented.
 - [x] **Hooks** - Extensive use of useState for component state management (recipes, friendsRecipes, shopping list, meal plan, pantry items, categories, modal visibility, selected days, notifications, form inputs). Using useEffect for loading data from localStorage on component mount, mock WebSocket notifications with setInterval, and cleaning up intervals on unmount.
 
 ### AI Assistant Functionality
