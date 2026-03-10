@@ -11,11 +11,11 @@ export function Login() {
 	const [error, setError] = React.useState(null);
 	const [success, setSuccess] = React.useState(false);
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setError(null);
 		try {
-			login(username, password);
+			await login(username, password);
 			setSuccess(true);
 			setTimeout(() => {
 				navigate("/pantry", {replace: true}); // Redirect to pantry page after successful login

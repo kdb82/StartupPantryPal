@@ -125,6 +125,18 @@ app.get("/api/user/me", requireAuth, (req, res) => {
     });
 });
 
+/* Pantry endpoints */
+const defaultCategories = [
+    "protein",
+    "vegetables",
+    "fruits",
+    "grains",
+    "dairy",
+    "staples",
+    "other"
+]
+
+
 app.listen(port, () => {
 	console.log(`Startup service running on port ${port}`);
 });

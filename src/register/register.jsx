@@ -14,7 +14,7 @@ export function Register() {
     const [error, setError] = React.useState(null);
     const [success, setSuccess] = React.useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
         
@@ -25,7 +25,7 @@ export function Register() {
         }
         
         try {
-            register(username, email, password);
+            await register(username, email, password);
             setSuccess(true);
             setTimeout(() => {
                 navigate("/pantry", { replace: true }); // Redirect to pantry page after successful registration

@@ -1,6 +1,5 @@
 import React from "react";
 import { createContext, useContext, useState, useEffect } from "react";
-import { set } from "zod";
 
 const AuthContext = createContext();
 
@@ -10,17 +9,20 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
+    const [authReady, setAuthReady] = useState(false);
 
-    // Load current user from localStorage on mount
     useEffect(() => {
         const loadCurrentUser = async () => {
             try {
-                const user = await apiRequest("/api/auth/me", { method: "GET" });
+                const user = await apiRequest("/api/user/me", { method: "GET" });
                 setCurrentUser(user);
             } catch {
                 setCurrentUser(null);
+            } finally {
+                setAuthReady(true);
             }
         };
+        
         loadCurrentUser();
     }, []);
 
@@ -77,7 +79,8 @@ export const AuthProvider = ({ children }) => {
         register,
         login,
         logout,
-        isAuthenticated: currentUser !== null
+        isAuthenticated: currentUser !== null,
+        authReady
     };
 
     return (
