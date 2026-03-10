@@ -3,7 +3,7 @@ import "../global.css";
 import "./pantry.css";
 import { useEffect } from "react";
 import { useAuth } from "../global_components/AuthContext";
-import { apiRequest } from "../service/apiClient";
+import { apiRequest } from "../apiRequest";
 
 export function Pantry() {
     const [items, setItems] = React.useState([]);
