@@ -229,3 +229,60 @@ if (bootstrapModal) bootstrapModal.hide();
 - Immutable state updates prevent subtle bugs and make React re-render predictably
 - Mock functionality (WebSocket with setInterval) helps complete UI before backend is ready
 - Component reusability comes from separating state management logic from presentation
+
+
+## Service API Endpoints
+
+### Authentication
+- `POST /api/auth/create` - Register new user
+  - Request: `{ email, username, password }`
+  - Response: `{ id, username, email, token }`
+  
+- `POST /api/auth/login` - Login existing user
+  - Request: `{ username, password }`
+  - Response: `{ id, username, email, token }`
+  
+- `DELETE /api/auth/logout` - Logout current user
+  - Response: `{ msg: 'logged out' }`
+  
+- `GET /api/user/me` - Get current user (restricted)
+  - Response: `{ id, username, email }` or 401
+
+### Pantry
+- `GET /api/pantry` - Get user's pantry items
+  - Response: `{ items: [], categories: [] }`
+  
+- `PUT /api/pantry` - Replace entire pantry
+  - Request: `{ items: [] }`
+  - Response: `{ items: [] }`
+  
+- `PUT /api/pantry/categories` - Update categories
+  - Request: `{ categories: [] }`
+  - Response: `{ categories: [] }`
+
+### Recipes
+- `GET /api/recipes` - Get user's saved recipes
+  - Response: `{ recipes: [] }`
+  
+- `POST /api/recipes` - Save new recipe
+  - Request: `{ recipeId, recipeName, recipeTime, recipeDescription, recipeIngredients, recipeSteps }`
+  - Response: `{ recipe: {...} }`
+  
+- `DELETE /api/recipes/:id` - Delete recipe
+  - Response: `{ msg: 'deleted' }`
+
+### Shopping List
+- `GET /api/shopping-list` - Get shopping list
+  - Response: `{ items: [] }`
+  
+- `PUT /api/shopping-list` - Replace shopping list
+  - Request: `{ items: [] }`
+  - Response: `{ items: [] }`
+
+### Meal Plan
+- `GET /api/meal-plan` - Get meal plan
+  - Response: `{ plan: {} }`
+  
+- `PUT /api/meal-plan` - Update meal plan
+  - Request: `{ plan: {} }`
+  - Response: `{ plan: {} }`
