@@ -117,6 +117,21 @@ app.delete("/api/auth/logout", (req, res) => {
     res.status(200).send({ message: "Logged out successfully" });
 });
 
+app.get("/api/auth/session", (req, res) => {
+	if (!req.user) {
+		return res.send({ authenticated: false });
+	}
+
+	res.send({
+		authenticated: true,
+		user: {
+			id: req.user.id,
+			email: req.user.email,
+			username: req.user.username,
+		},
+	});
+});
+
 app.get("/api/user/me", requireAuth, (req, res) => {
     res.send({
         id: req.user.id,

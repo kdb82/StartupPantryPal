@@ -1,5 +1,6 @@
 import React from "react";
 import { createContext, useContext, useState, useEffect } from "react";
+import { apiRequest } from "../service/apiClient";
 
 const AuthContext = createContext();
 
@@ -14,9 +15,14 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const loadCurrentUser = async () => {
             try {
-                const user = await apiRequest("/api/user/me", { method: "GET" });
-                setCurrentUser(user);
-            } catch {
+                const session = await apiRequest("/api/auth/session", { method: "GET" });
+                if (session.authenticated && session.user) {
+                    setCurrentUser(session.user);
+                } else {
+                    setCurrentUser(null);
+                }
+            } catch (error) {
+                console.error("Failed to load auth session:", error);
                 setCurrentUser(null);
             } finally {
                 setAuthReady(true);
@@ -25,25 +31,6 @@ export const AuthProvider = ({ children }) => {
         
         loadCurrentUser();
     }, []);
-
-    const apiRequest = async (url, options = {}) => {
-        const response = await fetch(url, {
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                ...(options.headers || {}),
-            },
-            ...options,
-        });
-
-        const data = await response.json().catch(() => ({}));
-
-        if (!response.ok) {
-            throw new Error(data.message || "Request failed");
-        }
-
-        return data;
-    };
 
     const register = async(username, email, password) => {
         const user = await apiRequest("/api/auth/register", {

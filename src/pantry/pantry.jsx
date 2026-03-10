@@ -3,6 +3,7 @@ import "../global.css";
 import "./pantry.css";
 import { useEffect } from "react";
 import { useAuth } from "../global_components/AuthContext";
+import { apiRequest } from "../service/apiClient";
 
 export function Pantry() {
     const [items, setItems] = React.useState([]);
@@ -10,25 +11,6 @@ export function Pantry() {
     const [itemInputs, setItemInputs] = React.useState({});
     const [newCategoryInput, setNewCategoryInput] = React.useState("");
     const { currentUser } = useAuth();
-
-    async function apiRequest(url, options = {}) {
-        const response = await fetch(url, {
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                ...(options.headers || {}),
-            },
-            ...options,
-        });
-
-        const data = await response.json().catch(() => ({}));
-
-        if (!response.ok) {
-            throw new Error(data.message || `API request failed: ${response.status}`);
-        }
-
-        return data;
-    }
 
     async function getPantry() {
         const pantry = await apiRequest("/api/pantry", { method: "GET" });
