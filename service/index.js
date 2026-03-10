@@ -140,7 +140,8 @@ app.get("/api/user/me", requireAuth, (req, res) => {
     });
 });
 
-/* Pantry endpoints */
+/* -----------Pantry endpoints --------------*/
+
 const defaultCategories = [
     "protein",
     "vegetables",
@@ -192,6 +193,105 @@ app.put("/api/pantry/categories", requireAuth, (req, res) => {
     const pantry = getOrCreatePantry(req.user.id);
     pantry.categories = normalized;
     res.send(pantry);
+});
+
+/* -----------Recipe endpoints --------------*/
+const userRecipeData = new Map(); //userId -> [ recipes ]
+const userShoppingListData = new Map(); //userId -> [ shopping list items ]
+const userMealPlanData = new Map();
+
+function getOrCreateUserData(store, userId, defaultValue) {
+    if (!store.has(userId)) {
+        store.set(userId, defaultValue);
+    }
+    return store.get(userId);
+}
+
+app.get("/api/recipes", requireAuth, (req, res) => {
+    const recipes = getOrCreateUserData(userRecipeData, req.user.id, []);
+    res.send(recipes);
+});
+
+app.post("/api/recipes", requireAuth, (req, res) => {
+	const {
+		recipeId,
+		recipeName,
+		recipeTime,
+		recipeDescription,
+		recipeIngredients,
+		recipeSteps,
+	} = req.body || {};
+
+	if (!recipeId || !recipeName) {
+		return res.status(400).send({ message: "recipeId and recipeName are required" });
+	}
+
+	const recipes = getOrCreateUserData(userRecipeData, req.user.id, []);
+	const normalizedId = String(recipeId);
+	const existingIndex = recipes.findIndex((r) => String(r.recipeId) === normalizedId);
+
+	const recipe = {
+		recipeId: normalizedId,
+		name: String(recipeName),
+		time: recipeTime ?? null,
+		description: recipeDescription ?? "",
+		ingredients: Array.isArray(recipeIngredients) ? recipeIngredients : [],
+		steps: Array.isArray(recipeSteps) ? recipeSteps : [],
+		savedAt: new Date().toISOString(),
+	};
+
+	if (existingIndex >= 0) {
+		recipes[existingIndex] = { ...recipes[existingIndex], ...recipe };
+	} else {
+		recipes.push(recipe);
+	}
+
+	res.status(201).send({ recipe });
+});
+
+app.delete("/api/recipes/:id", requireAuth, (req, res) => {
+	const { id } = req.params;
+	const recipes = getOrCreateUserData(userRecipeData, req.user.id, []);
+	const originalLength = recipes.length;
+	const filtered = recipes.filter((r) => String(r.recipeId) !== String(id));
+
+	userRecipeData.set(req.user.id, filtered);
+
+	if (filtered.length === originalLength) {
+		return res.status(404).send({ message: "Recipe not found" });
+	}
+
+	res.send({ message: "Recipe deleted" });
+});
+
+app.get("/api/shopping-list", requireAuth, (req, res) => {
+	const items = getOrCreateUserData(userShoppingListData, req.user.id, []);
+	res.send({ items });
+});
+
+app.put("/api/shopping-list", requireAuth, (req, res) => {
+	const { items } = req.body || {};
+	if (!Array.isArray(items)) {
+		return res.status(400).send({ message: "items must be an array" });
+	}
+
+	userShoppingListData.set(req.user.id, items);
+	res.send({ items });
+});
+
+app.get("/api/meal-plan", requireAuth, (req, res) => {
+	const plan = getOrCreateUserData(userMealPlanData, req.user.id, {});
+	res.send({ plan });
+});
+
+app.put("/api/meal-plan", requireAuth, (req, res) => {
+	const { plan } = req.body || {};
+	if (!plan || typeof plan !== "object" || Array.isArray(plan)) {
+		return res.status(400).send({ message: "plan must be an object" });
+	}
+
+	userMealPlanData.set(req.user.id, plan);
+	res.send({ plan });
 });
 
 app.listen(port, () => {
