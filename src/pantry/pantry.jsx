@@ -3,61 +3,79 @@ import "../global.css";
 import "./pantry.css";
 import { useEffect } from "react";
 
-const PANTRY_KEY = "user_pantry_data";
-const PANTRY_CATEGORIES_KEY = "user_pantry_categories";
-
 export function Pantry() {
     const [items, setItems] = React.useState([]);
     const [categories, setCategories] = React.useState([]);
     const [itemInputs, setItemInputs] = React.useState({});
     const [newCategoryInput, setNewCategoryInput] = React.useState("");
 
+    async function apiRequest(url, options = {}) {
+        const response = await fetch(url, {
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                ...(options.headers || {}),
+            },
+            ...options,
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+            throw new Error(`API request failed: ${response.statusText}`);
+        }
+
+        return data;
+    }
+
     // Helpers
-    function getPantry() {
-        const stored = localStorage.getItem(PANTRY_KEY);
+    async function getPantry() {
+        const pantry = await apiRequest("/api/pantry", {
+             method: "GET"
+        });
 
-        if (!stored) {
+        if (!pantry.items) {
             const initialPantry = [];
-
-            localStorage.setItem(PANTRY_KEY, JSON.stringify(initialPantry));
-            return initialPantry;
+            await apiRequest("/api/pantry", { method: "PUT", body: JSON.stringify({ items: initialPantry }) });
         }
 
         return JSON.parse(stored);
     }
 
-    function getCategories() {
-        const stored = localStorage.getItem(PANTRY_CATEGORIES_KEY);
-        if (!stored) {
-            const defaultCategories = [
-                "protein", "dairy", "vegetables", "fruits", "grains", "staples", "beverages"
-            ];
-            localStorage.setItem(PANTRY_CATEGORIES_KEY, JSON.stringify(defaultCategories));
-            return defaultCategories;
+    async function getCategories() {
+        const stored = await apiRequest("/api/pantry/categories", { method: "PUT" });
+        if (!stored.categories) {
+            console.log("No categories found");
         }
-        return JSON.parse(stored);
+        return stored.categories;
     }
 
-    function saveCategories(newCategories) {
+    async function saveCategories(newCategories) {
         setCategories(newCategories);
-        localStorage.setItem(PANTRY_CATEGORIES_KEY, JSON.stringify(newCategories));
+        await apiRequest("/api/pantry/categories", {
+            method: "PUT",
+            body: JSON.stringify({ categories: newCategories }),
+        }).catch((err) => {
+            console.error("Failed to save categories:", err);
+        });
     }
 
-    const loadPantry = () => {
-        const storedItems = getPantry();
-        const migratedItems = storedItems.map((item) => 
+    const loadPantry = async () => {
+        const storedItems = await getPantry();
+        const migratedItems = storedItems.map((item) =>
             item.id ? item : { ...item, id: Date.now() + Math.random() }
         );
         setItems(migratedItems);
     };
 
-    const savePantry = (newItems) => {
+    const savePantry = async (newItems) => {
         setItems(newItems);
-        localStorage.setItem(PANTRY_KEY, JSON.stringify(newItems));
+        await apiRequest("/api/pantry", { method: "PUT", body: JSON.stringify({ items: newItems }) });
     };
 
-    const addItem = (category) => {
+    const addItem = async (category) => {
         const input = itemInputs[category] || "";
+        const user = await apiRequest("/api/user/me", { method: "GET" });
         if (!input.trim()) return;
 
         const newItem = {
@@ -67,30 +85,30 @@ export function Pantry() {
             category: category,
             checked: false,
             addedAt: new Date().toISOString(),
-            addedBy: "currentUser" // Placeholder, replace with actual user info
+            addedBy: user.username
         };
 
         const updated = [...items, newItem];
-        savePantry(updated);
+        await savePantry(updated);
         setItemInputs({ ...itemInputs, [category]: "" });
     };
 
-    const addCategory = () => {
+    const addCategory = async () => {
         if (!newCategoryInput.trim()) return;
         const categoryId = newCategoryInput.trim().toLowerCase().replace(/\s+/g, '-');
         if (categories.includes(categoryId)) {
             alert("Category already exists");
             return;
         }
-        saveCategories([...categories, categoryId]);
+        await saveCategories([...categories, categoryId]);
         setNewCategoryInput("");
     };
 
-    const deleteCategory = (categoryId) => {
+    const deleteCategory = async (categoryId) => {
         if (!window.confirm(`Delete "${categoryId}" category and all its items?`)) return;
-        saveCategories(categories.filter(c => c !== categoryId));
+        await saveCategories(categories.filter(c => c !== categoryId));
         const updatedItems = items.filter(item => item.category !== categoryId);
-        savePantry(updatedItems);
+        await savePantry(updatedItems);
     };
 
     const handleItemInputChange = (category, value) => {
@@ -110,12 +128,12 @@ export function Pantry() {
         setCategories(storedCategories);
     }, []);
 
-    const removeItem = (itemId) => {
+    const removeItem = async (itemId) => {
         const updatedItems = items.filter((item) => item.id !== itemId);
-        savePantry(updatedItems);
+        await savePantry(updatedItems);
     };
 
-    const updateQuantity = (itemId, change) => {
+    const updateQuantity = async (itemId, change) => {
         const updatedItems = items.map((item) => {
             if (item.id === itemId) {
                 const newQuantity = Math.max(1, item.quantity + change);
@@ -123,7 +141,7 @@ export function Pantry() {
             }
             return item;
         });
-        savePantry(updatedItems);
+        await savePantry(updatedItems);
     };
 
     return (
@@ -177,9 +195,9 @@ export function Pantry() {
                     </section> */}
 
                     {/* Category Management */}
-                    <section className="pantry-category" style={{ background: 'var(--color-body-bg)'}}>
+                    <section className="pantry-category" style={{ background: 'var(--color-body-bg)' }}>
                         <details>
-                            <summary style={{background: '#efe4ce'}}>Manage Categories</summary>
+                            <summary style={{ background: '#efe4ce' }}>Manage Categories</summary>
                             <div className="category-content">
                                 <div className="add-item">
                                     <label htmlFor="newCategoryInput">Add new category:</label>
@@ -208,9 +226,9 @@ export function Pantry() {
                                         type="button"
                                         className="remove-item"
                                         onClick={() => deleteCategory(category)}
-                                        style={{ 
-                                            position: 'absolute', 
-                                            top: '-2rem', 
+                                        style={{
+                                            position: 'absolute',
+                                            top: '-2rem',
                                             right: '1rem',
                                             zIndex: 1
                                         }}

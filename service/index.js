@@ -136,6 +136,48 @@ const defaultCategories = [
     "other"
 ]
 
+const userPantryData = new Map(); //userId -> { items, categories }
+
+function getOrCreatePantry(userId) {
+    if (!userPantryData.has(userId)) {
+        userPantryData.set(userId, {
+             items: [],
+             categories: [...defaultCategories]
+     });
+    }
+    return userPantryData.get(userId);
+}
+
+app.get("/api/pantry", requireAuth, (req, res) => {
+    const pantry = getOrCreatePantry(req.user.id);
+    res.send(pantry);
+});
+
+app.put("/api/pantry", requireAuth, (req, res) => {
+    const { items } = req.body;
+    if (!Array.isArray(items)) {
+        return res.status(400).send({ message: "Items must be an array" });
+    }
+    const pantry = getOrCreatePantry(req.user.id);
+    pantry.items = items;
+    res.send(pantry);
+});
+
+app.put("/api/pantry/categories", requireAuth, (req, res) => {
+    const { categories } = req.body;
+    if (!Array.isArray(categories)) {
+        return res.status(400).send({ message: "Categories must be an array" });
+    }
+    const normalized = [...new Set(
+        categories
+        .map(c => c.trim().toLowerCase())
+        .filter(Boolean)
+    )];
+
+    const pantry = getOrCreatePantry(req.user.id);
+    pantry.categories = normalized;
+    res.send(pantry);
+});
 
 app.listen(port, () => {
 	console.log(`Startup service running on port ${port}`);
