@@ -2,12 +2,14 @@ import React from "react";
 import "../global.css";
 import "./pantry.css";
 import { useEffect } from "react";
+import { useAuth } from "../global_components/AuthContext";
 
 export function Pantry() {
     const [items, setItems] = React.useState([]);
     const [categories, setCategories] = React.useState([]);
     const [itemInputs, setItemInputs] = React.useState({});
     const [newCategoryInput, setNewCategoryInput] = React.useState("");
+    const { currentUser } = useAuth();
 
     async function apiRequest(url, options = {}) {
         const response = await fetch(url, {
@@ -22,60 +24,55 @@ export function Pantry() {
         const data = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-            throw new Error(`API request failed: ${response.statusText}`);
+            throw new Error(data.message || `API request failed: ${response.status}`);
         }
 
         return data;
     }
 
-    // Helpers
     async function getPantry() {
-        const pantry = await apiRequest("/api/pantry", {
-             method: "GET"
-        });
+        const pantry = await apiRequest("/api/pantry", { method: "GET" });
 
-        if (!pantry.items) {
-            const initialPantry = [];
-            await apiRequest("/api/pantry", { method: "PUT", body: JSON.stringify({ items: initialPantry }) });
-        }
-
-        return JSON.parse(stored);
-    }
-
-    async function getCategories() {
-        const stored = await apiRequest("/api/pantry/categories", { method: "PUT" });
-        if (!stored.categories) {
-            console.log("No categories found");
-        }
-        return stored.categories;
+        return {
+            items: Array.isArray(pantry.items) ? pantry.items : [],
+            categories: Array.isArray(pantry.categories) ? pantry.categories : [],
+        };
     }
 
     async function saveCategories(newCategories) {
-        setCategories(newCategories);
-        await apiRequest("/api/pantry/categories", {
+        const pantry = await apiRequest("/api/pantry/categories", {
             method: "PUT",
             body: JSON.stringify({ categories: newCategories }),
-        }).catch((err) => {
-            console.error("Failed to save categories:", err);
         });
+
+        setCategories(Array.isArray(pantry.categories) ? pantry.categories : []);
+        setItems(Array.isArray(pantry.items) ? pantry.items : []);
     }
 
     const loadPantry = async () => {
-        const storedItems = await getPantry();
-        const migratedItems = storedItems.map((item) =>
+        const pantry = await getPantry();
+
+        const migratedItems = pantry.items.map((item) =>
             item.id ? item : { ...item, id: Date.now() + Math.random() }
         );
+
         setItems(migratedItems);
+        setCategories(pantry.categories);
     };
 
     const savePantry = async (newItems) => {
-        setItems(newItems);
-        await apiRequest("/api/pantry", { method: "PUT", body: JSON.stringify({ items: newItems }) });
+        const pantry = await apiRequest("/api/pantry", {
+            method: "PUT",
+            body: JSON.stringify({ items: newItems }),
+        });
+
+        setItems(Array.isArray(pantry.items) ? pantry.items : []);
+        setCategories(Array.isArray(pantry.categories) ? pantry.categories : []);
     };
 
     const addItem = async (category) => {
         const input = itemInputs[category] || "";
-        const user = await apiRequest("/api/user/me", { method: "GET" });
+        
         if (!input.trim()) return;
 
         const newItem = {
@@ -85,7 +82,7 @@ export function Pantry() {
             category: category,
             checked: false,
             addedAt: new Date().toISOString(),
-            addedBy: user.username
+            addedBy: currentUser ? currentUser.username : "Unknown"
         };
 
         const updated = [...items, newItem];
@@ -123,9 +120,15 @@ export function Pantry() {
     };
 
     useEffect(() => {
-        loadPantry();
-        const storedCategories = getCategories();
-        setCategories(storedCategories);
+        const init = async () => {
+            try {
+                await loadPantry();
+            } catch (err) {
+                console.error("Failed to load pantry:", err);
+            }
+        };
+
+        init();
     }, []);
 
     const removeItem = async (itemId) => {

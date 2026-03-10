@@ -36,7 +36,7 @@ function requireAuth(req, res, next) {
 
 function setAuthCookie(res, token) {
 	res.cookie(authCookieName, token, {
-		secure: true,
+		secure: process.env.NODE_ENV === "production",
 		httpOnly: true,
 		sameSite: "strict",
 	});
@@ -170,7 +170,7 @@ app.put("/api/pantry/categories", requireAuth, (req, res) => {
     }
     const normalized = [...new Set(
         categories
-        .map(c => c.trim().toLowerCase())
+		.map((c) => String(c).trim().toLowerCase())
         .filter(Boolean)
     )];
 
