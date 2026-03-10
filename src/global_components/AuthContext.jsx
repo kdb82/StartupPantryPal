@@ -1,11 +1,6 @@
 import React from "react";
 import { createContext, useContext, useState, useEffect } from "react";
-import bcrypt from "bcryptjs";
-
-
-const USERS_KEY = "pantrypal_users";
-const CURRENT_USER_KEY = "pantrypal_currentUser";
-const AUTH_CHANGED_EVENT = "pantrypal_auth_changed";
+import { set } from "zod";
 
 const AuthContext = createContext();
 
@@ -18,76 +13,63 @@ export const AuthProvider = ({ children }) => {
 
     // Load current user from localStorage on mount
     useEffect(() => {
-        const storedUser = localStorage.getItem(CURRENT_USER_KEY);
-        if (storedUser) {
+        const loadCurrentUser = async () => {
             try {
-                setCurrentUser(JSON.parse(storedUser));
-            } catch (error) {
-                console.error("Error parsing stored user:", error);
-                localStorage.removeItem(CURRENT_USER_KEY);
+                const user = await apiRequest("/api/auth/me", { method: "GET" });
+                setCurrentUser(user);
+            } catch {
+                setCurrentUser(null);
             }
-        }
+        };
+        loadCurrentUser();
     }, []);
 
-    const register = (username, email, password) => {
-        const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
-        
-        if (!username || !email || !password) {
-            throw new Error("All fields are required");
-        }
-        
-        if (users.find((u) => u.email === email)) {
-            throw new Error("Email already in use");
-        }
-        
-        if (users.find((u) => u.username === username)) {
-            throw new Error("Username already in use");
+    const apiRequest = async (url, options = {}) => {
+        const response = await fetch(url, {
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                ...(options.headers || {}),
+            },
+            ...options,
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+            throw new Error(data.message || "Request failed");
         }
 
-        try {
-            const passwordHash = bcrypt.hashSync(password, 10);
-            const userID = crypto.randomUUID();
-            const newUser = { id: userID, username, email, passwordHash };
-            users.push(newUser);
-            localStorage.setItem(USERS_KEY, JSON.stringify(users));
-            
-            const { passwordHash: _, ...userWithoutPassword } = newUser;
-            localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
-            setCurrentUser(userWithoutPassword);
-            
-            console.log("User registered successfully:", userWithoutPassword);
-            return true;
-        } catch (error) {
-            console.error("Error during registration:", error);
-            throw new Error("Failed to register user");
-        }
+        return data;
     };
 
-    const login = (username, password) => {
-        const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
-        const user = users.find((u) => u.username === username);
-        
-        if (!user) {
-            throw new Error("Invalid username or password");
-        }
-
-        const passwordMatch = bcrypt.compareSync(password, user.passwordHash);
-        if (!passwordMatch) {
-            throw new Error("Invalid username or password");
-        }
-
-        const { passwordHash: _, ...userWithoutPassword } = user;
-        localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userWithoutPassword));
-        setCurrentUser(userWithoutPassword);
-        
-        console.log("User logged in successfully:", userWithoutPassword);
+    const register = async(username, email, password) => {
+        const user = await apiRequest("/api/auth/register", {
+            method: "POST",
+            body: JSON.stringify({ username, email, password }),
+        });
+        setCurrentUser(user);
+        console.log("User registered successfully");
         return true;
     };
 
-    const logout = () => {
-        localStorage.removeItem(CURRENT_USER_KEY);
-        setCurrentUser(null);
-        console.log("User logged out");
+    const login = async (username, password) => {
+        const user = await apiRequest("/api/auth/login", {
+            method: "POST",
+            body: JSON.stringify({ username, password }),
+        });
+        setCurrentUser(user);
+        console.log("User logged in successfully");
+        return true;
+    };
+
+    const logout = async () => {
+        try {
+            await apiRequest("/api/auth/logout", { method: "DELETE" });
+        } finally {
+            setCurrentUser(null);
+            console.log("User logged out successfully");
+        }
     };
 
     const value = {
