@@ -2,20 +2,54 @@ import React from "react";
 import "../global.css";
 import "./calendar.css";
 import { useState, useEffect } from "react";
-import { date } from "zod";
+import { apiRequest } from "../apiRequest";
+
+function startOfWeek(date) {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(d.setDate(diff));
+}
 
 export function Calendar() {
-    const SHOPPING_LIST_KEY = "shopping_list_items";
     const [shoppingList, setShoppingList] = useState([]);
     const [newIngredient, setNewIngredient] = useState("");
+    const [savedRecipes, setSavedRecipes] = useState([]);
+    const [weekStart, setWeekStart] = useState(startOfWeek(new Date()));
+    const [mealPlan, setMealPlan] = useState({});
+    const [showAddRecipeModal, setShowAddRecipeModal] = useState(false);
+    const [selectedDay, setSelectedDay] = useState(null);
 
+    useEffect(() => {
+        const loadSavedRecipes = async () => {
+            try {
+                const recipes = await apiRequest("/api/recipes", { method: "GET" });
+                setSavedRecipes(Array.isArray(recipes) ? recipes : []);
+            } catch (error) {
+                console.error("Error loading saved recipes:", error);
+                setSavedRecipes([]);
+            }
+        };
+        loadSavedRecipes();
+    }, []);
 
-    const startOfWeek = (date) => {
-        const d = new Date(date);
-        const day = d.getDay();
-        const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-        return new Date(d.setDate(diff));
-    };
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                const [shopping, meal] = await Promise.all([
+                    apiRequest("/api/shopping-list", { method: "GET" }),
+                    apiRequest("/api/meal-plan", { method: "GET" })
+                ]);
+
+                setShoppingList(Array.isArray(shopping.items) ? shopping.items : []);
+                setMealPlan(meal.plan && typeof meal.plan === "object" ? meal.plan : {});
+            } catch (error) {
+                console.error("Error loading data:", error);
+            }
+        };
+        loadData();
+    }, []);
+
 
     const formatDate = (date) => {
         return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
@@ -27,44 +61,20 @@ export function Calendar() {
         return result;
     };
 
-    const [weekStart, setWeekStart] = useState(startOfWeek(new Date()));
-    const MEAL_PLAN_KEY = "meal_plan_data";
-    const [mealPlan, setMealPlan] = useState({});
-    const [showAddRecipeModal, setShowAddRecipeModal] = useState(false);
-    const [selectedDay, setSelectedDay] = useState(null);
 
-    // Load shopping list from localStorage on mount
-    useEffect(() => {
-        const storedList = localStorage.getItem(SHOPPING_LIST_KEY);
-        if (storedList) {
-            try {
-                setShoppingList(JSON.parse(storedList));
-            } catch (error) {
-                console.error("Error parsing shopping list:", error);
-                localStorage.removeItem(SHOPPING_LIST_KEY);
-            }
+    const saveMealPlan = async (plan) => {
+        try {
+            const result = await apiRequest("/api/meal-plan", {
+                method: "PUT",
+                body: JSON.stringify({ plan }),
+            });
+            setMealPlan(result.plan && typeof result.plan === "object" ? result.plan : {});
+        } catch (error) {
+            console.error("Error saving meal plan:", error);
         }
-    }, []);
-
-    // Load meal plan from localStorage on mount
-    useEffect(() => {
-        const storedPlan = localStorage.getItem(MEAL_PLAN_KEY);
-        if (storedPlan) {
-            try {
-                setMealPlan(JSON.parse(storedPlan));
-            } catch (error) {
-                console.error("Error parsing meal plan:", error);
-                localStorage.removeItem(MEAL_PLAN_KEY);
-            }
-        }
-    }, []);
-
-    const saveMealPlan = (plan) => {
-        localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(plan));
-        setMealPlan(plan);
     };
 
-    const handleAddRecipeToDay = (dayName, recipeId, recipeName) => {
+    const handleAddRecipeToDay = async (dayName, recipeId, recipeName) => {
         const key = `${weekStart.toISOString().split('T')[0]}_${dayName}`;
         const updatedPlan = { ...mealPlan };
 
@@ -77,10 +87,10 @@ export function Calendar() {
             updatedPlan[key].push({ id: recipeId, name: recipeName });
         }
 
-        saveMealPlan(updatedPlan);
+        await saveMealPlan(updatedPlan);
     };
 
-    const handleRemoveRecipeFromDay = (dayName, recipeId) => {
+    const handleRemoveRecipeFromDay = async (dayName, recipeId) => {
         const key = `${weekStart.toISOString().split('T')[0]}_${dayName}`;
         const updatedPlan = { ...mealPlan };
 
@@ -91,30 +101,19 @@ export function Calendar() {
             }
         }
 
-        saveMealPlan(updatedPlan);
+        await saveMealPlan(updatedPlan);
     };
 
-    const getSavedRecipes = () => {
-        const recipes = [];
-        for (let key in localStorage) {
-            if (key.startsWith('recipe_')) {
-                try {
-                    const recipe = JSON.parse(localStorage.getItem(key));
-                    recipes.push({
-                        id: key.replace('recipe_', ''),
-                        name: recipe.name || "Unnamed Recipe"
-                    });
-                } catch (error) {
-                    console.error(`Error parsing ${key}:`, error);
-                }
-            }
+    const saveShoppingList = async (list) => {
+        try {
+            const result = await apiRequest("/api/shopping-list", {
+                method: "PUT",
+                body: JSON.stringify({ items: list }),
+            });
+            setShoppingList(Array.isArray(result.items) ? result.items : []);
+        } catch (error) {
+            console.error("Error saving shopping list:", error);
         }
-        return recipes;
-    };
-
-    const saveShoppingList = (list) => {
-        localStorage.setItem(SHOPPING_LIST_KEY, JSON.stringify(list));
-        setShoppingList(list);
     };
 
     const handlePrevWeek = () => {
@@ -125,25 +124,25 @@ export function Calendar() {
         setWeekStart(prev => addDays(prev, 7));
     };
 
-    const handleToggleItem = (itemId) => {
+    const handleToggleItem = async (itemId) => {
         const updatedList = shoppingList.map(item =>
             item.id === itemId ? { ...item, checked: !item.checked } : item
         );
-        saveShoppingList(updatedList);
+        await saveShoppingList(updatedList);
     };
 
-    const handleClearList = (clearAll) => {
+    const handleClearList = async (clearAll) => {
         if (!clearAll) {
             const uncheckedItems = shoppingList.filter(item => !item.checked);
-            saveShoppingList(uncheckedItems);
+            await saveShoppingList(uncheckedItems);
         } else {
             if (window.confirm("Are you sure you want to clear your ENTIRE shopping list?")) {
-                saveShoppingList([]);
+                await saveShoppingList([]);
             }
         }
     }
 
-    const handleAddItem = () => {
+    const handleAddItem = async () => {
         const ingredient = newIngredient.trim();
         const exists = shoppingList.find(item => item.name.toLowerCase() === ingredient.toLowerCase());
 
@@ -159,7 +158,7 @@ export function Calendar() {
             neededFor: ["Manually Added"]
         }
 
-        saveShoppingList([...shoppingList, newItem]);
+        await saveShoppingList([...shoppingList, newItem]);
         setNewIngredient("");
     };
 
@@ -317,10 +316,10 @@ export function Calendar() {
                         >
                             <h3 style={{ marginTop: 0 }}>Select Recipe for {selectedDay}</h3>
                             <div style={{ marginBottom: "var(--space-md)" }}>
-                                {getSavedRecipes().length > 0 ? (
-                                    getSavedRecipes().map((recipe) => (
+                                {savedRecipes.length > 0 ? (
+                                    savedRecipes.map((recipe) => (
                                         <div
-                                            key={recipe.id}
+                                            key={recipe.recipeId}
                                             style={{
                                                 padding: "var(--space-sm)",
                                                 borderBottom: "1px solid #e5e7eb",
@@ -328,7 +327,7 @@ export function Calendar() {
                                         >
                                             <button
                                                 onClick={() => {
-                                                    handleAddRecipeToDay(selectedDay, recipe.id, recipe.name);
+                                                    handleAddRecipeToDay(selectedDay, recipe.recipeId, recipe.name);
                                                 }}
                                                 style={{
                                                     width: "100%",
