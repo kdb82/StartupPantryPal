@@ -4,6 +4,7 @@ import "./recipes.css";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../global_components/AuthContext";
+import { apiRequest } from "../apiRequest";
 
 export function Recipes() {
     const { currentUser } = useAuth();
@@ -35,18 +36,9 @@ export function Recipes() {
     }, []);
 
     useEffect(() => {
-        const loadRecipes = () => {
-            const savedRecipes = [];
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key && key.startsWith("recipe_")) {
-                    const recipeData = localStorage.getItem(key);
-                    if (recipeData) {
-                        savedRecipes.push(JSON.parse(recipeData));
-                    }
-                }
-            }
-            setRecipes(savedRecipes);
+        const loadRecipes = async () => {
+            const recipes = await apiRequest("/api/recipes", { method: "GET" });
+            setRecipes(Array.isArray(recipes) ? recipes : []);
         };
         loadRecipes();
     }, []);
