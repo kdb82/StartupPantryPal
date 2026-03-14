@@ -1,6 +1,7 @@
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const express = require("express");
+const path = require("path");
 const uuid = require("uuid");
 const app = express();
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -360,6 +361,11 @@ app.get("/api/friends/activity", requireAuth, (req, res) => {
 
 app.get("/api/friends/recipes", requireAuth, (req, res) => {
 	res.send({ items: friendRecipes });
+});
+
+// SPA fallback for client-side routes (e.g. /recipes, /pantry)
+app.get(/^\/(?!api(?:\/|$)).*/, (req, res) => {
+	return res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.listen(port, () => {
