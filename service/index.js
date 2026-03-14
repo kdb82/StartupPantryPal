@@ -294,6 +294,74 @@ app.put("/api/meal-plan", requireAuth, (req, res) => {
 	res.send({ plan });
 });
 
+const friendActivity = [
+	{
+		id: "activity_1",
+		message: 'Sarah saved "Garlic Pasta" to their recipes',
+		timestamp: "10:24:00 AM",
+	},
+	{
+		id: "activity_2",
+		message: 'Mike saved "Chicken Salad" to their recipes',
+		timestamp: "11:10:00 AM",
+	},
+	{
+		id: "activity_3",
+		message: 'Emma saved "Salmon Teriyaki" to their recipes',
+		timestamp: "1:42:00 PM",
+	},
+];
+
+const friendRecipes = [
+	{
+		recipeId: "friend_1",
+		name: "Garlic Pasta",
+		description: "Creamy garlic pasta with fresh herbs",
+		ingredients: ["garlic", "pasta", "olive oil", "parmesan", "basil"],
+		steps: [
+			"Boil the pasta until al dente.",
+			"Saute garlic in olive oil until fragrant.",
+			"Toss pasta with the garlic oil, parmesan, and basil.",
+		],
+		sharedBy: "Sarah",
+		time: 25,
+	},
+	{
+		recipeId: "friend_2",
+		name: "Chicken Salad",
+		description: "Fresh greens with grilled chicken and a light vinaigrette",
+		ingredients: ["chicken breast", "mixed greens", "tomatoes", "cucumber", "vinaigrette"],
+		steps: [
+			"Season and grill the chicken breast.",
+			"Chop the vegetables and add them to a bowl.",
+			"Slice the chicken and serve over the greens with vinaigrette.",
+		],
+		sharedBy: "Mike",
+		time: 30,
+	},
+	{
+		recipeId: "friend_3",
+		name: "Salmon Teriyaki",
+		description: "Glazed salmon with teriyaki sauce and rice",
+		ingredients: ["salmon", "teriyaki sauce", "rice", "broccoli", "sesame seeds"],
+		steps: [
+			"Cook the rice according to package directions.",
+			"Bake or pan-sear the salmon and brush with teriyaki sauce.",
+			"Steam the broccoli and plate with the salmon and rice.",
+		],
+		sharedBy: "Emma",
+		time: 35,
+	},
+];
+
+app.get("/api/friends/activity", requireAuth, (req, res) => {
+	res.send({ items: friendActivity });
+});
+
+app.get("/api/friends/recipes", requireAuth, (req, res) => {
+	res.send({ items: friendRecipes });
+});
+
 app.listen(port, () => {
 	console.log(`Startup service running on port ${port}`);
 });
