@@ -7,6 +7,7 @@ const app = express();
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 const authCookieName = "token";
+const authCookieMaxAgeMs = 1000 * 60 * 60 * 24 * 30;
 const users = [];
 const userSessions = new Map();
 
@@ -37,6 +38,7 @@ function requireAuth(req, res, next) {
 
 function setAuthCookie(res, token) {
 	res.cookie(authCookieName, token, {
+		maxAge: authCookieMaxAgeMs,
 		secure: process.env.NODE_ENV === "production",
 		httpOnly: true,
 		sameSite: "strict",
@@ -114,7 +116,11 @@ app.delete("/api/auth/logout", (req, res) => {
     if (authToken) {
         userSessions.delete(authToken);
     }
-    res.clearCookie(authCookieName);
+	res.clearCookie(authCookieName, {
+		secure: process.env.NODE_ENV === "production",
+		httpOnly: true,
+		sameSite: "strict",
+	});
     res.status(200).send({ message: "Logged out successfully" });
 });
 
