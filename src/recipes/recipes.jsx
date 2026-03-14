@@ -7,7 +7,6 @@ import { useAuth } from "../global_components/AuthContext";
 import { apiRequest } from "../apiRequest";
 
 export function Recipes() {
-    const { currentUser } = useAuth();
     const [notifications, setNotifications] = useState([]);
     const [shoppingListMessage, setShoppingListMessage] = useState("");
     const [recipes, setRecipes] = useState([]);
@@ -46,8 +45,6 @@ export function Recipes() {
     // Handle save ingredients
     const handleSaveIngredients = async (missingIngredients, recipeName, recipeId) => {
         try {
-            const SHOPPING_LIST_KEY = "shopping_list_items";
-            
             // Handle both array and string inputs
             let ingredientsList;
             if (Array.isArray(missingIngredients)) {
@@ -65,15 +62,8 @@ export function Recipes() {
             }
 
             // Get existing shopping list
-            let shoppingList = [];
-            const storedList = localStorage.getItem(SHOPPING_LIST_KEY);
-            if (storedList) {
-                try {
-                    shoppingList = JSON.parse(storedList);
-                } catch (error) {
-                    console.error("Error parsing shopping list:", error);
-                }
-            }
+            const shoppingResponse = await apiRequest("/api/shopping-list", { method: "GET" });
+            const shoppingList = Array.isArray(shoppingResponse.items) ? shoppingResponse.items : [];
 
             // Add new ingredients (avoid duplicates)
             const addedIngredients = [];
@@ -98,8 +88,10 @@ export function Recipes() {
                 }
             });
 
-            // Save to localStorage
-            localStorage.setItem(SHOPPING_LIST_KEY, JSON.stringify(shoppingList));
+            await apiRequest("/api/shopping-list", {
+                method: "PUT",
+                body: JSON.stringify({ items: shoppingList }),
+            });
 
             if (addedIngredients.length === 0) {
                 setShoppingListMessage('Already added to shopping list');
@@ -124,10 +116,9 @@ export function Recipes() {
     };
 
     // Handle add recipe to calendar
-    const handleAddRecipeToCalendar = (day) => {
+    const handleAddRecipeToCalendar = async (day) => {
         if (!selectedRecipeForCalendar) return;
 
-        const MEAL_PLAN_KEY = "meal_plan_data";
         const recipe = selectedRecipeForCalendar;
         
         // Calculate the current week's Monday
@@ -139,15 +130,10 @@ export function Recipes() {
         const key = `${weekStart.toISOString().split('T')[0]}_${day}`;
         
         // Get existing meal plan
-        let mealPlan = {};
-        const storedPlan = localStorage.getItem(MEAL_PLAN_KEY);
-        if (storedPlan) {
-            try {
-                mealPlan = JSON.parse(storedPlan);
-            } catch (error) {
-                console.error("Error parsing meal plan:", error);
-            }
-        }
+        const mealPlanResponse = await apiRequest("/api/meal-plan", { method: "GET" });
+        const mealPlan = mealPlanResponse.plan && typeof mealPlanResponse.plan === "object"
+            ? mealPlanResponse.plan
+            : {};
 
         if (!mealPlan[key]) {
             mealPlan[key] = [];
@@ -158,7 +144,10 @@ export function Recipes() {
             mealPlan[key].push({ id: recipe.recipeId, name: recipe.name });
         }
 
-        localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(mealPlan));
+        await apiRequest("/api/meal-plan", {
+            method: "PUT",
+            body: JSON.stringify({ plan: mealPlan }),
+        });
         setShoppingListMessage(`✓ Added "${recipe.name}" to ${day}`);
         setTimeout(() => setShoppingListMessage(""), 3000);
         
@@ -174,11 +163,11 @@ export function Recipes() {
     };
 
     // Handle delete recipe
-    const handleDeleteRecipe = (recipeId, recipeName) => {
+    const handleDeleteRecipe = async (recipeId, recipeName) => {
         const confirmed = window.confirm(`Are you sure you want to delete "${recipeName}"? This action cannot be undone.`);
         if (confirmed) {
-            localStorage.removeItem(`recipe_${recipeId}`);
-            setRecipes(recipes.filter(recipe => recipe.recipeId !== recipeId));
+            await apiRequest(`/api/recipes/${recipeId}`, { method: "DELETE" });
+            setRecipes((prev) => prev.filter((recipe) => recipe.recipeId !== recipeId));
             return true;
         }
         return false;
@@ -342,8 +331,8 @@ export function Recipes() {
                                         <button
                                             type="button"
                                             className="btn btn-danger delete-recipe"
-                                            onClick={() => {
-                                                const deleted = handleDeleteRecipe(recipe.recipeId, recipe.name);
+                                            onClick={async () => {
+                                                const deleted = await handleDeleteRecipe(recipe.recipeId, recipe.name);
                                                 if (deleted) {
                                                     const modal = bootstrap.Modal.getInstance(document.getElementById(`recipeModal-${recipe.recipeId}`));
                                                     if (modal) modal.hide();
@@ -434,6 +423,7 @@ export function FriendsRecipes() {
     const [notifications, setNotifications] = useState([]);
     const [shoppingListMessage, setShoppingListMessage] = useState("");
     const [friendsRecipes, setFriendsRecipes] = useState([]);
+    const [pantryItems, setPantryItems] = useState([]);
     const [showDaySelector, setShowDaySelector] = useState(false);
     const [selectedRecipeForCalendar, setSelectedRecipeForCalendar] = useState(null);
 
@@ -472,8 +462,6 @@ export function FriendsRecipes() {
                 time: 30
             };
 
-            localStorage.setItem(`friends_recipe_${recipeId}`, JSON.stringify(mockRecipe));
-
             setNotifications(prev => [newNotification, ...prev].slice(0, 2));
             setFriendsRecipes(prev => [mockRecipe, ...prev]);
         }, 3000);
@@ -481,54 +469,39 @@ export function FriendsRecipes() {
         return () => clearInterval(notificationInterval);
     }, []);
 
-    // Load friends' recipes from localStorage on mount
     useEffect(() => {
-        const loadFriendsRecipes = () => {
-            const savedFriendsRecipes = [];
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key && key.startsWith("friends_recipe_")) {
-                    const recipeData = localStorage.getItem(key);
-                    if (recipeData) {
-                        savedFriendsRecipes.push(JSON.parse(recipeData));
-                    }
-                }
+        const loadPantry = async () => {
+            try {
+                const pantry = await apiRequest("/api/pantry", { method: "GET" });
+                setPantryItems(Array.isArray(pantry.items) ? pantry.items : []);
+            } catch (error) {
+                console.error("Failed to load pantry for recipe comparison:", error);
+                setPantryItems([]);
             }
-            setFriendsRecipes(savedFriendsRecipes);
         };
-        loadFriendsRecipes();
+
+        loadPantry();
     }, []);
 
     // Calculate missing ingredients based on user's pantry
     const calculateMissingIngredients = (recipeIngredients) => {
-        const PANTRY_KEY = "user_pantry_data";
-        const pantryData = localStorage.getItem(PANTRY_KEY);
-        
-        if (!pantryData) {
+        if (!pantryItems.length) {
             return recipeIngredients; // All ingredients are missing if no pantry
         }
 
-        try {
-            const pantryItems = JSON.parse(pantryData);
-            const normalizeIngredient = (item) =>
-                item.replace(/\s*\(\s*\d+\s*\)\s*$/, "").trim().toLowerCase();
-            
-            const pantryNames = pantryItems.map(item => normalizeIngredient(item.name));
-            
-            return recipeIngredients.filter(ingredient => 
-                !pantryNames.includes(normalizeIngredient(ingredient))
-            );
-        } catch (error) {
-            console.error("Error parsing pantry data:", error);
-            return recipeIngredients;
-        }
+        const normalizeIngredient = (item) =>
+            item.replace(/\s*\(\s*\d+\s*\)\s*$/, "").trim().toLowerCase();
+
+        const pantryNames = pantryItems.map((item) => normalizeIngredient(item.name));
+
+        return recipeIngredients.filter((ingredient) =>
+            !pantryNames.includes(normalizeIngredient(ingredient))
+        );
     };
 
     // Handle save ingredients
     const handleSaveIngredients = async (missingIngredients, recipeName, recipeId) => {
         try {
-            const SHOPPING_LIST_KEY = "shopping_list_items";
-            
             // Handle both array and string inputs
             let ingredientsList;
             if (Array.isArray(missingIngredients)) {
@@ -546,15 +519,8 @@ export function FriendsRecipes() {
             }
 
             // Get existing shopping list
-            let shoppingList = [];
-            const storedList = localStorage.getItem(SHOPPING_LIST_KEY);
-            if (storedList) {
-                try {
-                    shoppingList = JSON.parse(storedList);
-                } catch (error) {
-                    console.error("Error parsing shopping list:", error);
-                }
-            }
+            const shoppingResponse = await apiRequest("/api/shopping-list", { method: "GET" });
+            const shoppingList = Array.isArray(shoppingResponse.items) ? shoppingResponse.items : [];
 
             // Add new ingredients (avoid duplicates)
             const addedIngredients = [];
@@ -579,8 +545,10 @@ export function FriendsRecipes() {
                 }
             });
 
-            // Save to localStorage
-            localStorage.setItem(SHOPPING_LIST_KEY, JSON.stringify(shoppingList));
+            await apiRequest("/api/shopping-list", {
+                method: "PUT",
+                body: JSON.stringify({ items: shoppingList }),
+            });
 
             if (addedIngredients.length === 0) {
                 setShoppingListMessage('Already added to shopping list');
@@ -605,10 +573,9 @@ export function FriendsRecipes() {
     };
 
     // Handle add recipe to calendar
-    const handleAddRecipeToCalendar = (day) => {
+    const handleAddRecipeToCalendar = async (day) => {
         if (!selectedRecipeForCalendar) return;
 
-        const MEAL_PLAN_KEY = "meal_plan_data";
         const recipe = selectedRecipeForCalendar;
         
         // Calculate the current week's Monday
@@ -620,15 +587,10 @@ export function FriendsRecipes() {
         const key = `${weekStart.toISOString().split('T')[0]}_${day}`;
         
         // Get existing meal plan
-        let mealPlan = {};
-        const storedPlan = localStorage.getItem(MEAL_PLAN_KEY);
-        if (storedPlan) {
-            try {
-                mealPlan = JSON.parse(storedPlan);
-            } catch (error) {
-                console.error("Error parsing meal plan:", error);
-            }
-        }
+        const mealPlanResponse = await apiRequest("/api/meal-plan", { method: "GET" });
+        const mealPlan = mealPlanResponse.plan && typeof mealPlanResponse.plan === "object"
+            ? mealPlanResponse.plan
+            : {};
 
         if (!mealPlan[key]) {
             mealPlan[key] = [];
@@ -639,7 +601,10 @@ export function FriendsRecipes() {
             mealPlan[key].push({ id: recipe.recipeId, name: recipe.name });
         }
 
-        localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(mealPlan));
+        await apiRequest("/api/meal-plan", {
+            method: "PUT",
+            body: JSON.stringify({ plan: mealPlan }),
+        });
         setShoppingListMessage(`✓ Added "${recipe.name}" to ${day}`);
         setTimeout(() => setShoppingListMessage(""), 3000);
         
@@ -658,8 +623,7 @@ export function FriendsRecipes() {
     const handleDeleteRecipe = (recipeId, recipeName) => {
         const confirmed = window.confirm(`Are you sure you want to delete "${recipeName}"? This action cannot be undone.`);
         if (confirmed) {
-            localStorage.removeItem(`friends_recipe_${recipeId}`);
-            setFriendsRecipes(friendsRecipes.filter(recipe => recipe.recipeId !== recipeId));
+            setFriendsRecipes((prev) => prev.filter((recipe) => recipe.recipeId !== recipeId));
             return true;
         }
         return false;
