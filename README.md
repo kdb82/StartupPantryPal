@@ -112,7 +112,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [x] **All functionality implemented or mocked out** - Fully functional meal planning with calendar, shopping list, recipe management (save, delete, add to calendar/shopping list), pantry tracking with dynamic categories, and AI recipe assistant using OpenRouter third-party API with real recipe generation. Mock WebSocket notifications using setInterval for friends' recipe activity feed on Recipes component. Using localStorage for data persistence (pantry, recipes, meal plans, shopping list, categories) until backend/database is implemented.
+- [x] **All functionality implemented or mocked out** - Fully functional meal planning with calendar, shopping list, recipe management (save, delete, add to calendar/shopping list), pantry tracking with dynamic categories, and AI recipe assistant using OpenRouter third-party API with real recipe generation. Mock WebSocket-style notifications still run on an interval, but they now seed from backend friend endpoints.
 - [x] **Hooks** - Extensive use of useState for component state management (recipes, friendsRecipes, shopping list, meal plan, pantry items, categories, modal visibility, selected days, notifications, form inputs). Using useEffect for loading data from localStorage on component mount, mock WebSocket notifications with setInterval, and cleaning up intervals on unmount.
 
 ### AI Assistant Functionality
@@ -126,7 +126,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
   - Save and retrieve recipes (`save_recipe`, `get_user_recipes`)
   - Manage pantry categories (`add_category_to_pantry`, `remove_category_from_pantry`)
   - Schedule meals on calendar (`add_recipe_to_calendar`, `remove_recipe_from_calendar`)
-- **Dynamic pantry categories** - User-managed categories stored in localStorage with full AI integration. AI validates categories before adding ingredients and queries actual user categories.
+- **Dynamic pantry categories** - User-managed categories are persisted through backend pantry endpoints and are available to AI tools for validation and updates.
 - **Conversation persistence** - Chat history persists across page navigation using module-level cache that survives page navigation.
 - **Anti-hallucination safeguards** - Explicit AI instructions prevent tool hallucination with concrete examples and requirement language (e.g., This one was a headache).
 - **Ingredient normalization** - Algorithm that strips parenthetical content, normalizes whitespace, and performs case-insensitive comparison across all tool operations.
@@ -137,12 +137,33 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
+- [x] **Node.js/Express HTTP service** - Implemented service in `service/index.js` with Express middleware, auth/session handling, and feature endpoints.
+- [x] **Static middleware for frontend** - Express serves the deployed frontend bundle from `public` using static middleware.
 - [x] **Calls to third party endpoints** - Integrated OpenRouter API for AI-powered recipe generation and meal planning assistance.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - I did not complete this part of the deliverable.
+- [x] **Backend service endpoints** - Added endpoints for auth/session, pantry, recipes, shopping list, meal plan, and friends feed data.
+- [x] **Frontend calls service endpoints** - Frontend now uses API-backed requests across auth, pantry, recipes, calendar/meal plan, and friends activity/recipes.
+- [x] **Supports registration, login, logout, and restricted endpoint** - Implemented register/login/logout/session plus protected routes that require authentication.
+- [x] **Uses BCrypt to hash passwords** - Passwords are hashed with bcryptjs before storing user records in the service.
+
+### Service Endpoint Summary
+
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `DELETE /api/auth/logout`
+- `GET /api/auth/session`
+- `GET /api/user/me` (restricted)
+- `GET /api/pantry`
+- `PUT /api/pantry`
+- `PUT /api/pantry/categories`
+- `GET /api/recipes`
+- `POST /api/recipes`
+- `DELETE /api/recipes/:id`
+- `GET /api/shopping-list`
+- `PUT /api/shopping-list`
+- `GET /api/meal-plan`
+- `PUT /api/meal-plan`
+- `GET /api/friends/activity`
+- `GET /api/friends/recipes`
 
 ## 🚀 DB deliverable
 

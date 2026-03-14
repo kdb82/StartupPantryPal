@@ -233,56 +233,64 @@ if (bootstrapModal) bootstrapModal.hide();
 
 ## Service API Endpoints
 
-### Authentication
-- `POST /api/auth/create` - Register new user
+### Authentication and Session
+- `POST /api/auth/register`
   - Request: `{ email, username, password }`
-  - Response: `{ id, username, email, token }`
-  
-- `POST /api/auth/login` - Login existing user
+  - Response: `{ id, email, username }`
+- `POST /api/auth/login`
   - Request: `{ username, password }`
-  - Response: `{ id, username, email, token }`
-  
-- `DELETE /api/auth/logout` - Logout current user
-  - Response: `{ msg: 'logged out' }`
-  
-- `GET /api/user/me` - Get current user (restricted)
-  - Response: `{ id, username, email }` or 401
+  - Response: `{ id, email, username }`
+- `DELETE /api/auth/logout`
+  - Response: `{ message: "Logged out successfully" }`
+- `GET /api/auth/session`
+  - Response when logged out: `{ authenticated: false }`
+  - Response when logged in: `{ authenticated: true, user: { id, email, username } }`
+- `GET /api/user/me` (restricted)
+  - Response: `{ id, email, username }` or 401
 
 ### Pantry
-- `GET /api/pantry` - Get user's pantry items
+- `GET /api/pantry`
   - Response: `{ items: [], categories: [] }`
-  
-- `PUT /api/pantry` - Replace entire pantry
+- `PUT /api/pantry`
   - Request: `{ items: [] }`
-  - Response: `{ items: [] }`
-  
-- `PUT /api/pantry/categories` - Update categories
+  - Response: `{ items: [], categories: [] }`
+- `PUT /api/pantry/categories`
   - Request: `{ categories: [] }`
-  - Response: `{ categories: [] }`
+  - Response: `{ items: [], categories: [] }`
 
 ### Recipes
-- `GET /api/recipes` - Get user's saved recipes
-  - Response: `{ recipes: [] }`
-  
-- `POST /api/recipes` - Save new recipe
+- `GET /api/recipes`
+  - Response: `[ { recipeId, name, time, description, ingredients, steps, savedAt } ]`
+- `POST /api/recipes`
   - Request: `{ recipeId, recipeName, recipeTime, recipeDescription, recipeIngredients, recipeSteps }`
-  - Response: `{ recipe: {...} }`
-  
-- `DELETE /api/recipes/:id` - Delete recipe
-  - Response: `{ msg: 'deleted' }`
+  - Response: `{ recipe: { ... } }`
+- `DELETE /api/recipes/:id`
+  - Response: `{ message: "Recipe deleted" }`
 
 ### Shopping List
-- `GET /api/shopping-list` - Get shopping list
+- `GET /api/shopping-list`
   - Response: `{ items: [] }`
-  
-- `PUT /api/shopping-list` - Replace shopping list
+- `PUT /api/shopping-list`
   - Request: `{ items: [] }`
   - Response: `{ items: [] }`
 
 ### Meal Plan
-- `GET /api/meal-plan` - Get meal plan
+- `GET /api/meal-plan`
   - Response: `{ plan: {} }`
-  
-- `PUT /api/meal-plan` - Update meal plan
+- `PUT /api/meal-plan`
   - Request: `{ plan: {} }`
   - Response: `{ plan: {} }`
+
+### Friends Feed
+- `GET /api/friends/activity` (restricted)
+  - Response: `{ items: [ { id, message, timestamp } ] }`
+- `GET /api/friends/recipes` (restricted)
+  - Response: `{ items: [ { recipeId, name, description, ingredients, steps, sharedBy, time } ] }`
+
+## Service Deliverable Learnings
+
+- Frontend API calls now go through Vite proxy (`/api` -> `http://localhost:4000`) during development and through Express in production.
+- If `/api/*` returns 404 in local dev, check which process is actually bound to port 4000. A stale process can shadow the intended backend.
+- For BrowserRouter apps, production needs a server-side SPA fallback so refreshing deep links like `/recipes` returns `index.html`.
+- Express 5 does not accept `app.get("*", ...)`. Use a regex fallback instead (for example excluding `/api` paths).
+- Deployment with `deployService.sh` should push both frontend build assets and backend service files, then restart PM2.
