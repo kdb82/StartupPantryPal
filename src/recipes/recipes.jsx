@@ -3,8 +3,8 @@ import "../global.css";
 import "./recipes.css";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useAuth } from "../global_components/AuthContext";
 import { apiRequest } from "../apiRequest";
+import { useAuth } from "../global_components/AuthContext";
 
 export function Recipes() {
     const [notifications, setNotifications] = useState([]);
@@ -12,35 +12,66 @@ export function Recipes() {
     const [recipes, setRecipes] = useState([]);
     const [showDaySelector, setShowDaySelector] = useState(false);
     const [selectedRecipeForCalendar, setSelectedRecipeForCalendar] = useState(null);
-
-    // Mock WebSocket notifications - users saving recipes
-    useEffect(() => {
-        const mockUserNames = ["Sarah", "Mike", "Alex", "Jessica", "Tom", "Emma", "Chris"];
-        const mockRecipeNames = ["Garlic Pasta", "Chicken Salad", "Cookies", "Salmon Teriyaki", "Stir Fry", "Tacos"];
-
-        const notificationInterval = setInterval(() => {
-            const randomUser = mockUserNames[Math.floor(Math.random() * mockUserNames.length)];
-            const randomRecipe = mockRecipeNames[Math.floor(Math.random() * mockRecipeNames.length)];
-            
-            const newNotification = {
-                id: Date.now(),
-                message: `${randomUser} saved "${randomRecipe}" to their recipes`,
-                timestamp: new Date().toLocaleTimeString()
-            };
-
-            setNotifications(prev => [newNotification, ...prev].slice(0, 2)); // Keep last 2
-        }, 3000);
-
-        return () => clearInterval(notificationInterval);
-    }, []);
+    const { authReady, isAuthenticated } = useAuth();
 
     useEffect(() => {
+        let notificationInterval;
+
+        if (!authReady || !isAuthenticated) {
+			setNotifications([]);
+			return undefined;
+		}
+
+        const loadNotifications = async () => {
+            try {
+                const response = await apiRequest("/api/friends/activity", { method: "GET" });
+                const activityItems = Array.isArray(response.items) ? response.items : [];
+
+                if (activityItems.length === 0) {
+                    setNotifications([]);
+                    return;
+                }
+
+                let activityIndex = 0;
+                setNotifications([activityItems[activityIndex]]);
+
+                notificationInterval = setInterval(() => {
+                    activityIndex = (activityIndex + 1) % activityItems.length;
+                    const nextItem = {
+                        ...activityItems[activityIndex],
+                        id: `${activityItems[activityIndex].id}-${Date.now()}`,
+                        timestamp: new Date().toLocaleTimeString(),
+                    };
+
+                    setNotifications((prev) => [nextItem, ...prev].slice(0, 2));
+                }, 3000);
+            } catch (error) {
+                console.error("Failed to load friend activity:", error);
+                setNotifications([]);
+            }
+        };
+
+        loadNotifications();
+
+        return () => {
+            if (notificationInterval) {
+                clearInterval(notificationInterval);
+            }
+        };
+    }, [authReady, isAuthenticated]);
+
+    useEffect(() => {
+        if (!authReady || !isAuthenticated) {
+			setRecipes([]);
+			return;
+		}
+
         const loadRecipes = async () => {
             const recipes = await apiRequest("/api/recipes", { method: "GET" });
             setRecipes(Array.isArray(recipes) ? recipes : []);
         };
         loadRecipes();
-    }, []);
+    }, [authReady, isAuthenticated]);
 
     // Handle save ingredients
     const handleSaveIngredients = async (missingIngredients, recipeName, recipeId) => {
@@ -180,10 +211,10 @@ export function Recipes() {
 
                     <section aria-labelledby="recipe-api-title" className="placeholder-card">
                         <h3 id="recipe-api-title">
-                            Friends' Activity (Mock WebSocket)
+                            Friends' Activity
                         </h3>
                         <p className="muted">
-                            Real-time notifications of friends saving recipes
+                            Recent recipe activity from the backend API
                         </p>
 
                         <ul className="notification-feed" role="log" aria-live="polite" aria-label="Recipe notifications">
@@ -426,50 +457,89 @@ export function FriendsRecipes() {
     const [pantryItems, setPantryItems] = useState([]);
     const [showDaySelector, setShowDaySelector] = useState(false);
     const [selectedRecipeForCalendar, setSelectedRecipeForCalendar] = useState(null);
+    const { authReady, isAuthenticated } = useAuth();
 
-    // Mock WebSocket notifications - users saving recipes
     useEffect(() => {
-        const mockUserNames = ["Sarah", "Mike", "Alex", "Jessica", "Tom", "Emma", "Chris"];
-        const mockRecipeNames = ["Garlic Pasta", "Chicken Salad", "Cookies", "Salmon Teriyaki", "Stir Fry", "Tacos"];
-        const mockDescriptions = {
-            "Garlic Pasta": "Creamy garlic pasta with fresh herbs",
-            "Chicken Salad": "Fresh greens with grilled chicken",
-            "Cookies": "Delicious homemade chocolate chip cookies",
-            "Salmon Teriyaki": "Glazed salmon with teriyaki sauce",
-            "Stir Fry": "Quick and colorful vegetable stir fry",
-            "Tacos": "Flavorful tacos with seasoned filling"
+        let notificationInterval;
+        let recipeInterval;
+
+        if (!authReady || !isAuthenticated) {
+			setNotifications([]);
+			setFriendsRecipes([]);
+			return undefined;
+		}
+
+        const loadFriendRecipes = async () => {
+            try {
+                const [activityResponse, recipesResponse] = await Promise.all([
+                    apiRequest("/api/friends/activity", { method: "GET" }),
+                    apiRequest("/api/friends/recipes", { method: "GET" }),
+                ]);
+
+                const activityItems = Array.isArray(activityResponse.items) ? activityResponse.items : [];
+                const recipeItems = Array.isArray(recipesResponse.items) ? recipesResponse.items : [];
+
+                if (activityItems.length > 0) {
+                    let activityIndex = 0;
+                    setNotifications([activityItems[activityIndex]]);
+
+                    notificationInterval = setInterval(() => {
+                        activityIndex = (activityIndex + 1) % activityItems.length;
+                        const nextItem = {
+                            ...activityItems[activityIndex],
+                            id: `${activityItems[activityIndex].id}-${Date.now()}`,
+                            timestamp: new Date().toLocaleTimeString(),
+                        };
+
+                        setNotifications((prev) => [nextItem, ...prev].slice(0, 2));
+                    }, 3000);
+                } else {
+                    setNotifications([]);
+                }
+
+                if (recipeItems.length > 0) {
+                    let recipeIndex = 0;
+                    setFriendsRecipes([recipeItems[recipeIndex]]);
+
+                    recipeInterval = setInterval(() => {
+                        recipeIndex = (recipeIndex + 1) % recipeItems.length;
+                        const nextRecipe = recipeItems[recipeIndex];
+
+                        setFriendsRecipes((prev) => {
+                            const remainingRecipes = prev.filter(
+                                (recipe) => recipe.recipeId !== nextRecipe.recipeId
+                            );
+                            return [nextRecipe, ...remainingRecipes];
+                        });
+                    }, 3000);
+                } else {
+                    setFriendsRecipes([]);
+                }
+            } catch (error) {
+                console.error("Failed to load friend recipe data:", error);
+                setNotifications([]);
+                setFriendsRecipes([]);
+            }
         };
 
-        const notificationInterval = setInterval(() => {
-            const randomUser = mockUserNames[Math.floor(Math.random() * mockUserNames.length)];
-            const randomRecipe = mockRecipeNames[Math.floor(Math.random() * mockRecipeNames.length)];
-            const recipeId = `friends_${Date.now()}`;
-            
-            const newNotification = {
-                id: Date.now(),
-                message: `${randomUser} saved "${randomRecipe}" to their recipes`,
-                timestamp: new Date().toLocaleTimeString()
-            };
+        loadFriendRecipes();
 
-            // Create a mock recipe object
-            const mockRecipe = {
-                recipeId,
-                name: randomRecipe,
-                description: mockDescriptions[randomRecipe] || "A delicious recipe",
-                ingredients: ["Sample ingredient 1", "Sample ingredient 2", "Sample ingredient 3"],
-                steps: ["Step 1", "Step 2", "Step 3"],
-                sharedBy: randomUser,
-                time: 30
-            };
-
-            setNotifications(prev => [newNotification, ...prev].slice(0, 2));
-            setFriendsRecipes(prev => [mockRecipe, ...prev]);
-        }, 3000);
-
-        return () => clearInterval(notificationInterval);
-    }, []);
+        return () => {
+            if (notificationInterval) {
+                clearInterval(notificationInterval);
+            }
+            if (recipeInterval) {
+                clearInterval(recipeInterval);
+            }
+        };
+    }, [authReady, isAuthenticated]);
 
     useEffect(() => {
+        if (!authReady || !isAuthenticated) {
+			setPantryItems([]);
+			return;
+		}
+
         const loadPantry = async () => {
             try {
                 const pantry = await apiRequest("/api/pantry", { method: "GET" });
@@ -481,7 +551,7 @@ export function FriendsRecipes() {
         };
 
         loadPantry();
-    }, []);
+    }, [authReady, isAuthenticated]);
 
     // Calculate missing ingredients based on user's pantry
     const calculateMissingIngredients = (recipeIngredients) => {
@@ -637,10 +707,10 @@ export function FriendsRecipes() {
 
                     <section aria-labelledby="recipe-api-title" className="placeholder-card">
                         <h3 id="recipe-api-title">
-                            Friends' Activity (Mock WebSocket)
+                            Friends' Activity
                         </h3>
                         <p className="muted">
-                            Real-time notifications of friends saving recipes
+                            Recent recipe activity from the backend API
                         </p>
 
                         <ul className="notification-feed" role="log" aria-live="polite" aria-label="Recipe notifications">
