@@ -66,7 +66,7 @@ I am going to use the required technologies in the following ways.
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ x ] **Server deployed and accessible with custom domain name** - [My server link](https://startup.pantrypal.click).
-- [ ] **IMPORTANT (grading): deploy Simon to subdomain** - The course Simon app must be deployed to `https://simon.pantrypal.click` (don’t skip this or you may receive a 0).
+- [ x ] **IMPORTANT (grading): deploy Simon to subdomain** - The course Simon app must be deployed to `https://simon.pantrypal.click` (don’t skip this or you may receive a 0).
 
 **Helpful Info**:
 - Command to SSH into server: ssh -i ~/keys/pantryPal_production.pem ubuntu@98.84.77.7
