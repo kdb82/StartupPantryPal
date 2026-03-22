@@ -295,18 +295,27 @@ app.delete("/api/recipes/:id", requireAuth, async (req, res) => {
 	res.send({ message: "Recipe deleted" });
 });
 
-app.get("/api/shopping-list", requireAuth, (req, res) => {
-	const items = getOrCreateUserData(userShoppingListData, req.user.id, []);
-	res.send({ items });
+app.get("/api/shopping-list", requireAuth, async (req, res) => {
+	const db = await getDb();
+	const doc = await db
+		.collection("shoppingLists")
+		.findOne({ userId: req.user.id }, { projection: { _id: 0, items: 1 } });
+	res.send({ items: doc?.items ?? [] });
 });
 
-app.put("/api/shopping-list", requireAuth, (req, res) => {
+app.put("/api/shopping-list", requireAuth, async (req, res) => {
 	const { items } = req.body || {};
 	if (!Array.isArray(items)) {
 		return res.status(400).send({ message: "items must be an array" });
 	}
 
-	userShoppingListData.set(req.user.id, items);
+	const db = await getDb();
+	await db.collection("shoppingLists").updateOne(
+		{ userId: req.user.id },
+		{ $set: { userId: req.user.id, items } },
+		{ upsert: true }
+	);
+
 	res.send({ items });
 });
 
