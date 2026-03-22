@@ -79,6 +79,8 @@ Your role/parameters:
   - Cook for 2 more minutes until sauce coats everything
   - Serve hot, optionally over rice
 
+  ---
+
   ## 2. Teriyaki Broccoli & Cashew Bowl
   - **Time:** 20 minutes
   - **Servings:** 2-3
@@ -98,6 +100,8 @@ Your role/parameters:
   - Pour teriyaki sauce and toss well
   - Cook 2 more minutes until broccoli is tender-crisp
   - Top with cashews if available, serve over rice
+
+  ---
 
   ## 3. Creamy Garlic Pasta with Broccoli
   - **Time:** 15 minutes
