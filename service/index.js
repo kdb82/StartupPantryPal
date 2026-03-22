@@ -167,34 +167,49 @@ const defaultCategories = [
     "other"
 ]
 
-const userPantryData = new Map(); //userId -> { items, categories }
+async function getOrCreatePantry(userId) {
+	const db = await getDb();
+	const pantryCollection = db.collection("pantries");
+	const existing = await pantryCollection.findOne({ userId });
 
-function getOrCreatePantry(userId) {
-    if (!userPantryData.has(userId)) {
-        userPantryData.set(userId, {
-             items: [],
-             categories: [...defaultCategories]
-     });
-    }
-    return userPantryData.get(userId);
+	if (existing) {
+		return existing;
+	}
+
+	const pantry = {
+		userId,
+		items: [],
+		categories: [...defaultCategories],
+	};
+
+	await pantryCollection.insertOne(pantry);
+	return pantry;
 }
 
-app.get("/api/pantry", requireAuth, (req, res) => {
-    const pantry = getOrCreatePantry(req.user.id);
-    res.send(pantry);
+app.get("/api/pantry", requireAuth, async (req, res) => {
+	const pantry = await getOrCreatePantry(req.user.id);
+	res.send({ items: pantry.items, categories: pantry.categories });
 });
 
-app.put("/api/pantry", requireAuth, (req, res) => {
+app.put("/api/pantry", requireAuth, async (req, res) => {
     const { items } = req.body;
     if (!Array.isArray(items)) {
         return res.status(400).send({ message: "Items must be an array" });
     }
-    const pantry = getOrCreatePantry(req.user.id);
-    pantry.items = items;
-    res.send(pantry);
+
+	const db = await getDb();
+	const pantryCollection = db.collection("pantries");
+	await pantryCollection.updateOne(
+		{ userId: req.user.id },
+		{ $set: { items } },
+		{ upsert: true }
+	);
+
+	const pantry = await getOrCreatePantry(req.user.id);
+	res.send({ items: pantry.items, categories: pantry.categories });
 });
 
-app.put("/api/pantry/categories", requireAuth, (req, res) => {
+app.put("/api/pantry/categories", requireAuth, async (req, res) => {
     const { categories } = req.body;
     if (!Array.isArray(categories)) {
         return res.status(400).send({ message: "Categories must be an array" });
@@ -205,9 +220,16 @@ app.put("/api/pantry/categories", requireAuth, (req, res) => {
         .filter(Boolean)
     )];
 
-    const pantry = getOrCreatePantry(req.user.id);
-    pantry.categories = normalized;
-    res.send(pantry);
+	const db = await getDb();
+	const pantryCollection = db.collection("pantries");
+	await pantryCollection.updateOne(
+		{ userId: req.user.id },
+		{ $set: { categories: normalized } },
+		{ upsert: true }
+	);
+
+	const pantry = await getOrCreatePantry(req.user.id);
+	res.send({ items: pantry.items, categories: pantry.categories });
 });
 
 /* -----------Recipe endpoints --------------*/
