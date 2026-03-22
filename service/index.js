@@ -3,31 +3,29 @@ const bcrypt = require("bcryptjs");
 const express = require("express");
 const path = require("path");
 const uuid = require("uuid");
+const { getDb } = require("./db");
 const app = express();
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 const authCookieName = "token";
 const authCookieMaxAgeMs = 1000 * 60 * 60 * 24 * 30;
-const users = [];
-const userSessions = new Map();
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static("public"));
 
-function setAuthUser(req, res, next) {
+app.use(async (req, res, next) => {
 	const authToken = req.cookies[authCookieName];
 
 	if (authToken) {
-		const userId = userSessions.get(authToken);
-		if (userId) {
-			req.user = users.find((u) => u.id === userId);
+		const db = await getDb();
+		const session = await db.collection("sessions").findOne({ token: authToken });
+		if (session) {
+			req.user = await db.collection("users").findOne({ id: session.userId });
 		}
 	}
 	next();
-}
-
-app.use(setAuthUser);
+});
 
 function requireAuth(req, res, next) {
 	if (!req.user) {
