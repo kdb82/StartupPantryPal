@@ -52,26 +52,32 @@ app.post("/api/auth/register", async (req, res) => {
 			.send({ message: "Email, username and password are required" });
 	}
 
-	if (users.find((u) => u.email === email)) {
+	const db = await getDb();
+	const usersCollection = db.collection("users");
+
+	if (await usersCollection.findOne({ email })) {
 		return res.status(400).send({ message: "Email already exists" });
 	}
 
-	if (users.find((u) => u.username === username)) {
+	if (await usersCollection.findOne({ username })) {
 		return res.status(400).send({ message: "Username already exists" });
 	}
 
 	const passwordHash = await bcrypt.hash(password, 10);
+	const userId = uuid.v4();
 
 	const user = {
-		id: uuid.v4(),
+		id: userId,
 		email,
 		username,
 		passwordHash,
 	};
 
-	users.push(user);
+	await usersCollection.insertOne(user);
+
 	const authToken = uuid.v4();
-	userSessions.set(authToken, user.id);
+	const sessionsCollection = db.collection("sessions");
+	await sessionsCollection.insertOne({ token: authToken, userId });
 
 	setAuthCookie(res, authToken);
 	res
@@ -88,7 +94,9 @@ app.post("/api/auth/login", async (req, res) => {
 			.send({ message: "Username and password are required" });
 	}
 
-	const user = users.find((u) => u.username === username);
+	const db = await getDb();
+	const usersCollection = db.collection("users");
+	const user = await usersCollection.findOne({ username });
 
 	if (!user) {
 		return res.status(401).send({ message: "Invalid username or password" });
@@ -100,7 +108,8 @@ app.post("/api/auth/login", async (req, res) => {
 	}
 
 	const authToken = uuid.v4();
-	userSessions.set(authToken, user.id);
+	const sessionsCollection = db.collection("sessions");
+	await sessionsCollection.insertOne({ token: authToken, userId: user.id });
 
 	setAuthCookie(res, authToken);
 	res
@@ -108,11 +117,12 @@ app.post("/api/auth/login", async (req, res) => {
 		.send({ id: user.id, email: user.email, username: user.username });
 });
 
-app.delete("/api/auth/logout", (req, res) => {
+app.delete("/api/auth/logout", async (req, res) => {
     const authToken = req.cookies[authCookieName];
 
     if (authToken) {
-        userSessions.delete(authToken);
+        const db = await getDb();
+        await db.collection("sessions").deleteOne({ token: authToken });
     }
 	res.clearCookie(authCookieName, {
 		secure: process.env.NODE_ENV === "production",
