@@ -250,7 +250,7 @@ export const searchRecipesTool = tool({
   }),
   execute: async ({ ingredients = [], timeLimit, servings, dietaryPreferences } = {}) => {
     const normalizeIngredient = (item) =>
-      item.replace(/\s*\(\s*\d+\s*\)\s*$/, "").trim().toLowerCase();
+      item.replace(/\s*\([^)]*\)\s*$/, "").trim().toLowerCase();
     const normalizedIngredients = Array.isArray(ingredients)
       ? ingredients.map(normalizeIngredient)
       : [];
