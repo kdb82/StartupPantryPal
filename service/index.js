@@ -243,7 +243,7 @@ app.get("/api/recipes", requireAuth, async (req, res) => {
 	res.send(recipes);
 });
 
-app.post("/api/recipes", requireAuth, (req, res) => {
+app.post("/api/recipes", requireAuth, async (req, res) => {
 	const {
 		recipeId,
 		recipeName,
@@ -257,11 +257,10 @@ app.post("/api/recipes", requireAuth, (req, res) => {
 		return res.status(400).send({ message: "recipeId and recipeName are required" });
 	}
 
-	const recipes = getOrCreateUserData(userRecipeData, req.user.id, []);
 	const normalizedId = String(recipeId);
-	const existingIndex = recipes.findIndex((r) => String(r.recipeId) === normalizedId);
 
 	const recipe = {
+		userId: req.user.id,
 		recipeId: normalizedId,
 		name: String(recipeName),
 		time: recipeTime ?? null,
@@ -271,24 +270,25 @@ app.post("/api/recipes", requireAuth, (req, res) => {
 		savedAt: new Date().toISOString(),
 	};
 
-	if (existingIndex >= 0) {
-		recipes[existingIndex] = { ...recipes[existingIndex], ...recipe };
-	} else {
-		recipes.push(recipe);
-	}
+	const db = await getDb();
+	await db.collection("recipes").updateOne(
+		{ userId: req.user.id, recipeId: normalizedId },
+		{ $set: recipe },
+		{ upsert: true }
+	);
 
-	res.status(201).send({ recipe });
+	const { userId: _ignoredUserId, ...recipeResponse } = recipe;
+	res.status(201).send({ recipe: recipeResponse });
 });
 
-app.delete("/api/recipes/:id", requireAuth, (req, res) => {
+app.delete("/api/recipes/:id", requireAuth, async (req, res) => {
 	const { id } = req.params;
-	const recipes = getOrCreateUserData(userRecipeData, req.user.id, []);
-	const originalLength = recipes.length;
-	const filtered = recipes.filter((r) => String(r.recipeId) !== String(id));
+	const db = await getDb();
+	const result = await db
+		.collection("recipes")
+		.deleteOne({ userId: req.user.id, recipeId: String(id) });
 
-	userRecipeData.set(req.user.id, filtered);
-
-	if (filtered.length === originalLength) {
+	if (!result.deletedCount) {
 		return res.status(404).send({ message: "Recipe not found" });
 	}
 
