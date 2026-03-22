@@ -319,18 +319,27 @@ app.put("/api/shopping-list", requireAuth, async (req, res) => {
 	res.send({ items });
 });
 
-app.get("/api/meal-plan", requireAuth, (req, res) => {
-	const plan = getOrCreateUserData(userMealPlanData, req.user.id, {});
-	res.send({ plan });
+app.get("/api/meal-plan", requireAuth, async (req, res) => {
+	const db = await getDb();
+	const doc = await db
+		.collection("mealPlans")
+		.findOne({ userId: req.user.id }, { projection: { _id: 0, plan: 1 } });
+	res.send({ plan: doc?.plan ?? {} });
 });
 
-app.put("/api/meal-plan", requireAuth, (req, res) => {
+app.put("/api/meal-plan", requireAuth, async (req, res) => {
 	const { plan } = req.body || {};
 	if (!plan || typeof plan !== "object" || Array.isArray(plan)) {
 		return res.status(400).send({ message: "plan must be an object" });
 	}
 
-	userMealPlanData.set(req.user.id, plan);
+	const db = await getDb();
+	await db.collection("mealPlans").updateOne(
+		{ userId: req.user.id },
+		{ $set: { userId: req.user.id, plan } },
+		{ upsert: true }
+	);
+
 	res.send({ plan });
 });
 
