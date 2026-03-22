@@ -258,6 +258,23 @@ if (bootstrapModal) bootstrapModal.hide();
   - Request: `{ categories: [] }`
   - Response: `{ items: [], categories: [] }`
 
+## MongoDB Persistence Migration (Recent)
+
+### What was implemented
+- Replaced in-memory storage for users, sessions, pantry, recipes, shopping list, and meal plan with MongoDB collections.
+- Added a shared database module (`service/db.js`) that creates one `MongoClient` and lazily initializes the `pantrypal` DB handle.
+- Kept frontend API contracts stable by returning the same JSON shapes after migration.
+
+### MongoDB syntax patterns used
+- `findOne(filter)` for single-document reads.
+- `updateOne(filter, { $set: ... }, { upsert: true })` for update-or-insert behavior.
+- `deleteOne(filter)` with `deletedCount` checks for proper 404 handling.
+- `find(...).project(...).toArray()` for filtered list responses.
+
+### Debugging lesson learned
+- If all DB-backed endpoints fail with `MongoServerError: bad auth : Authentication failed`, the backend wiring may be correct but Atlas credentials/permissions are not.
+- Verify Atlas DB user password, allowed auth mechanism, and network/IP allowlist before changing endpoint code.
+
 ### Recipes
 - `GET /api/recipes`
   - Response: `[ { recipeId, name, time, description, ingredients, steps, savedAt } ]`
