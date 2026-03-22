@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/kdb82/StartupPantryPal#readme",
   "devDependencies": {
+    "@types/node": "^25.5.0",
     "vite": "^7.3.1"
   },
   "dependencies": {

@@ -276,12 +276,6 @@ if (bootstrapModal) bootstrapModal.hide();
 - Verify Atlas DB user password, allowed auth mechanism, and network/IP allowlist before changing endpoint code.
 - Confirmed with a direct `MongoClient.connect()` one-liner (outside Express routes): auth failure still occurs, so issue is definitely Atlas credentials/user config, not endpoint logic.
 
-### Verified fix and validation flow
-- Root issue ended up being a combination of stale/old credentials loaded at runtime and malformed `dbConfig.json` while iterating.
-- Added support in `service/db.js` for `connectionString` so Atlas driver URI can be used directly.
-- After fixing credentials and JSON shape, direct Mongo ping succeeded (`{ ok: 1 }`).
-- End-to-end API smoke tests passed for register/login session, pantry, recipes, shopping list, and meal plan with persisted reads after writes.
-
 ### Recipes
 - `GET /api/recipes`
   - Response: `[ { recipeId, name, time, description, ingredients, steps, savedAt } ]`
