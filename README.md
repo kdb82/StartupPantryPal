@@ -169,8 +169,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
+- [x] **Stores data in MongoDB** - Replaced in-memory backend storage with MongoDB collections for pantry, recipes, shopping list, meal plan, and sessions. Verified persistence by writing and then reading data through service endpoints.
+- [x] **Stores credentials in MongoDB** - User records are stored in MongoDB `users` collection with BCrypt password hashes, and authentication/session flow now validates against MongoDB-backed user data.
 
 ## 🚀 WebSocket deliverable
 

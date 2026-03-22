@@ -1,7 +1,10 @@
 const { MongoClient } = require("mongodb");
 const dbConfig = require("./dbConfig.json");
 
-const url = process.env.MONGODB_URI || `mongodb+srv://${encodeURIComponent(dbConfig.username)}:${encodeURIComponent(dbConfig.password)}@${dbConfig.hostname}/?retryWrites=true&w=majority&appName=PantryPal`;
+const url = process.env.MONGODB_URI
+	|| dbConfig.connectionString
+	|| dbConfig.uri
+	|| `mongodb+srv://${encodeURIComponent(dbConfig.username)}:${encodeURIComponent(dbConfig.password)}@${dbConfig.hostname}/?retryWrites=true&w=majority&authSource=admin&appName=PantryPal`;
 const dbName = process.env.MONGODB_DB_NAME || dbConfig.dbName || "pantrypal";
 const client = new MongoClient(url);
 let dbInstance;

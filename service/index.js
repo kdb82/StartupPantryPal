@@ -201,7 +201,7 @@ app.put("/api/pantry", requireAuth, async (req, res) => {
 	const pantryCollection = db.collection("pantries");
 	await pantryCollection.updateOne(
 		{ userId: req.user.id },
-		{ $set: { items } },
+		{ $set: { items }, $setOnInsert: { categories: [...defaultCategories] } },
 		{ upsert: true }
 	);
 
@@ -224,7 +224,7 @@ app.put("/api/pantry/categories", requireAuth, async (req, res) => {
 	const pantryCollection = db.collection("pantries");
 	await pantryCollection.updateOne(
 		{ userId: req.user.id },
-		{ $set: { categories: normalized } },
+		{ $set: { categories: normalized }, $setOnInsert: { items: [] } },
 		{ upsert: true }
 	);
 
