@@ -233,20 +233,14 @@ app.put("/api/pantry/categories", requireAuth, async (req, res) => {
 });
 
 /* -----------Recipe endpoints --------------*/
-const userRecipeData = new Map(); //userId -> [ recipes ]
-const userShoppingListData = new Map(); //userId -> [ shopping list items ]
-const userMealPlanData = new Map();
-
-function getOrCreateUserData(store, userId, defaultValue) {
-    if (!store.has(userId)) {
-        store.set(userId, defaultValue);
-    }
-    return store.get(userId);
-}
-
-app.get("/api/recipes", requireAuth, (req, res) => {
-    const recipes = getOrCreateUserData(userRecipeData, req.user.id, []);
-    res.send(recipes);
+app.get("/api/recipes", requireAuth, async (req, res) => {
+	const db = await getDb();
+	const recipes = await db
+		.collection("recipes")
+		.find({ userId: req.user.id })
+		.project({ _id: 0, userId: 0 })
+		.toArray();
+	res.send(recipes);
 });
 
 app.post("/api/recipes", requireAuth, (req, res) => {
