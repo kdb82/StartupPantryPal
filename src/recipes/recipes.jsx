@@ -6,10 +6,106 @@ import { useEffect, useState } from "react";
 import { apiRequest } from "../apiRequest";
 import { useAuth } from "../global_components/AuthContext";
 
+function normalizeIngredientForMatch(value) {
+    if (!value) return "";
+
+    const singularize = (token) => {
+        if (token.endsWith("ies") && token.length > 4) return `${token.slice(0, -3)}y`;
+        if (token.endsWith("ses") && token.length > 4) return token.slice(0, -2);
+        if (token.endsWith("s") && token.length > 3 && !token.endsWith("ss")) {
+            return token.slice(0, -1);
+        }
+        return token;
+    };
+
+    const text = String(value)
+        .toLowerCase()
+        .replace(/\([^)]*\)/g, " ")
+        .split(",")[0]
+        .replace(/\b\d+(?:[./]\d+)?\b/g, " ")
+        .replace(/[^a-z\s]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    if (!text) return "";
+
+    const units = new Set([
+        "cup", "cups", "tablespoon", "tablespoons", "tbsp", "teaspoon", "teaspoons", "tsp",
+        "ounce", "ounces", "oz", "pound", "lb", "lbs", "gram", "grams", "g", "kg",
+        "clove", "cloves", "slice", "slices", "piece", "pieces", "can", "cans", "jar", "jars",
+        "bunch", "sprig", "pinch",
+    ]);
+
+    const descriptors = new Set([
+        "fresh", "frozen", "diced", "minced", "chopped", "sliced", "thin", "thick", "bite", "sized",
+        "boneless", "skinless", "large", "small", "medium", "optional", "to", "taste", "grated", "cubed",
+    ]);
+
+    const aliases = {
+        breasts: "chicken",
+        breast: "chicken",
+        thighs: "chicken",
+        thigh: "chicken",
+        drumsticks: "chicken",
+        drumstick: "chicken",
+        tenderloins: "chicken",
+        tenderloin: "chicken",
+        chily: "chili",
+    };
+
+    const tokens = text
+        .split(" ")
+        .map((token) => singularize(token))
+        .map((token) => aliases[token] || token)
+        .filter((token) => token && !units.has(token) && !descriptors.has(token));
+
+    return tokens.join(" ").trim();
+}
+
+function ingredientMatches(pantryValue, recipeValue) {
+    const pantryNormalized = normalizeIngredientForMatch(pantryValue);
+    const recipeNormalized = normalizeIngredientForMatch(recipeValue);
+
+    if (!pantryNormalized || !recipeNormalized) return false;
+
+    if (
+        pantryNormalized === recipeNormalized ||
+        pantryNormalized.includes(recipeNormalized) ||
+        recipeNormalized.includes(pantryNormalized)
+    ) {
+        return true;
+    }
+
+    const pantryTokens = pantryNormalized.split(" ").filter(Boolean);
+    const recipeTokens = recipeNormalized.split(" ").filter(Boolean);
+    if (!pantryTokens.length || !recipeTokens.length) return false;
+
+    const pantrySet = new Set(pantryTokens);
+    const recipeSet = new Set(recipeTokens);
+    const smaller = pantrySet.size <= recipeSet.size ? pantrySet : recipeSet;
+    const larger = smaller === pantrySet ? recipeSet : pantrySet;
+
+    for (const token of smaller) {
+        if (!larger.has(token)) return false;
+    }
+
+    return true;
+}
+
+function calculateMissingIngredientsFromPantry(recipeIngredients, pantryItems) {
+    if (!Array.isArray(recipeIngredients) || recipeIngredients.length === 0) return [];
+    if (!Array.isArray(pantryItems) || pantryItems.length === 0) return recipeIngredients;
+
+    return recipeIngredients.filter(
+        (ingredient) => !pantryItems.some((item) => ingredientMatches(item.name, ingredient))
+    );
+}
+
 export function Recipes() {
     const [notifications, setNotifications] = useState([]);
     const [shoppingListMessage, setShoppingListMessage] = useState("");
     const [recipes, setRecipes] = useState([]);
+    const [pantryItems, setPantryItems] = useState([]);
     const [showDaySelector, setShowDaySelector] = useState(false);
     const [selectedRecipeForCalendar, setSelectedRecipeForCalendar] = useState(null);
     const { authReady, isAuthenticated } = useAuth();
@@ -63,6 +159,7 @@ export function Recipes() {
     useEffect(() => {
         if (!authReady || !isAuthenticated) {
 			setRecipes([]);
+            setPantryItems([]);
 			return;
 		}
 
@@ -71,6 +168,25 @@ export function Recipes() {
             setRecipes(Array.isArray(recipes) ? recipes : []);
         };
         loadRecipes();
+    }, [authReady, isAuthenticated]);
+
+    useEffect(() => {
+        if (!authReady || !isAuthenticated) {
+            setPantryItems([]);
+            return;
+        }
+
+        const loadPantry = async () => {
+            try {
+                const pantry = await apiRequest("/api/pantry", { method: "GET" });
+                setPantryItems(Array.isArray(pantry.items) ? pantry.items : []);
+            } catch (error) {
+                console.error("Failed to load pantry for recipe comparison:", error);
+                setPantryItems([]);
+            }
+        };
+
+        loadPantry();
     }, [authReady, isAuthenticated]);
 
     // Handle save ingredients
@@ -304,6 +420,10 @@ export function Recipes() {
                                         ></button>
                                     </div>
                                     <div className="modal-body">
+                                        {(() => {
+                                            const missing = calculateMissingIngredientsFromPantry(recipe.ingredients, pantryItems);
+                                            return (
+                                                <>
                                         <p className="text-muted mb-3">
                                             Shared by You{recipe.time ? ` • ${recipe.time} minutes` : ''}
                                         </p>
@@ -322,14 +442,17 @@ export function Recipes() {
                                         </ol>
                                         <h6>Missing Ingredients</h6>
                                         <ul>
-                                            {recipe.missingIngredients && recipe.missingIngredients.length > 0 ? (
-                                                recipe.missingIngredients.map((ingredient, idx) => (
+                                            {missing.length > 0 ? (
+                                                missing.map((ingredient, idx) => (
                                                     <li key={idx}>{ingredient}</li>
                                                 ))
                                             ) : (
                                                 <li>None! You have all the ingredients.</li>
                                             )}
                                         </ul>
+                                                </>
+                                            );
+                                        })()}
                                     </div>
                                     <div className="modal-footer">
                                         <button
@@ -339,14 +462,17 @@ export function Recipes() {
                                         >
                                             Close
                                         </button>
-                                        {recipe.missingIngredients && recipe.missingIngredients.length > 0 && (
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() => handleSaveIngredients(recipe.missingIngredients, recipe.name, recipe.recipeId)}
-                                            >
-                                                Add Missing Ingredients to Shopping List
-                                            </button>
-                                        )}
+                                        {(() => {
+                                            const missing = calculateMissingIngredientsFromPantry(recipe.ingredients, pantryItems);
+                                            return missing.length > 0 ? (
+                                                <button
+                                                    className="btn btn-primary"
+                                                    onClick={() => handleSaveIngredients(missing, recipe.name, recipe.recipeId)}
+                                                >
+                                                    Add Missing Ingredients to Shopping List
+                                                </button>
+                                            ) : null;
+                                        })()}
                                         <button
                                             type="button"
                                             style={{backgroundColor: "#b6d6b7", borderColor: "white"}}
@@ -554,20 +680,8 @@ export function FriendsRecipes() {
     }, [authReady, isAuthenticated]);
 
     // Calculate missing ingredients based on user's pantry
-    const calculateMissingIngredients = (recipeIngredients) => {
-        if (!pantryItems.length) {
-            return recipeIngredients; // All ingredients are missing if no pantry
-        }
-
-        const normalizeIngredient = (item) =>
-            item.replace(/\s*\(\s*\d+\s*\)\s*$/, "").trim().toLowerCase();
-
-        const pantryNames = pantryItems.map((item) => normalizeIngredient(item.name));
-
-        return recipeIngredients.filter((ingredient) =>
-            !pantryNames.includes(normalizeIngredient(ingredient))
-        );
-    };
+    const calculateMissingIngredients = (recipeIngredients) =>
+        calculateMissingIngredientsFromPantry(recipeIngredients, pantryItems);
 
     // Handle save ingredients
     const handleSaveIngredients = async (missingIngredients, recipeName, recipeId) => {

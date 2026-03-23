@@ -42,6 +42,128 @@ function normalizeRecipeId(recipeId) {
   return recipeId.startsWith("recipe_") ? recipeId.substring(7) : recipeId;
 }
 
+function normalizeForPantryMatch(value) {
+  if (!value) return "";
+
+  const singularize = (token) => {
+    if (token.endsWith("ies") && token.length > 4) return `${token.slice(0, -3)}y`;
+    if (token.endsWith("ses") && token.length > 4) return token.slice(0, -2);
+    if (token.endsWith("s") && token.length > 3 && !token.endsWith("ss")) {
+      return token.slice(0, -1);
+    }
+    return token;
+  };
+
+  const text = value
+    .toLowerCase()
+    .replace(/\([^)]*\)/g, " ")
+    .split(",")[0]
+    .replace(/\b\d+(?:[./]\d+)?\b/g, " ")
+    .replace(/[^a-z\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!text) return "";
+
+  const units = new Set([
+    "cup", "tablespoon", "tbsp", "teaspoon", "tsp", "ounce", "oz", "pound", "lb", "lbs",
+    "gram", "g", "kg", "clove", "slice", "piece", "can", "jar", "bunch", "sprig", "pinch",
+  ]);
+
+  const descriptors = new Set([
+    "fresh", "frozen", "diced", "minced", "chopped", "sliced", "thin", "thick", "bite", "sized",
+    "boneless", "skinless", "large", "small", "medium", "optional", "to", "taste",
+  ]);
+
+  const proteinAliases = {
+    chily: "chili",
+    breasts: "chicken",
+    breast: "chicken",
+    thighs: "chicken",
+    thigh: "chicken",
+    drumsticks: "chicken",
+    drumstick: "chicken",
+    tenderloins: "chicken",
+    tenderloin: "chicken",
+  };
+
+  const tokens = text
+    .split(" ")
+    .map((token) => singularize(token))
+    .map((token) => proteinAliases[token] || token)
+    .filter((token) => token && !units.has(token) && !descriptors.has(token));
+
+  return tokens.join(" ").trim();
+}
+
+const STRICT_QUALIFIER_EXCEPTIONS = {
+  garlic: new Set(["powder", "salt", "paste"]),
+  onion: new Set(["powder", "salt"]),
+  chili: new Set(["powder", "flake", "flakes"]),
+  milk: new Set(["almond", "coconut", "oat", "soy"]),
+  flour: new Set(["almond", "coconut", "bread", "self", "rising", "wheat"]),
+  sugar: new Set(["brown", "powdered", "confectioner"]),
+  salt: new Set(["kosher", "sea", "pink", "iodized", "garlic", "onion"]),
+};
+
+function getStrictQualifiers(value, base) {
+  const qualifiers = STRICT_QUALIFIER_EXCEPTIONS[base];
+  if (!qualifiers || !value) return new Set();
+
+  const tokens = value.split(" ").filter(Boolean);
+  if (!tokens.includes(base)) return new Set();
+
+  return new Set(tokens.filter((token) => token !== base && qualifiers.has(token)));
+}
+
+function ingredientsMatch(pantryValue, recipeValue) {
+  const pantryNormalized = normalizeForPantryMatch(pantryValue);
+  const recipeNormalized = normalizeForPantryMatch(recipeValue);
+
+  if (!pantryNormalized || !recipeNormalized) return false;
+
+  // Fast path for exact and substring matches (e.g., "soda" vs "soda pop").
+  if (
+    pantryNormalized === recipeNormalized ||
+    pantryNormalized.includes(recipeNormalized) ||
+    recipeNormalized.includes(pantryNormalized)
+  ) {
+    return true;
+  }
+
+  // Guard against false positives for ingredients where qualifiers matter.
+  for (const base of Object.keys(STRICT_QUALIFIER_EXCEPTIONS)) {
+    const pantryIsBase = pantryNormalized === base;
+    const recipeIsBase = recipeNormalized === base;
+    const pantryQualifiers = getStrictQualifiers(pantryNormalized, base);
+    const recipeQualifiers = getStrictQualifiers(recipeNormalized, base);
+
+    if (pantryIsBase && recipeQualifiers.size > 0) return false;
+    if (recipeIsBase && pantryQualifiers.size > 0) return false;
+
+    if (pantryQualifiers.size > 0 && recipeQualifiers.size > 0) {
+      const sharedQualifier = [...pantryQualifiers].some((q) => recipeQualifiers.has(q));
+      if (!sharedQualifier) return false;
+    }
+  }
+
+  // Token subset check for multi-word variants.
+  const pantryTokens = pantryNormalized.split(" ").filter(Boolean);
+  const recipeTokens = recipeNormalized.split(" ").filter(Boolean);
+  if (!pantryTokens.length || !recipeTokens.length) return false;
+
+  const pantrySet = new Set(pantryTokens);
+  const recipeSet = new Set(recipeTokens);
+  const smaller = pantrySet.size <= recipeSet.size ? pantrySet : recipeSet;
+  const larger = smaller === pantrySet ? recipeSet : pantrySet;
+
+  for (const token of smaller) {
+    if (!larger.has(token)) return false;
+  }
+
+  return true;
+}
+
 async function getPantryState() {
   const pantry = await apiRequest("/api/pantry", { method: "GET" });
   return {
@@ -249,12 +371,14 @@ export const searchRecipesTool = tool({
     servings: z.number().optional().describe("Number of servings needed"),
   }),
   execute: async ({ ingredients = [], timeLimit, servings, dietaryPreferences } = {}) => {
-    const normalizeIngredient = (item) =>
-      item.replace(/\s*\([^)]*\)\s*$/, "").trim().toLowerCase();
     const normalizedIngredients = Array.isArray(ingredients)
-      ? ingredients.map(normalizeIngredient)
+      ? ingredients.map((item) => normalizeForPantryMatch(item))
       : [];
-    const hasIngredient = (name) => normalizedIngredients.includes(normalizeIngredient(name));
+
+    const hasIngredient = (name) => {
+      if (!name) return false;
+      return ingredients.some((pantryItem) => ingredientsMatch(pantryItem, name));
+    };
     const buildMissingItems = (recipeIngredients) =>
       recipeIngredients.filter((item) => !hasIngredient(item));
 
@@ -535,13 +659,10 @@ export const saveRecipeTool = tool({
     const normalizedRecipeId = normalizeRecipeId(recipeId);
 
     const pantry = await getPantryState();
-    const normalizeIngredient = (item) =>
-      item.replace(/\s*\(\s*\d+\s*\)\s*$/, "").trim().toLowerCase();
-    const pantryItems = pantry.items.map((item) => normalizeIngredient(item.name));
 
     const missingIngredients = Array.isArray(resolvedIngredients)
       ? resolvedIngredients.filter(
-          (ingredient) => !pantryItems.includes(normalizeIngredient(ingredient))
+          (ingredient) => !pantry.items.some((item) => ingredientsMatch(item.name, ingredient))
         )
       : [];
 
