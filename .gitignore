@@ -6,3 +6,4 @@ notes/openrouterai.md
 .env
 .env.local
 .env.*.local
+service/dbConfig.json
